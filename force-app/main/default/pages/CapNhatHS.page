@@ -1,0 +1,19 @@
+<apex:page standardController="Student__c">
+    <apex:form>
+        <apex:pageBlock title="Cập Nhật Thông Tin Học Sinh">
+            <apex:pageBlockSection>
+                Họ: <apex:inputText value="{!Student__c.firstName__c}"/>
+                Tên: <apex:inputText value="{!Student__c.lastName__c}"/>
+                Giới tính: <apex:inputCheckbox value="{!Student__c.Sex__c}"/>
+                Ngày Sinh <apex:inputField value="{!Student__c.dayOfBirth__c}"/>
+                Điểm 1: <apex:inputText value="{!Student__c.Diem1__c}"/>
+                Điểm 2: <apex:inputText value="{!Student__c.Diem2__c}"/>
+                Điểm 3: <apex:inputText value="{!Student__c.Diem3__c}"/>
+            </apex:pageBlockSection>
+            <apex:pageBlockButtons>
+                <apex:commandButton action="{!save}" value="Lưu"/>
+            </apex:pageBlockButtons>
+            
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

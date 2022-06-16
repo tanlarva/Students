@@ -1,0 +1,24 @@
+<apex:page standardController="Student__c" showHeader="true">
+<!-- Begin Default Content REMOVE THIS -->
+    <apex:form>
+    	<apex:pageBlock title="Chi tiết Học sinh">
+            <apex:pageBlockSection columns="1">
+                <apex:outputText>Họ: {!Student__c.firstName__c}</apex:outputText>
+                <apex:outputText>Tên: {!Student__c.lastName__c}</apex:outputText>
+                <apex:outputText>Giới tính: {!If(Student__c.Sex__c , "Nam", "Nữ")}</apex:outputText>
+                <apex:outputText value="Ngày sinh: {!DAY(Student__c.dayOfBirth__c)}/{!MONTH(Student__c.dayOfBirth__c)}/{!YEAR(Student__c.dayOfBirth__c)}"></apex:outputText>
+                <apex:outputText>Điểm 1: {!Student__c.Diem1__c}</apex:outputText>
+                <apex:outputText>Điểm 2: {!Student__c.Diem2__c}</apex:outputText>
+                <apex:outputText>Điểm 3: {!Student__c.Diem3__c}</apex:outputText>
+                <apex:outputText>Điểm Trung Bình: {!Student__c.GPA__c}</apex:outputText>
+                <apex:outputText>Tình trạng: {!Student__c.Status__c}</apex:outputText>
+            </apex:pageBlockSection>
+            <apex:pageBlockButtons>
+                <apex:commandButton action="{!edit}" value="Cập Nhật"/>
+                <apex:commandButton action="{!delete}" value="Xóa"/>
+            </apex:pageBlockButtons>   
+        </apex:pageBlock>
+    </apex:form>
+    
+<!-- End Default Content REMOVE THIS -->
+</apex:page>

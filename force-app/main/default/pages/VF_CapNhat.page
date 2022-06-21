@@ -1,16 +1,21 @@
 <apex:page standardController="Student__c">
+    <apex:includeScript value="{! $Resource.jQueryMin }" />
+    <apex:includeScript value="{!URLFOR($Resource.jQueryUI, 'jquery-ui-1.13.1/jquery-ui.js') }" />
+    <apex:includeScript value="{!URLFOR($Resource.Bootstrap, 'bootstrap-5.0.2-dist/js/bootstrap.bundle.js') }" />
+    <apex:Stylesheet value="{!URLFOR($Resource.jQueryUI, 'jquery-ui-1.13.1/jquery-ui.css')}" />
+    <apex:Stylesheet value="{!URLFOR($Resource.Bootstrap, 'bootstrap-5.0.2-dist/css/bootstrap.css')}" />
     <apex:form>
         <apex:pageBlock title="Cập Nhật Thông Tin Học Sinh">
-            <apex:pageBlockSection>
-                Họ: <apex:inputText value="{!Student__c.firstName__c}"/>
-                Tên: <apex:inputText value="{!Student__c.lastName__c}"/>
-                Giới tính: <apex:inputCheckbox value="{!Student__c.Sex__c}"/>
-                Ngày Sinh <apex:inputField value="{!Student__c.dayOfBirth__c}"/>
-                Điểm 1: <apex:inputText value="{!Student__c.Diem1__c}"/>
-                Điểm 2: <apex:inputText value="{!Student__c.Diem2__c}"/>
-                Điểm 3: <apex:inputText value="{!Student__c.Diem3__c}"/>
+            <apex:pageBlockSection columns="1">
+                <apex:inputText value="{!Student__c.firstName__c}"/>
+                <apex:inputText value="{!Student__c.lastName__c}"/>
+                <apex:inputCheckbox value="{!Student__c.Sex__c}"/>
+                <apex:inputField value="{!Student__c.dayOfBirth__c}"/>
+                <apex:inputText value="{!Student__c.Diem1__c}"/>
+                <apex:inputText value="{!Student__c.Diem2__c}"/>
+                <apex:inputText value="{!Student__c.Diem3__c}"/>
             </apex:pageBlockSection>
-            <apex:pageBlockButtons>
+            <apex:pageBlockButtons location="bottom">
                 <apex:commandButton action="{!save}" value="Lưu"/>
             </apex:pageBlockButtons>
             

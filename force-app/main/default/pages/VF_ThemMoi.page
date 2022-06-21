@@ -1,5 +1,9 @@
-<apex:page controller="VF_ThemMoi_Controller" tabStyle="Student__c">
-    <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></apex:includeScript>
+<apex:page controller="VF_ThemMoi_Controller" showHeader="true">
+    <apex:includeScript value="{! $Resource.jQueryMin }"/>
+    <apex:includeScript value="{!URLFOR($Resource.jQueryUI, 'jquery-ui-1.13.1/jquery-ui.js') }"/>
+    <apex:includeScript value="{!URLFOR($Resource.Bootstrap, 'bootstrap-5.0.2-dist/js/bootstrap.bundle,js') }"/>
+    <apex:Stylesheet value="{!URLFOR($Resource.jQueryUI, 'jquery-ui-1.13.1/jquery-ui.css')}"/>
+    <apex:Stylesheet value="{!URLFOR($Resource.Bootstrap, 'bootstrap-5.0.2-dist/css/bootstrap.css')}"/>
     <style>
         .nameSex{
             justify-content:right;
@@ -25,9 +29,10 @@
                 </apex:pageBlockSectionItem>
               
             </apex:pageBlockSection>
-            <pageBlockButtons location="bottom">
+            
+            <apex:pageBlockButtons location="bottom">
                 <apex:commandButton value="Save" action="{!save}"/>
-            </pageBlockButtons>
+            </apex:pageBlockButtons>
         </apex:pageBlock>
     </apex:form>
     <script>

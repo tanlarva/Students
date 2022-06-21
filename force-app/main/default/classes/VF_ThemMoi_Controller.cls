@@ -18,6 +18,7 @@ public class VF_ThemMoi_Controller {
         return (redirectSuccess);
     }
 
+    //Tạo selection cho Lớp
     public SelectOption[] getSelectCLass(){
         SelectOption[] options = new SelectOption[]{};
         for(Class__c oneClass : [SELECT Id, nameClass__c FROM Class__c]){
@@ -26,7 +27,6 @@ public class VF_ThemMoi_Controller {
         }
         return options;
     }
-
     public String getChooseCLass(){
         return chooseCLass;
     }

@@ -1,0 +1,78 @@
+<apex:page controller="VF_TimKiem_Controller" docType="html-5.0">
+    <apex:includeScript value="{! $Resource.jQueryMin }" />
+    <apex:includeScript value="{!URLFOR($Resource.jQueryUI, 'jquery-ui-1.13.1/jquery-ui.js') }" />
+    <apex:includeScript value="{!URLFOR($Resource.Bootstrap, 'bootstrap-5.0.2-dist/js/bootstrap.bundle.js') }" />
+    <apex:Stylesheet value="{!URLFOR($Resource.jQueryUI, 'jquery-ui-1.13.1/jquery-ui.css')}" />
+    <apex:Stylesheet value="{!URLFOR($Resource.Bootstrap, 'bootstrap-5.0.2-dist/css/bootstrap.css')}" />
+    <!-- CSS -->
+    <style type="text/css">
+        .midBlock {
+            vertical-align: center !important;
+        }
+
+        .fit {
+            padding-top: 10px !important;
+        }
+        .mr5{
+            margin-right:5px;
+        }
+        .floatR{
+            text-align: right !important;
+        }
+        .floatM{
+            text-align: center !important;
+        }
+        
+    </style>
+    <!-- PAGE CONTENT -->
+    <apex:form>
+        <!-- Page Message -->
+        <apex:pageMessages id="msgId" />
+        <apex:actionRegion>
+            <apex:pageBlock>
+                <div class="row justify-content-start fit">
+                    <div class="col-2 floatR">
+                        Tên học sinh:
+                    </div>
+                    <input type="text" class="col-2" value="{!dataSearch.nameStudent}"></input>
+                    
+                    <label class="col-2">
+                        <input class="mr5" type="checkbox" name="sortSearch"/>Sắp xếp theo chiều tăng dần
+                    </label>
+                    
+                </div>
+                <div class="row justify-content-start fit">
+                    <div class="col-2 floatR">Lớp:</div>
+                    <div class="col-2">
+                        <apex:selectList value="{!chooseClass}">
+                            <apex:selectOptions value="{!selectClass}"></apex:selectOptions>
+                        </apex:selectList>
+                    </div>
+                </div>
+
+                <div class="row justify-content-start fit">
+                    <div class="col-2 floatR">Ngày sinh: </div>
+                    <input class="col-2" type="text" name="strDate" value="{!dataSearch.startDate}" />
+                    <div class="col-1 floatM">~</div>
+                    <input class="col-2" type="text" name="endDate" value="{!dataSearch.endDate}" />
+                </div>
+
+                <apex:pageBlockButtons location="bottom">
+                    <apex:commandButton action="{!search}" value="Tìm kiếm" />
+                    <apex:commandButton onclick="gotoNewStudent()" value="Thêm mới" />
+                    <apex:commandButton action="{!deleteStu}" value="Xóa" />
+                </apex:pageBlockButtons>
+            </apex:pageBlock>
+        </apex:actionRegion>
+    </apex:form>
+    <script>
+        var $ = jQuery.noConflict();
+        function gotoNewStudent() {
+            window.open('/apex/VF_ThemMoi');
+        }
+        $(document).ready(function () {
+            $("input[name = 'strDate']").datepicker();
+            $("input[name = 'endDate']").datepicker();
+        })
+    </script>
+</apex:page>

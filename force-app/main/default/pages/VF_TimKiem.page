@@ -9,7 +9,6 @@
         .midBlock {
             vertical-align: center !important;
         }
-
         .fit {
             padding-top: 10px !important;
         }
@@ -28,14 +27,16 @@
     <apex:form>
         <!-- Page Message -->
         <apex:pageMessages id="msgId" />
+
+
+        <!-- Form search -->
         <apex:actionRegion>
             <apex:pageBlock>
                 <div class="row justify-content-start fit">
                     <div class="col-2 floatR">
                         Tên học sinh:
                     </div>
-                    <input type="text" class="col-2" value="{!dataSearch.nameStudent}"></input>
-                    
+                    <input name="nameStu" type="text" class="col-2" value="{!dataSearch.nameStudent}"></input>
                     <label class="col-2">
                         <input class="mr5" type="checkbox" name="sortSearch"/>Sắp xếp theo chiều tăng dần
                     </label>
@@ -56,7 +57,6 @@
                     <div class="col-1 floatM">~</div>
                     <input class="col-2" type="text" name="endDate" value="{!dataSearch.endDate}" />
                 </div>
-
                 <apex:pageBlockButtons location="bottom">
                     <apex:commandButton action="{!search}" value="Tìm kiếm" />
                     <apex:commandButton onclick="gotoNewStudent()" value="Thêm mới" />
@@ -64,11 +64,48 @@
                 </apex:pageBlockButtons>
             </apex:pageBlock>
         </apex:actionRegion>
+
+        <!-- Data search -->
+        <apex:pageBlock id="dataSearch" title="Kết quả tìm kiếm">
+            <apex:pageBlockTable value="{!results}" var="x">
+                <apex:column>
+                    <apex:facet name="header">
+                        <c:CheckAllRecord />
+                    </apex:facet>
+                    <apex:inputCheckbox value="{!x.isSelected}"/>
+                </apex:column>
+                <apex:column value="{!x.student.firstName__c}"/>
+                <apex:column value="{!x.student.lastName__c}"/>
+                <apex:column value="{!x.student.dayOfBirth__c}"/>
+                <apex:column value="{!x.student.Diem1__c}"/>
+                <apex:column value="{!x.student.Diem2__c}"/>
+                <apex:column value="{!x.student.Diem3__c}"/>
+                <apex:column value="{!x.student.GPA__c}"/>
+                <apex:column value="{!x.student.Status__c}"/>
+                <apex:column>
+                    <apex:commandLink onClick="gotoUpdateStudent('{!x.student.Id}')">Cập nhật</apex:commandLink>
+                    |
+                    <apex:commandLink>Xóa</apex:commandLink>
+                </apex:column>
+            </apex:pageBlockTable>
+            <apex:pageBlockButtons location="bottom">
+                <apex:commandButton action="{!firstPage}" value="Trang đầu"/>
+                <apex:commandButton action="{!prePage}" value="<"/>
+                <apex:outputText id="page" value="{!PageNumber}"/>
+                <apex:commandButton action="{!nextPage}" value=">"/>
+                <apex:commandButton action="{!lastPage}" value="Trang cuối"/>
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+
     </apex:form>
     <script>
         var $ = jQuery.noConflict();
         function gotoNewStudent() {
             window.open('/apex/VF_ThemMoi');
+        }
+        function gotoUpdateStudent(id) {
+            let url = '/apex/VF_CapNhat?&id='+id.toString();
+            window.open(url);
         }
         $(document).ready(function () {
             $("input[name = 'strDate']").datepicker();

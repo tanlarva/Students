@@ -1,0 +1,26 @@
+<apex:component>
+    <style>
+        .nameSex{
+            justify-content:right;
+        }  
+    </style>
+    <h6 class="nameSex">Nữ</h6>
+    <script>
+        var $ = jQuery.noConflict();
+        $(document).ready(function() {
+            if($(".sex").is(":checked")){
+                $('.nameSex').text('Nam');
+            }else{
+                $('.nameSex').text('Nữ');
+            }
+            $(".sex").change(function(e) {
+                $add = $(this);
+                if($add.is(':checked')){
+                    $('.nameSex').text('Nam');
+                }else{
+                    $('.nameSex').text('Nữ');
+                }
+            })    
+        })
+    </script>
+</apex:component>

@@ -1,7 +1,6 @@
 <apex:component>
     <script> 
         function cvCheckAllOrNone(allOrNoneCheckbox) {
-        
             // Find parent table
             var container = allOrNoneCheckbox;
             while (container.tagName != "TABLE") {
@@ -20,6 +19,6 @@
                 }
             }    
         }
-        </script>
-        <apex:inputCheckbox onclick="cvCheckAllOrNone(this)" title = "Toggle All Rows"/>
+    </script>
+    <apex:inputCheckbox onclick="cvCheckAllOrNone(this)" title = "Toggle All Rows"/>
 </apex:component>

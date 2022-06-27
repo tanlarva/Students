@@ -17,6 +17,7 @@
                 <apex:outputText>Điểm 3: {!Student__c.Diem3__c}</apex:outputText>
                 <apex:outputText>Điểm Trung Bình: {!Student__c.GPA__c}</apex:outputText>
                 <apex:outputText>Tình trạng: {!Student__c.Status__c}</apex:outputText>
+                <apex:outputText>Xếp Loại: {!Student__c.XepLoai__c}</apex:outputText>
             </apex:pageBlockSection>
             <apex:pageBlockButtons location="bottom">
                 <apex:commandButton action="{!edit}" value="Cập Nhật"/>

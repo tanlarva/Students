@@ -25,7 +25,7 @@ trigger Trigger_AF_Status on Student__c (after insert, after delete, after updat
         for(Student__c stuOld : Trigger.old){
             for(Class__c classMinus : [SELECT Id, numPass__c, numFail__c FROM Class__c WHERE Id =:stuOld.Class__c]){
                 if(stuOld.Status__c=='Đậu'){
-                    classMinus.numFail__c--;
+                    classMinus.numPass__c--;
                 }else if(stuOld.Status__c=='Rớt'){
                     classMinus.numFail__c--;
                 }
@@ -35,7 +35,7 @@ trigger Trigger_AF_Status on Student__c (after insert, after delete, after updat
         for(Student__c stuNew : Trigger.new){
             for(Class__c classAdd : [SELECT Id, numPass__c, numFail__c FROM Class__c WHERE Id =:stuNew.Class__c]){
                 if(stuNew.Status__c=='Đậu'){
-                    classAdd.numFail__c++;
+                    classAdd.numPass__c++;
                 }else if(stuNew.Status__c=='Rớt'){
                     classAdd.numFail__c++;
                 }

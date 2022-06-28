@@ -9,7 +9,7 @@ trigger Trigger_AF_Siso on Student__c (after insert, after delete, after update)
             update upCLass;   
         }
     }else if(Trigger.isDelete){
-        for( Student__c stu : Trigger.new){
+        for( Student__c stu : Trigger.old){
             Class__c upCLass = new Class__c();
             for(Class__c classUpdate : [SELECT Id, numStu__c FROM Class__c WHERE Id =:stu.Class__c]){
                 upClass = classUpdate;

@@ -1,12 +1,35 @@
+/**
+* ClassName: VF_ThemMoi_Controller
+* ClassDetail: Thêm mới đối tượng
+* @created: 2022/06/21 Phan Duy Tân
+* @modified:
+*/
 public class VF_ThemMoi_Controller {
     public Student__c student {get; private set;}
     String chooseCLass;
 
+    /**
+	* Contructor
+	* init
+	* @param:
+    * @param: 	
+	* @return: 
+	* @created: 2022/06/21 Phan Duy Tân
+	* @modified:
+	**/
     public VF_ThemMoi_Controller() {
         Id id = ApexPages.currentPage().getParameters().get('id');
         student = (id == null) ? new Student__c() : [SELECT lastName__c, firstName__c, Sex__c, Class__c, Status__c, Diem3__c, Diem2__c, Diem1__c, GPA__c FROM Student__c WHERE Name  = :id];
     }
-
+    /**
+	* save
+	* Lưu học sinh
+	* @param:
+    * @param: 	
+	* @return: Pagereference
+	* @created: 2022/06/21 Phan Duy Tân
+	* @modified:
+	**/
     public Pagereference save(){
         try {
             upsert(student);
@@ -18,6 +41,15 @@ public class VF_ThemMoi_Controller {
         return (redirectSuccess);
     }
 
+    /**
+	* getSelectCLass
+	* Lấy lớp
+	* @param:
+    * @param: 	
+	* @return: SelectOption 
+	* @created: 2022/06/21 Phan Duy Tân
+	* @modified:
+	**/
     //Tạo selection cho Lớp
     public SelectOption[] getSelectCLass(){
         SelectOption[] options = new SelectOption[]{};

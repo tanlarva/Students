@@ -1,7 +1,9 @@
-/*
-    
-
- */
+/**
+* ClassName: VF_TimKiem_Controller
+* ClassDetail: Tìm kiếm đối tượng
+* @created: 2022/06/21 Phan Duy Tân
+* @modified:
+*/
 public with sharing class VF_TimKiem_Controller {
     public String sId {get; set;}
     public Boolean sSort {get; set;}
@@ -16,10 +18,27 @@ public with sharing class VF_TimKiem_Controller {
     public dataSearch dataSearch {get; set; }
      
     private List<studentDTO> result {get; set; }
+
+    /**
+	* Contructor
+	* init
+	* @param: 
+	* @return: 
+	* @created: 2022/06/21 Phan Duy Tân
+	* @modified:
+	**/
     public VF_TimKiem_Controller() {
         dataSearch = new dataSearch();
     }
 
+    /**
+	* getResults
+	* Get list học sinh
+	* @param: 
+	* @return: List<studentDTO>
+	* @created: 2022/06/22 Phan Duy Tân
+	* @modified:
+	**/
     //Controller table
     public List<studentDTO> getResults(){
         List<studentDTO> results = new List<studentDTO>();
@@ -63,6 +82,14 @@ public with sharing class VF_TimKiem_Controller {
         this.dataSearch.idCLass = value;
     }
 
+     /**
+	* search
+	* Tìm kiếm
+	* @param: 
+	* @return: 
+	* @created: 2022/06/22 Phan Duy Tân
+	* @modified:
+	**/
     //Sự kiện ấn Tìm kiếm
     public void search(){
         dataSearch.nameStudent = ApexPages.currentPage().getParameters().get('nameStu');
@@ -89,7 +116,14 @@ public with sharing class VF_TimKiem_Controller {
         this.totalPage = (this.totalSearch<3)?1:((math.mod(this.totalSearch,pageSize)==0) ? this.totalSearch/pageSize : (this.totalSearch/pageSize) +1);
     }
 
-    
+     /**
+	* deleteStu
+	* Xóa đối tượng đã đánh dấu
+	* @param: 
+	* @return: 
+	* @created: 2022/06/22 Phan Duy Tân
+	* @modified:
+	**/
     //Chức năng button
     public void deleteStu(){
         Student__c del = new Student__c();
@@ -97,16 +131,40 @@ public with sharing class VF_TimKiem_Controller {
         delete del;
         this.result = null;   
     }
+     /**
+	* updateStu
+	* Cập nhật đối tượng
+	* @param: 
+	* @return: Pagereference 
+	* @created: 2022/06/23 Phan Duy Tân
+	* @modified:
+	**/
     public Pagereference updateStu(){
         Pagereference page = Page.VF_CapNhat;
         page.getParameters().put('id',sId);
         return page;
     }
+     /**
+	* detailStu
+	* Chi tiết đối tượng
+	* @param: 
+	* @return: Pagereference 
+	* @created: 2022/06/23 Phan Duy Tân
+	* @modified:
+	**/
     public Pagereference detailStu(){
         Pagereference page = Page.VF_ChiTiet;
         page.getParameters().put('id',sId);
         return page;
     }
+    /**
+	* deleteMNStu
+	* Xóa nhiều đối tượng
+	* @param: 
+	* @return: Pagereference 
+	* @created: 2022/06/23 Phan Duy Tân
+	* @modified:
+	**/
     public void deleteMNStu(){
         System.Savepoint sp = Database.setSavepoint();
         try{
@@ -124,14 +182,28 @@ public with sharing class VF_TimKiem_Controller {
         }
         this.result = null;
     }
+
+     /**
+	* newStu
+	* Thêm mới đối tượng
+	* @param: 
+	* @return: Pagereference 
+	* @created: 2022/06/23 Phan Duy Tân
+	* @modified:
+	**/
     public Pagereference newStu(){
         Pagereference page = Page.VF_ThemMoi;
         return page;
     }
-    public void sortStu(){
 
-    }
-
+    /**
+	* firstPage, lastPage, prePage, nextPage
+	* Phân trang
+	* @param: 
+	* @return: 
+	* @created: 2022/06/22 Phan Duy Tân
+	* @modified:
+	**/
     //Phân trang
     public void firstPage(){
         pageCurrent =1;
@@ -149,41 +221,66 @@ public with sharing class VF_TimKiem_Controller {
             pageCurrent++;
         }
     }
+
+    /**
+	* getPageNumber
+	* vị trí trang hiện tại
+	* @param: 
+	* @return: String
+	* @created: 2022/06/22 Phan Duy Tân
+	* @modified:
+	**/
     public String getPageNumber(){
         return String.valueOf(pageCurrent);
     }
 
+    /**
+	* createQuery
+	* Tạo truy vấn
+	* @param: 
+	* @return: String 
+	* @created: 2022/06/22 Phan Duy Tân
+	* @modified:
+	**/
     //Edit query
     public String createQuery(dataSearch dataSearch){
         String query = 'SELECT Class__c, dayOfBirth__c,Diem1__c,Diem3__c,Diem2__c,firstName__c,GPA__c,Id,lastName__c,Sex__c,Status__c, Name FROM Student__c WHERE ';
         String query1, query2, query3, query4;
-        if(dataSearch!=null){
-            if(dataSearch.nameStudent!=null){
-                query1 = ' ((firstName__c LIKE \'%'+dataSearch.nameStudent+'%\') OR (lastName__c LIKE \'%'+dataSearch.nameStudent+'%\'))';
+        if(dataSearch != null){
+            if(dataSearch.nameStudent != null){
+                query1 = ' ((firstName__c LIKE \'%' + String.escapeSingleQuotes(dataSearch.nameStudent) + '%\') OR (lastName__c LIKE \'%' + String.escapeSingleQuotes(dataSearch.nameStudent) + '%\'))';
             }
             if((dataSearch.startDate!=null)&&(dataSearch.endDate!=null)){
-                query2 = ' (dayOfBirth__c > '+dataSearch.startDate+' AND dayOfBirth__c < '+dataSearch.endDate+')';
+                query2 = ' (dayOfBirth__c > '+ String.escapeSingleQuotes(dataSearch.startDate) +' AND dayOfBirth__c < '+ String.escapeSingleQuotes(dataSearch.endDate) +')';
             }else if(dataSearch.endDate!=null){
-                query2 = ' (dayOfBirth__c < '+dataSearch.endDate+')';
+                query2 = ' (dayOfBirth__c < '+ String.escapeSingleQuotes(dataSearch.endDate)+')';
             }else if(dataSearch.startDate!=null){
-                query2 = ' (dayOfBirth__c > '+dataSearch.startDate+')';
+                query2 = ' (dayOfBirth__c > '+ String.escapeSingleQuotes(dataSearch.startDate)+')';
             }
             if(dataSearch.idCLass!=null){
-                query3 = ' Class__c = \''+dataSearch.idCLass+'\'';
+                query3 = ' Class__c = \''+ String.escapeSingleQuotes(dataSearch.idCLass) +'\'';
             }
             if(dataSearch.sortName){
                 query4 = ' ORDER BY lastName__c ';
             }
         }
 
-        query = query + (query1!=null? query1 : '')
-                      + (((query1!=null)&&(query2!=null))? ' AND '+query2 : (query2!=null? query2 : ''))
-                      + ((((query1!=null)||(query2!=null))&&(query3!=null))? ' AND '+ query3 : (query3!=null? query3 : ''))
-                      + (query4!=null? query4: '');
+        query = query + (query1 != null ?  query1 : '')
+                      + (((query1 != null) && (query2 != null)) ? ' AND ' + query2 : (query2 != null ? query2 : ''))
+                      + ((((query1 != null) || (query2 != null)) && (query3 != null)) ? ' AND ' + query3 : (query3 != null ? query3 : ''))
+                      + (query4 != null ? query4 : '');
         System.debug('@@@'+ query);
         return query;
     }
 
+    /**
+	* updateStu
+	* Cập nhật đối tượng
+	* @param:  PageReference
+	* @return: String 
+	* @created: 2022/06/23 Phan Duy Tân
+	* @modified:
+	**/
     //Sự kiện ấn Cập nhật
     public PageReference updateStu(String id){
         PageReference go = Page.VF_CapNhat;
@@ -191,7 +288,12 @@ public with sharing class VF_TimKiem_Controller {
         return go;
     }
 
-    
+    /**
+    * ClassName: dataSearch
+    * ClassDetail: chứa dữ liệ search
+    * @created: 2022/06/21 Phan Duy Tân
+    * @modified:
+    */
     //Các Class phụ
     class dataSearch{
         public String nameStudent {get; set;}
@@ -216,6 +318,12 @@ public with sharing class VF_TimKiem_Controller {
         // }
     }
     
+    /**
+    * ClassName: studentDTO
+    * ClassDetail: Chứa đói tượng student và selected
+    * @created: 2022/06/21 Phan Duy Tân
+    * @modified:
+    */
     class studentDTO{
         public Student__c student {get; set;}
         public boolean isSelected {get; set;}

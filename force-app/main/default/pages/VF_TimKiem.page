@@ -58,15 +58,14 @@
                     <input class="col-2" type="text" name="endDate" value="{!dataSearch.endDate}" />
                 </div>
                 <apex:pageBlockButtons location="bottom">
-                    <apex:commandButton action="{!search}" value="Tìm kiếm" />
-                    <apex:commandButton action="{!newStu}" value="Thêm mới" />
-                    <apex:commandButton action="{!deleteMNStu}" value="Xóa" />
+                    <apex:commandButton action="{!search}" status="Waiting" value="Tìm kiếm" />
+                    <apex:commandButton action="{!newStu}" status="Waiting"  value="Thêm mới" />
+                    <apex:commandButton action="{!deleteMNStu}" status="Waiting" value="Xóa" />
                 </apex:pageBlockButtons>
             	
             </apex:pageBlock>
        
         </apex:actionRegion>
-
         <!-- Data search -->
         <apex:pageBlock id="dataSearch" title="Kết quả tìm kiếm">
             <apex:outputText style="float: right;" value="Số lượng: {!totalSearch}"></apex:outputText>
@@ -90,21 +89,21 @@
                 <apex:column  HeaderValue="Điểm trung bình" value="{!x.student.GPA__c}"/>
                 <apex:column  HeaderValue="Tình trạng" value="{!x.student.Status__c}"/>
                 <apex:column >
-                    <apex:commandLink action="{!updateStu}">Cập nhật
+                    <apex:commandLink status="Waiting" action="{!updateStu}">Cập nhật
                         <apex:param name="updateStu" value="{!x.student.Id}" assignTo="{!sId}"/>
                     </apex:commandLink>
                     |
-                    <apex:commandLink action="{!deleteStu}">Xóa
+                    <apex:commandLink status="Waiting" action="{!deleteStu}">Xóa
                         <apex:param name="deleteStu" value="{!x.student.Id}" assignTo="{!sId}"/>
                     </apex:commandLink>
                 </apex:column>
             </apex:pageBlockTable>
             <apex:pageBlockButtons location="bottom">
-                <apex:commandButton action="{!firstPage}" value="Trang đầu"/>
-                <apex:commandButton action="{!prePage}" value="<"/>
+                <apex:commandButton status="Waiting" action="{!firstPage}" value="Trang đầu"/>
+                <apex:commandButton status="Waiting" action="{!prePage}" value="<"/>
                 <apex:outputText id="page" value="{!PageNumber}"/>
-                <apex:commandButton action="{!nextPage}" value=">"/>
-                <apex:commandButton action="{!lastPage}" value="Trang cuối"/>
+                <apex:commandButton status="Waiting" action="{!nextPage}" value=">"/>
+                <apex:commandButton status="Waiting" action="{!lastPage}" value="Trang cuối"/>
             </apex:pageBlockButtons>
         </apex:pageBlock>
 

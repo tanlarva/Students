@@ -1,0 +1,43 @@
+<!--/**
+* コンポーネント名 : Loading.component
+* コンポーネント概要:
+* @created: 2017/05/09 Vu Tran Tuan
+* @modified:
+*/-->
+<!-- Note: when use to Component Loading need add status="Waiting" to properties of tag -->
+<apex:component id="WaitComponent">
+	<style>
+		.loadingOuterPanel {
+			position: fixed;
+			top: 0px;
+			left: 0px;
+			height: 100%;
+			width: 100%;
+			z-index: 98;
+			overflow: hidden;
+			background-color: #c0c0c0;
+			filter: alpha(opacity=55);
+			-moz-opacity: 0.55;
+			-khtml-opacity: 0.55;
+			opacity: 0.55;
+		}
+		.loadingMsg{
+			color: #343434;
+			font-size: 18px;
+			font-weight: bold;
+		}
+	</style>
+	<apex:actionStatus id="Waitting">
+		<apex:facet name="start">
+			<apex:outputpanel layout="block" id="load_page" styleClass="loadingOuterPanel">
+				<div align="center" style="position: relative; top: 50%; z-index: 9999;">
+					<p>
+						<apex:image url="/img/loading.gif" />
+						&nbsp;&nbsp;
+						<apex:outputText value="Processing．．．" styleClass="loadingMsg" />
+					</p>
+				</div>
+			</apex:outputpanel>
+		</apex:facet>
+	</apex:actionStatus>
+</apex:component>

@@ -24,28 +24,28 @@
         
     </style>
     <!-- PAGE CONTENT -->
-    <apex:form>
+    <apex:form >
         <!-- Page Message -->
         <apex:pageMessages id="msgId" />
 
 
         <!-- Form search -->
-        <apex:actionRegion>
-            <apex:pageBlock>
+        <apex:actionRegion >
+            <apex:pageBlock >
                 <div class="row justify-content-start fit">
                     <div class="col-2 floatR">
                         Tên học sinh:
                     </div>
                     <input name="nameStu" type="text" class="col-2" value="{!dataSearch.nameStudent}"></input>
-                    <label class="col-3">
-                        <apex:inputCheckbox value="{!dataSearch.sortName}"/>Sắp xếp theo chiều tăng dần
+                    <label class="col-4">
+                        <apex:inputCheckbox value="{!dataSearch.sortName}"/> Sắp xếp theo chiều tăng dần
                     </label>
                     
                 </div>
                 <div class="row justify-content-start fit">
                     <div class="col-2 floatR">Lớp:</div>
                     <div class="col-2">
-                        <apex:selectList value="{!chooseClass}">
+                        <apex:selectList size="1" value="{!chooseClass}">
                             <apex:selectOptions value="{!selectClass}"></apex:selectOptions>
                         </apex:selectList>
                     </div>
@@ -62,37 +62,40 @@
                     <apex:commandButton action="{!newStu}" value="Thêm mới" />
                     <apex:commandButton action="{!deleteMNStu}" value="Xóa" />
                 </apex:pageBlockButtons>
+            	
             </apex:pageBlock>
+       
         </apex:actionRegion>
 
         <!-- Data search -->
         <apex:pageBlock id="dataSearch" title="Kết quả tìm kiếm">
+            <apex:outputText style="float: right;" value="Số lượng: {!totalSearch}"></apex:outputText>
             <apex:pageBlockTable value="{!results}" var="x">
-                <apex:column>
+                <apex:column >
                     <apex:facet name="header">
                         <c:CheckAllRecord />
                     </apex:facet>
                     <apex:inputCheckbox value="{!x.isSelected}"/>
                 </apex:column>
-                <apex:column value="{!x.student.firstName__c}"/>
+                <apex:column  HeaderValue="Họ" value="{!x.student.firstName__c}"/>
                 <apex:column HeaderValue="Tên">
                     <apex:commandLink action="{!detailStu}"  value="{!x.student.lastName__c}">
                         <apex:param name="detailStu" value="{!x.student.Id}" assignTo="{!sId}"/>
                     </apex:commandLink>
                 </apex:column>
-                <apex:column value="{!x.student.dayOfBirth__c}"/>
-                <apex:column value="{!x.student.Diem1__c}"/>
-                <apex:column value="{!x.student.Diem2__c}"/>
-                <apex:column value="{!x.student.Diem3__c}"/>
-                <apex:column value="{!x.student.GPA__c}"/>
-                <apex:column value="{!x.student.Status__c}"/>
-                <apex:column>
+                <apex:column  HeaderValue="Ngày sinh" value="{!x.student.dayOfBirth__c}"/>
+                <apex:column  HeaderValue="Điểm Hóa" value="{!x.student.Diem1__c}"/>
+                <apex:column  HeaderValue="Điểm Lý" value="{!x.student.Diem2__c}"/>
+                <apex:column  HeaderValue="Điểm Toán" value="{!x.student.Diem3__c}"/>
+                <apex:column  HeaderValue="Điểm trung bình" value="{!x.student.GPA__c}"/>
+                <apex:column  HeaderValue="Tình trạng" value="{!x.student.Status__c}"/>
+                <apex:column >
                     <apex:commandLink action="{!updateStu}">Cập nhật
                         <apex:param name="updateStu" value="{!x.student.Id}" assignTo="{!sId}"/>
                     </apex:commandLink>
                     |
                     <apex:commandLink action="{!deleteStu}">Xóa
-                        <apex:param name = "deleteStu" value="{!x.student.Id}" assignTo="{!sId}"/>
+                        <apex:param name="deleteStu" value="{!x.student.Id}" assignTo="{!sId}"/>
                     </apex:commandLink>
                 </apex:column>
             </apex:pageBlockTable>

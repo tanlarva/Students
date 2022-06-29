@@ -18,7 +18,7 @@
                 <apex:inputField value="{!student.Diem2__c}"></apex:inputField>
                 <apex:inputField value="{!student.Diem3__c}"></apex:inputField>
                 <apex:pageBlockSectionItem>Lớp: 
-                    <apex:selectList value="{!chooseClass}">
+                    <apex:selectList size="1" value="{!chooseClass}">
                         <apex:selectOptions value="{!selectClass}"></apex:selectOptions>
                     </apex:selectList>
                 </apex:pageBlockSectionItem>

@@ -38,6 +38,8 @@ public class TriggerStudentHandle {
                 Integer present_Day =  present_date.Day();
                 Integer present_month = present_date.Month();
                 Integer present_year =  present_date.Year();
+
+
            
                 if(math.mod(present_year,4)==0){
                     month = new list <integer>{ 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
@@ -91,26 +93,39 @@ public class TriggerStudentHandle {
 	* @modified:
 	**/  
     public static void onAfterInsert(List<Student__c> a){
-        Student__c student = new Student__c();
-        Class__c upClass = new Class__c();
+        List<Class__c> updateClass = new List<Class__c>();
+
+        String checkIdClass = 'null';
+        
         for(Student__c stu : a){
-            student = stu;
-            for(Class__c classUpdate:  [SELECT Id, numStu__c, numPass__c, numFail__c FROM Class__c WHERE Id =:stu.Class__c] ){
-                upClass = classUpdate;
+            String temp = stu.Class__c;
+            // student = stu;
+            if(checkIdClass != temp){
+                checkIdClass = temp;
+                for(Class__c classUpdate:  [SELECT Id, numStu__c, numPass__c, numFail__c FROM Class__c WHERE Id =:stu.Class__c] ){
+                    updateClass.add(classUpdate);
+                }
             }
         }
-         //Cập nhật sĩ số
-         upClass.numStu__c = upClass.numStu__c+1;
-         //Cập nhật đậu rớt
-         if(student.Status__c == 'Đậu'){
-             upClass.numPass__c = upClass.numPass__c+1;
-         }else if(student.Status__c == 'Rớt'){
-             upClass.numFail__c = upClass.numFail__c+1;
-         }
-         update upClass;
+
+        for(Class__c upClass : updateClass){
+            for(Student__c stu : a){
+                if(upClass.Id == stu.Class__c){
+                    //Cập nhật sĩ số
+                    upClass.numStu__c = upClass.numStu__c+1;
+                    //Cập nhật đậu rớt
+                    if(stu.Status__c == 'Đậu'){
+                        upClass.numPass__c = upClass.numPass__c+1;
+                    }else if(stu.Status__c == 'Rớt'){
+                        upClass.numFail__c = upClass.numFail__c+1;
+                    }
+                }
+            }
+        }
+         update updateClass;
 
          //Xếp loại
-         List<Student__c> stus = [SELECT Id, Name, GPA__c, XepLoai__c FROM Student__c WHERE Id =:student.Id ];
+         List<Student__c> stus = [SELECT Id, Name, GPA__c, XepLoai__c FROM Student__c WHERE Id IN :a];
          for(Student__c stuUp: stus){
              if(stuUp.GPA__c>=8){
                  stuUp.XepLoai__c = 'Giỏi';
@@ -133,24 +148,37 @@ public class TriggerStudentHandle {
 	* @modified:
 	**/  
     public static void onAfterDelete(List<Student__c> a){
-        Class__c upClass = new Class__c();
-        Student__c student = new Student__c();
+
+        String checkIdClass;
+        List<Class__c> updateClass = new List<Class__c>();
+        
+
+        checkIdClass = 'null';
         for(Student__c stu: a){
-            for(Class__c classUpdate : [SELECT Id, numStu__c, numPass__c, numFail__c FROM Class__c WHERE Id =:stu.Class__c]){
-                upClass = classUpdate;
+            String temp = stu.Class__c;
+            if(checkIdClass != temp){
+                checkIdClass = temp;
+                for(Class__c classUpdate : [SELECT Id, numStu__c, numPass__c, numFail__c FROM Class__c WHERE Id =:stu.Class__c]){
+                    updateClass.add(classUpdate);
+                }
             }
         }
-        //Cập nhật số lượng học sinh
-        upCLass.numStu__c=upCLass.numStu__c-1;
-        
-        //Cập nhật số học sinh đậu rớt
-        if(student.Status__c=='Đậu'){
-            upClass.numPass__c--;
-        }else if(student.Status__c=='Rớt'){
-            upClass.numFail__c--;
+
+        for(Class__c upClass : updateClass){
+            for(Student__c stu : a){
+                if(upClass.Id == stu.Class__c){
+                    upClass.numStu__c--;
+                    if(stu.Status__c=='Đậu'){
+                        upClass.numPass__c--;
+                    }else if(stu.Status__c=='Rớt'){
+                        upClass.numFail__c--;
+                    }
+                }
+            }
         }
 
-        update upCLass;
+        update updateClass;
+       
     }
     /**
 	* onAfterUpdate
@@ -161,73 +189,116 @@ public class TriggerStudentHandle {
 	* @modified:
 	**/  
     public static void onAfterUpdate(List<Student__c> a,List<Student__c> b){
-        Class__c classOld = new Class__c();
-        Class__c classNew = new Class__c();
-        Student__c studentNew = new Student__c();
-        Student__c studentOld = new Student__c();
-        for(Student__c stuOld : a){
-            for(Class__c classMinus : [SELECT Id, numPass__c, numFail__c FROM Class__c WHERE Id =:stuOld.Class__c]){
-                classOld = classMinus;
+        List<Class__c> updateClass = [SELECT Id, numPass__c, numFail__c FROM Class__c];
+        for(Integer i = 0; i < a.size(); i++){
+            if(a[i].Class__c != b[i].Class__c){
+                for(Class__c c : updateClass){
+                    if(a[i].Class__c == c.Id){
+                        c.numStu__c--;
+                        if(a[i].Status__c == 'Đậu'){
+                            c.numPass__c--;
+                        }else if (a[i].Status__c == 'Rớt') {
+                            c.numFail__c--;
+                        }
+                    }
+                    if(b[i].Class__c == c.Id){
+                        c.numStu__c++;
+                        if(a[i].Status__c == 'Đậu'){
+                            c.numPass__c++;
+                        }else if (a[i].Status__c == 'Rớt') {
+                            c.numFail__c++;
+                        }
+                    }
+                }
             }
-            studentOld = stuOld;
         }
-        for(Student__c stuNew : b){
-            for(Class__c classAdd : [SELECT Id, numPass__c, numFail__c FROM Class__c WHERE Id =:stuNew.Class__c]){
-                classNew = classAdd;
-            }
-            studentNew = stuNew;
-        }
+        update updateClass;
+
+
+        // Class__c classOld = new Class__c();
+        // Class__c classNew = new Class__c();
+        // Student__c studentNew = new Student__c();
+        // Student__c studentOld = new Student__c();
+
+        // for(Student__c stuOld : a){
+        //     for(Class__c classMinus : [SELECT Id, numPass__c, numFail__c FROM Class__c WHERE Id =:stuOld.Class__c]){
+        //         classOld = classMinus;
+        //     }
+        //     studentOld = stuOld;
+        // }
+        // for(Student__c stuNew : b){
+        //     for(Class__c classAdd : [SELECT Id, numPass__c, numFail__c FROM Class__c WHERE Id =:stuNew.Class__c]){
+        //         classNew = classAdd;
+        //     }
+        //     studentNew = stuNew;
+        // }
         
-        if(classOld!=classNew){
-            System.debug('Lớp khác');
-            if(studentOld.Status__c=='Đậu'){
-                classOld.numPass__c--;
-            }else if(studentOld.Status__c=='Rớt'){
-                classOld.numFail__c--;
-            }
-            classOld.numStu__c--;
-            update classOld;
+        // if(classOld!=classNew){
+        //     System.debug('Lớp khác');
+        //     if(studentOld.Status__c=='Đậu'){
+        //         classOld.numPass__c--;
+        //     }else if(studentOld.Status__c=='Rớt'){
+        //         classOld.numFail__c--;
+        //     }
+        //     classOld.numStu__c--;
+        //     update classOld;
     
-            if(studentNew.Status__c=='Đậu'){
-                classNew.numPass__c++;
-            }else if(studentNew.Status__c=='Rớt'){
-                classNew.numFail__c++;
-            }
-            classNew.numStu__c++;
-            update classNew;
-        }else if(studentOld.Status__c!=studentNew.Status__c){
-            System.debug('Lớp cũ');
-            if(studentNew.Status__c=='Đậu'){
-                classNew.numPass__c++;
-                classNew.numFail__c--;
-            }else if(studentNew.Status__c=='Rớt'){
-                classNew.numPass__c--;
-                classNew.numFail__c++;
-            }
-            update classNew;
-        }
+        //     if(studentNew.Status__c=='Đậu'){
+        //         classNew.numPass__c++;
+        //     }else if(studentNew.Status__c=='Rớt'){
+        //         classNew.numFail__c++;
+        //     }
+        //     classNew.numStu__c++;
+        //     update classNew;
+        // }else if(studentOld.Status__c!=studentNew.Status__c){
+        //     System.debug('Lớp cũ');
+        //     if(studentNew.Status__c=='Đậu'){
+        //         classNew.numPass__c++;
+        //         classNew.numFail__c--;
+        //     }else if(studentNew.Status__c=='Rớt'){
+        //         classNew.numPass__c--;
+        //         classNew.numFail__c++;
+        //     }
+        //     update classNew;
+        // }
        
         //Sao chép đối tượng
-        Student__c temp = studentNew.clone(true,true,true,false);
-
+        // Student__c temp = studentNew.clone(true,true,true,false);
         List<Student__c> udt = new List<Student__c>();
 
-        System.debug('####'+temp);
+        for(Student__c stu : b){
+            Student__c temp = stu.clone(true,true,true,false);
+            if(temp.GPA__c>=8){
+                temp.XepLoai__c = 'Giỏi';
+            }else if(temp.GPA__c>=6.5){
+                temp.XepLoai__c = 'Khá';
+            }else if(temp.GPA__c>=5){
+                temp.XepLoai__c = 'Trung Bình';
+            }else if(temp.GPA__c>=0){
+                temp.XepLoai__c = 'Yếu';
+            }
+            udt.add(temp);
+        }
+
+        // if(temp.GPA__c>=8){
+        //     temp.XepLoai__c = 'Giỏi';
+        // }else if(temp.GPA__c>=6.5){
+        //     temp.XepLoai__c = 'Khá';
+        // }else if(temp.GPA__c>=5){
+        //     temp.XepLoai__c = 'Trung Bình';
+        // }else if(temp.GPA__c>=0){
+        //     temp.XepLoai__c = 'Yếu';
+        // }
         
-        if(temp.GPA__c>=8){
-            temp.XepLoai__c = 'Giỏi';
-        }else if(temp.GPA__c>=6.5){
-            temp.XepLoai__c = 'Khá';
-        }else if(temp.GPA__c>=5){
-            temp.XepLoai__c = 'Trung Bình';
-        }else if(temp.GPA__c>=0){
-            temp.XepLoai__c = 'Yếu';
+        for(Integer i = 0; i < a.size(); i++){
+            if(a[i].XepLoai__c != udt[i].XepLoai__c){
+                upsert udt[i];
+            }
         }
+        
 
-        udt.add(temp);
-
-        if(studentOld.XepLoai__c != temp.XepLoai__c){
-            upsert udt;
-        }
+        // if(studentOld.XepLoai__c != temp.XepLoai__c){
+        //     upsert udt;
+        // }
     }
 }

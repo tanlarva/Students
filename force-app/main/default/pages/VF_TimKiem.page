@@ -69,10 +69,12 @@
         <!-- Data search -->
         <apex:pageBlock id="dataSearch" title="Kết quả tìm kiếm">
             <apex:outputText style="float: right;" value="Số lượng: {!totalSearch}"></apex:outputText>
-            <apex:pageBlockTable value="{!results}" var="x">
+            <apex:pageBlockTable id="tableResult" value="{!results}" var="x">
                 <apex:column >
                     <apex:facet name="header">
-                        <c:CheckAllRecord />
+                        <apex:inputCheckbox  value="{!checkAll}" title = "Toggle All Rows">
+                            <apex:actionSupport event="onclick" action="{!checkAll}" reRender="tableResult"/>
+                        </apex:inputCheckbox>
                     </apex:facet>
                     <apex:inputCheckbox value="{!x.isSelected}"/>
                 </apex:column>

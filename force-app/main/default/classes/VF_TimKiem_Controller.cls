@@ -13,6 +13,7 @@ public with sharing class VF_TimKiem_Controller {
     private Integer totalPage = 0;
     private final Integer pageSize = 3;
     public Integer totalSearch {get; set; }
+    public Boolean checkAll {get; set;}
     String chooseCLass;
 
     public dataSearch dataSearch {get; set; }
@@ -288,6 +289,19 @@ public with sharing class VF_TimKiem_Controller {
         return go;
     }
 
+    public PageReference checkAll(){
+        if(this.CheckAll){
+            for(studentDTO a: this.result){
+                a.isSelected = true;
+            }
+        }else{
+            for(studentDTO a: this.result){
+                a.isSelected = false;
+            }
+        }
+        return null;
+    }
+
     /**
     * ClassName: dataSearch
     * ClassDetail: chứa dữ liệ search
@@ -332,6 +346,7 @@ public with sharing class VF_TimKiem_Controller {
             this.student = student;
         }
     }
+
 }
 
 

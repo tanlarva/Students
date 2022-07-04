@@ -27,8 +27,6 @@
     <apex:form >
         <!-- Page Message -->
         <apex:pageMessages id="msgId" />
-
-
         <!-- Form search -->
         <apex:actionRegion >
             <apex:pageBlock >
@@ -58,9 +56,9 @@
                     <input class="col-2" type="text" name="endDate" value="{!dataSearch.endDate}" />
                 </div>
                 <apex:pageBlockButtons location="bottom">
-                    <apex:commandButton action="{!search}" status="Waiting" value="Tìm kiếm" />
-                    <apex:commandButton action="{!newStu}" status="Waiting"  value="Thêm mới" />
-                    <apex:commandButton action="{!deleteMNStu}" status="Waiting" value="Xóa" />
+                    <apex:commandButton action="{!searchStudent}" status="Waiting" value="Tìm kiếm" />
+                    <apex:commandButton action="{!newStudent}" status="Waiting"  value="Thêm mới" />
+                    <apex:commandButton action="{!deleteMNStudent}" status="Waiting" value="Xóa" />
                 </apex:pageBlockButtons>
             	
             </apex:pageBlock>
@@ -72,15 +70,16 @@
             <apex:pageBlockTable id="tableResult" value="{!results}" var="x">
                 <apex:column >
                     <apex:facet name="header">
-                        <apex:inputCheckbox  value="{!checkAll}" title = "Toggle All Rows">
+                        <!-- <apex:inputCheckbox  value="{!checkAll}" title = "Toggle All Rows">
                             <apex:actionSupport event="onclick" action="{!checkAll}" reRender="tableResult"/>
-                        </apex:inputCheckbox>
+                        </apex:inputCheckbox> -->
+                        <c:CheckAllTable/>
                     </apex:facet>
                     <apex:inputCheckbox value="{!x.isSelected}"/>
                 </apex:column>
                 <apex:column  HeaderValue="Họ" value="{!x.student.firstName__c}"/>
                 <apex:column HeaderValue="Tên">
-                    <apex:commandLink action="{!detailStu}"  value="{!x.student.lastName__c}">
+                    <apex:commandLink action="{!detailStudent}"  value="{!x.student.lastName__c}">
                         <apex:param name="detailStu" value="{!x.student.Id}" assignTo="{!sId}"/>
                     </apex:commandLink>
                 </apex:column>
@@ -91,11 +90,11 @@
                 <apex:column  HeaderValue="Điểm trung bình" value="{!x.student.GPA__c}"/>
                 <apex:column  HeaderValue="Tình trạng" value="{!x.student.Status__c}"/>
                 <apex:column >
-                    <apex:commandLink status="Waiting" action="{!updateStu}">Cập nhật
+                    <apex:commandLink status="Waiting" action="{!updateStudent}">Cập nhật
                         <apex:param name="updateStu" value="{!x.student.Id}" assignTo="{!sId}"/>
                     </apex:commandLink>
                     |
-                    <apex:commandLink status="Waiting" action="{!deleteStu}">Xóa
+                    <apex:commandLink status="Waiting" action="{!deleteStudent}">Xóa
                         <apex:param name="deleteStu" value="{!x.student.Id}" assignTo="{!sId}"/>
                     </apex:commandLink>
                 </apex:column>

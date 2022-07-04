@@ -1,9 +1,9 @@
 <apex:page controller="VF_ThemMoi_Controller" showHeader="true">
-    <apex:includeScript value="{! $Resource.jQueryMin }"/>
-    <apex:includeScript value="{!URLFOR($Resource.jQueryUI, 'jquery-ui-1.13.1/jquery-ui.js') }"/>
-    <apex:includeScript value="{!URLFOR($Resource.Bootstrap, 'bootstrap-5.0.2-dist/js/bootstrap.bundle.js') }"/>
-    <apex:Stylesheet value="{!URLFOR($Resource.jQueryUI, 'jquery-ui-1.13.1/jquery-ui.css')}"/>
-    <apex:Stylesheet value="{!URLFOR($Resource.Bootstrap, 'bootstrap-5.0.2-dist/css/bootstrap.css')}"/>    
+    <apex:includeScript value="{! $Resource.jQueryMin }" />
+    <apex:includeScript value="{!URLFOR($Resource.jQueryUI, 'jquery-ui-1.13.1/jquery-ui.js') }" />
+    <apex:includeScript value="{!URLFOR($Resource.Bootstrap, 'bootstrap-5.0.2-dist/js/bootstrap.bundle.js') }" />
+    <apex:Stylesheet value="{!URLFOR($Resource.jQueryUI, 'jquery-ui-1.13.1/jquery-ui.css')}" />
+    <apex:Stylesheet value="{!URLFOR($Resource.Bootstrap, 'bootstrap-5.0.2-dist/css/bootstrap.css')}" />
     <apex:form>
         <apex:pageBlock mode="edit">
             <apex:pageMessages/>
@@ -17,18 +17,18 @@
                 <apex:inputField value="{!student.Diem1__c}"></apex:inputField>
                 <apex:inputField value="{!student.Diem2__c}"></apex:inputField>
                 <apex:inputField value="{!student.Diem3__c}"></apex:inputField>
-                <apex:pageBlockSectionItem>Lớp: 
+                <apex:pageBlockSectionItem>Lớp:
                     <apex:selectList size="1" value="{!chooseClass}">
                         <apex:selectOptions value="{!selectClass}"></apex:selectOptions>
                     </apex:selectList>
                 </apex:pageBlockSectionItem>
-              
+
             </apex:pageBlockSection>
-            
+
             <apex:pageBlockButtons location="bottom">
-                <apex:commandButton value="Save" action="{!save}"/>
+                <apex:commandButton value="Save" action="{!save}" />
             </apex:pageBlockButtons>
         </apex:pageBlock>
     </apex:form>
-    
+
 </apex:page>

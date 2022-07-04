@@ -8,16 +8,12 @@ public with sharing class VF_TimKiem_Controller {
     public String sId {get; set;}
     public Boolean sSort {get; set;}
     private static final Integer INT_LIMIT_QUERY = 50000;
-
     private Integer pageCurrent = 1;
     private Integer totalPage = 0;
     private final Integer pageSize = 3;
     public Integer totalSearch {get; set; }
-    public Boolean checkAll {get; set;}
     String chooseCLass;
-
-    public dataSearch dataSearch {get; set; }
-     
+    public dataSearch dataSearch {get; set; }     
     private List<studentDTO> result {get; set; }
 
     /**
@@ -40,7 +36,6 @@ public with sharing class VF_TimKiem_Controller {
 	* @created: 2022/06/22 Phan Duy Tân
 	* @modified:
 	**/
-    //Controller table
     public List<studentDTO> getResults(){
         List<studentDTO> results = new List<studentDTO>();
         if(this.result==null){
@@ -66,7 +61,14 @@ public with sharing class VF_TimKiem_Controller {
         return results;
     }
 
-    //Tạo selection cho Lớp
+     /**
+	* getSelectClass
+	* Tạo selectoption cho Lớp
+	* @param: 
+	* @return: 
+	* @created: 2022/06/22 Phan Duy Tân
+	* @modified:
+	**/
     public SelectOption[] getSelectCLass(){
         SelectOption[] options = new SelectOption[]{};
         for(Class__c oneClass : [SELECT Id, nameClass__c FROM Class__c]){
@@ -91,8 +93,7 @@ public with sharing class VF_TimKiem_Controller {
 	* @created: 2022/06/22 Phan Duy Tân
 	* @modified:
 	**/
-    //Sự kiện ấn Tìm kiếm
-    public void search(){
+    public void searchStudent(){
         dataSearch.nameStudent = ApexPages.currentPage().getParameters().get('nameStu');
         dataSearch.startDate = null;
         dataSearch.endDate = null;
@@ -125,8 +126,7 @@ public with sharing class VF_TimKiem_Controller {
 	* @created: 2022/06/22 Phan Duy Tân
 	* @modified:
 	**/
-    //Chức năng button
-    public void deleteStu(){
+    public void deleteStudent(){
         Student__c del = new Student__c();
         del = [SELECT Id FROM Student__c WHERE Id =:sId];
         delete del;
@@ -140,7 +140,7 @@ public with sharing class VF_TimKiem_Controller {
 	* @created: 2022/06/23 Phan Duy Tân
 	* @modified:
 	**/
-    public Pagereference updateStu(){
+    public Pagereference updateStudent(){
         Pagereference page = Page.VF_CapNhat;
         page.getParameters().put('id',sId);
         return page;
@@ -153,7 +153,7 @@ public with sharing class VF_TimKiem_Controller {
 	* @created: 2022/06/23 Phan Duy Tân
 	* @modified:
 	**/
-    public Pagereference detailStu(){
+    public Pagereference detailStudent(){
         Pagereference page = Page.VF_ChiTiet;
         page.getParameters().put('id',sId);
         return page;
@@ -166,7 +166,7 @@ public with sharing class VF_TimKiem_Controller {
 	* @created: 2022/06/23 Phan Duy Tân
 	* @modified:
 	**/
-    public void deleteMNStu(){
+    public void deleteMNStudent(){
         System.Savepoint sp = Database.setSavepoint();
         try{
             List<Student__c> del = new List<Student__c>();
@@ -192,7 +192,7 @@ public with sharing class VF_TimKiem_Controller {
 	* @created: 2022/06/23 Phan Duy Tân
 	* @modified:
 	**/
-    public Pagereference newStu(){
+    public Pagereference newStudent(){
         Pagereference page = Page.VF_ThemMoi;
         return page;
     }
@@ -205,7 +205,6 @@ public with sharing class VF_TimKiem_Controller {
 	* @created: 2022/06/22 Phan Duy Tân
 	* @modified:
 	**/
-    //Phân trang
     public void firstPage(){
         pageCurrent =1;
     }
@@ -243,7 +242,6 @@ public with sharing class VF_TimKiem_Controller {
 	* @created: 2022/06/22 Phan Duy Tân
 	* @modified:
 	**/
-    //Edit query
     public String createQuery(dataSearch dataSearch){
         String query = 'SELECT Class__c, dayOfBirth__c,Diem1__c,Diem3__c,Diem2__c,firstName__c,GPA__c,Id,lastName__c,Sex__c,Status__c, Name FROM Student__c WHERE ';
         String query1, query2, query3, query4;
@@ -289,26 +287,13 @@ public with sharing class VF_TimKiem_Controller {
         return go;
     }
 
-    public PageReference checkAll(){
-        if(this.CheckAll){
-            for(studentDTO a: this.result){
-                a.isSelected = true;
-            }
-        }else{
-            for(studentDTO a: this.result){
-                a.isSelected = false;
-            }
-        }
-        return null;
-    }
 
     /**
     * ClassName: dataSearch
-    * ClassDetail: chứa dữ liệ search
+    * ClassDetail: chứa dữ liệu search
     * @created: 2022/06/21 Phan Duy Tân
     * @modified:
     */
-    //Các Class phụ
     class dataSearch{
         public String nameStudent {get; set;}
         public String idCLass {get; set;}
@@ -324,12 +309,7 @@ public with sharing class VF_TimKiem_Controller {
         public void setEndDate(String day){
             this.endDate = day;
         }
-        // public String changeDate(String add){
-        //     String day = '';
-        //     DateTime newDate = date.parse(add);
-        //     day = newDate.format('YYYY-MM-dd');
-        //     return day;
-        // }
+        
     }
     
     /**

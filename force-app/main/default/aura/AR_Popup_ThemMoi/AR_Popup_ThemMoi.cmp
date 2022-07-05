@@ -1,22 +1,25 @@
-<aura:component controller="AR_ThemMoi_Controller" implements="force:appHostable, flexipage:availableForAllPageTypes,flexipage:availableForRecordHome, lightning:actionOverride" access="global">
+<aura:component controller="AR_ThemMoi_Controller" implements=" force:appHostable, flexipage:availableForAllPageTypes,flexipage:availableForRecordHome, lightning:actionOverride" access="global">
     <aura:attribute name="dataStudent"
                     type="Student__c"
                     default="{'SObjectType':'Student__c',
                             'firstName':'',
                             'lastName':'',
-                            'Sex':'',
+                            'Sex':'true',
                             'dayOfBirth':'',
                             'Class':'',
                             'Diem1':'',
                             'Diem2':'',
                             'Diem3':''}"/>
-    <aura:attribute name="classMap" type="Map"/>
+    <aura:attribute name="options" type="Map" access="PRIVATE"/>
 
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
 
-    <div class="slds-m-around_xx-small">
-        <div class="container-fluid">
-            <lightning:card title="Create Student">
+    <div class="slds-m-around--xx-small">
+        <div class="c-container">
+            <lightning:card>
+                <aura:set attribute="title" >
+                    <h3>Thêm Học Sinh</h3>
+                </aura:set>
                 <div class="form-group">
                     <lightning:input name="fnameStudent" label="Họ học sinh" value="{!v.student.firstName}"/>
                 </div>
@@ -27,16 +30,14 @@
                     <lightning:input name="sexStudent" label="Giới tính" value="{!v.student.Sex}"/>
                 </div>
                 <div class="form-group">
-                    <lightning:input name="dobStudent" label="Ngày sinh" value="{!v.student.dayOfBirth}"/>
+                    <lightning:input type="date" name="dobStudent" label="Ngày sinh" value="{!v.student.dayOfBirth}"/>
                 </div>
                 <div class="form-group">
-                    <lightning:select aura:id="classPicklist" value="{!v.student.Class}" onchange="{!c.handleClassOnChange}">
-                        <option value="">--Chọn lớp--</option>
-                        <aura:iteration items="{!v.classMap}" var="class" indexVar="key">
-                            <option text="{!class.value}" value="{!class.key}" selected="{!class.key==v.student.Class}"/>
+                    <lightning:select aura:id="classPicklist" name="classPicklist" label="Lớp" required="true" onchange="{!c.handleClassOnChange}">
+                        <aura:iteration items="{!v.options}" var="option">
+                            <option text="{!option.value}" value="{!option.key}"></option>
                         </aura:iteration>
                     </lightning:select>
-                    <lightning:input name="classStudent" label="Lớp" value="{!v.student.Class}"/>
                 </div>
                 <div class="form-group">
                     <lightning:input name="diem1Student" label="Điểm 1" value="{!v.student.Diem1}"/>
@@ -48,7 +49,7 @@
                     <lightning:input name="diem3Student" label="Điểm 3" value="{!v.student.Diem3}"/>
                 </div>
                 <div class="form-group">
-                    <lightning:button variant="brand" label="Create Student" title="Create" onclick="{!c.handleCreateStudent}"/>
+                    <lightning:button variant="brand" label="Create" title="Create" onclick="{!c.handleCreateStudent}"/>
                 </div>
                 
             </lightning:card>

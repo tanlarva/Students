@@ -4,12 +4,11 @@
     },
 
     handleCreateStudent: function(component, event, helper) {
-        helper.saveData(component);
+        helper.saveData(component, event);
     },
 
     handleClassOnChange: function(component, event, helper){
-        var class = component.get('v.student.Class');
-        alert(class);
-    },
+        helper.changeClass(component, event);
+    }
 
 })

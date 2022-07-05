@@ -1,9 +1,10 @@
 ({
-    saveData : function(cmp){
-        var action = cmp.get('c.newStudent');
-        // var dataStudent = cmp.get('v.dataStudent');
+    saveData : function(component, event){
+        var action = component.get('c.createStudent');
+        var dataStudent = component.get("v.dataStudent");
+        alert(dataStudent);
         action.setParams({
-            'dataStudent': cmp.get('v.dataStudent')
+            student : dataStudent
         })
 
         action.setCallback(this, function(response){
@@ -42,7 +43,7 @@
         $A.enqueueAction(action);
     },
 
-    getClassPicklist : function(component, event){
+    getClassPicklist : function(component, onResponse){
         var action = component.get('c.getListClass');
         action.setCallback(this, function(response){
             var state = response.getState();
@@ -52,9 +53,15 @@
                 for(var key in result){
                     classMap.push({key: key, value: result[key]});
                 }
-                component.set('v.classMap', classMap);
+                component.set('v.options', classMap);
+                component.set('v.dataStudent.Class', classMap[1].key);
             }
         });
         $A.enqueueAction(action);
     },
+
+    changeClass: function(component, event){
+        var temp = component.find('classPicklist').get('v.value');
+        component.set('v.dataStudent.Class', temp);
+    }
 })

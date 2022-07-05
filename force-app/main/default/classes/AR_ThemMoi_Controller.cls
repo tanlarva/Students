@@ -7,7 +7,7 @@
 public with sharing class AR_ThemMoi_Controller {
 
     @AuraEnabled
-    public static void newStudent(Student__c student){
+    public static void createStudent(Student__c student){
         try {
             insert student;
         } catch (Exception e) {

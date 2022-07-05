@@ -1,0 +1,25 @@
+<aura:component implements="force:appHostable, flexipage:availableForAllPageTypes,flexipage:availableForRecordHome, lightning:actionOverride, force:hasRecordId" access="global">
+    <aura:attribute name="student" type="Object"/>
+    <lightning:recordViewForm recordId="{!v.recordId}" objectApiName="Student__c">
+        <lightning:card title="Chi tiết Học sinh">
+            <p class="slds-p-horizontal_small">
+                <div class="slds-grid">
+                    <div class="slds-col slds-size_1-of-2">
+                        <lightning:outputField fieldName="firstName__c"/>
+                        <lightning:outputField fieldName="lastName__c"/>
+                        <lightning:outputField fieldName="Sex__c"/>
+                        <lightning:outputField fieldName="dayOfBirth__c"/>
+                        <lightning:outputField fieldName="Status__c"/>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2">
+                        <lightning:outputField fieldName="Diem1__c"/>
+                        <lightning:outputField fieldName="Diem2__c"/>
+                        <lightning:outputField fieldName="Diem3__c"/>
+                        <lightning:outputField fieldName="GPA__c"/>
+                        <lightning:outputField fieldName="XepLoai__c"/>
+                    </div>
+                </div>
+            </p>
+        </lightning:card>
+    </lightning:recordViewForm>
+</aura:component>	

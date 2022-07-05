@@ -122,7 +122,12 @@ public class TriggerStudentHandle {
                 }
             }
         }
-         update updateClass;
+        try{
+            update updateClass;
+        }catch(Exception e){
+            ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.Error, e.getMessage()));
+        }
+        
 
          //Xếp loại
          List<Student__c> stus = [SELECT Id, Name, GPA__c, XepLoai__c FROM Student__c WHERE Id IN :a];
@@ -137,7 +142,13 @@ public class TriggerStudentHandle {
                  stuUp.XepLoai__c = 'Yếu';
              }
          }
-         update stus;
+        
+        try{
+            update stus;
+        }catch(Exception e){
+            ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.Error, e.getMessage()));
+        }
+         
     }
     /**
 	* onAfterDelete
@@ -176,8 +187,13 @@ public class TriggerStudentHandle {
                 }
             }
         }
-
-        update updateClass;
+        
+        try{
+            update updateClass;
+        }catch(Exception e){
+            ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.Error, e.getMessage()));
+        }
+        
        
     }
     /**
@@ -212,7 +228,13 @@ public class TriggerStudentHandle {
                 }
             }
         }
-        update updateClass;
+
+        try{
+            update updateClass;
+        }catch(Exception e){
+            ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.Error, e.getMessage()));
+        }
+        
 
 
         // Class__c classOld = new Class__c();
@@ -292,7 +314,11 @@ public class TriggerStudentHandle {
         
         for(Integer i = 0; i < a.size(); i++){
             if(a[i].XepLoai__c != udt[i].XepLoai__c){
-                upsert udt[i];
+                try{
+                    upsert udt[i];
+                }catch(Exception e){
+                    ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.Error, e.getMessage()));
+                }
             }
         }
         

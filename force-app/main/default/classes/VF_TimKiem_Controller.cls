@@ -127,10 +127,17 @@ public with sharing class VF_TimKiem_Controller {
 	* @modified:
 	**/
     public void deleteStudent(){
-        Student__c del = new Student__c();
-        del = [SELECT Id FROM Student__c WHERE Id =:sId];
-        delete del;
-        this.result = null;   
+        System.Savepoint sp = Database.setSavepoint();
+        try{
+            Student__c del = new Student__c();
+            del = [SELECT Id FROM Student__c WHERE Id =:sId];
+            delete del;
+        }catch(Exception e){
+            Database.rollback(sp);
+            ApexPages.addmessage(new ApexPages.Message(ApexPages.Severity.ERROR, 
+                                'Unable to delete Student: '+e.getMessage(), e.getMessage()));			
+        }
+        this.result = null;
     }
      /**
 	* updateStu
@@ -179,7 +186,7 @@ public with sharing class VF_TimKiem_Controller {
         }catch(Exception e){
             Database.rollback(sp);
             ApexPages.addmessage(new ApexPages.Message(ApexPages.Severity.ERROR, 
-                                'Unable to delete products: '+e.getMessage(), e.getMessage()));			
+                                'Unable to delete many Students: '+e.getMessage(), e.getMessage()));			
         }
         this.result = null;
     }

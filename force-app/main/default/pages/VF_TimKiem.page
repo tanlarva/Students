@@ -68,7 +68,7 @@
         <apex:pageBlock id="dataSearch" title="Kết quả tìm kiếm">
             <apex:outputText style="float: right;" value="Số lượng: {!totalSearch}"></apex:outputText>
             <apex:pageBlockTable id="tableResult" value="{!results}" var="x">
-                <apex:column >
+                <apex:column styleClass= "{!IF(x.student.GPA__c < 5, 'danger', '') }">
                     <apex:facet name="header">
                         <!-- <apex:inputCheckbox  value="{!checkAll}" title = "Toggle All Rows">
                             <apex:actionSupport event="onclick" action="{!checkAll}" reRender="tableResult"/>
@@ -77,19 +77,19 @@
                     </apex:facet>
                     <apex:inputCheckbox value="{!x.isSelected}"/>
                 </apex:column>
-                <apex:column  HeaderValue="Họ" value="{!x.student.firstName__c}"/>
-                <apex:column HeaderValue="Tên">
+                <apex:column  HeaderValue="Họ" value="{!x.student.firstName__c}" styleClass= "{!IF(x.student.GPA__c < 5, 'danger', '') }"/>
+                <apex:column HeaderValue="Tên" styleClass= "{!IF(x.student.GPA__c < 5, 'danger', '') }">
                     <apex:commandLink action="{!detailStudent}"  value="{!x.student.lastName__c}">
                         <apex:param name="detailStu" value="{!x.student.Id}" assignTo="{!sId}"/>
                     </apex:commandLink>
                 </apex:column>
-                <apex:column  HeaderValue="Ngày sinh" value="{!x.student.dayOfBirth__c}"/>
-                <apex:column  HeaderValue="Điểm Hóa" value="{!x.student.Diem1__c}"/>
-                <apex:column  HeaderValue="Điểm Lý" value="{!x.student.Diem2__c}"/>
-                <apex:column  HeaderValue="Điểm Toán" value="{!x.student.Diem3__c}"/>
-                <apex:column  HeaderValue="Điểm trung bình" value="{!x.student.GPA__c}"/>
-                <apex:column  HeaderValue="Tình trạng" value="{!x.student.Status__c}"/>
-                <apex:column >
+                <apex:column  HeaderValue="Ngày sinh" value="{!x.student.dayOfBirth__c}" styleClass= "{!IF(x.student.GPA__c < 5, 'danger', '') }"/>
+                <apex:column  HeaderValue="Điểm Hóa" value="{!x.student.Diem1__c}" styleClass= "{!IF(x.student.GPA__c < 5, 'danger', '') }"/>
+                <apex:column  HeaderValue="Điểm Lý" value="{!x.student.Diem2__c}" styleClass= "{!IF(x.student.GPA__c < 5, 'danger', '') }"/>
+                <apex:column  HeaderValue="Điểm Toán" value="{!x.student.Diem3__c}" styleClass= "{!IF(x.student.GPA__c < 5, 'danger', '') }"/>
+                <apex:column  HeaderValue="Điểm trung bình" value="{!x.student.GPA__c}" styleClass= "{!IF(x.student.GPA__c < 5, 'danger', '') }"/>
+                <apex:column  HeaderValue="Tình trạng" value="{!x.student.Status__c}" styleClass= "{!IF(x.student.GPA__c < 5, 'danger', '') }"/>
+                <apex:column styleClass= "{!IF(x.student.GPA__c < 5, 'danger', '') }">
                     <apex:commandLink status="Waiting" action="{!updateStudent}">Cập nhật
                         <apex:param name="updateStu" value="{!x.student.Id}" assignTo="{!sId}"/>
                     </apex:commandLink>

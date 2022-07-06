@@ -299,7 +299,7 @@ public with sharing class VF_TimKiem_Controller {
     * ClassName: dataSearch
     * ClassDetail: chứa dữ liệu search
     * @created: 2022/06/21 Phan Duy Tân
-    * @modified:
+    * @modified: 2022/07/06 Phan Duy Tân
     */
     class dataSearch{
         public String nameStudent {get; set;}
@@ -307,8 +307,13 @@ public with sharing class VF_TimKiem_Controller {
         public String startDate {get; set;}
         public String endDate {get; set;}
         public Boolean sortName {get; set;}
-        public dataSearch(){
-
+        public dataSearch(){}
+        public dataSearch(String nameStudent, String idCLass, String startDate, String endDate, Boolean sortName){
+            this.nameStudent = nameStudent;
+            this.idCLass = idCLass;
+            this.startDate = startDate;
+            this.endDate = endDate;
+            this.sortName = sortName;
         }
         public void setStartDate(String day){
             this.startDate = day;

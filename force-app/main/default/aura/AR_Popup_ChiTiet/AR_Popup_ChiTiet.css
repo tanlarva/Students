@@ -1,2 +1,9 @@
-.THIS {
+.THIS .form-group {
+    margin: 10px 10px;
+}
+
+.THIS .c-container{
+    margin: auto;
+    width: 50%;
+    max-width: 500px;
 }

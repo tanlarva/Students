@@ -1,0 +1,22 @@
+.THIS .container{
+    margin: 10px 10px;
+}
+
+.THIS .container-limit{
+    margin: auto;
+    width: 50%;
+    max-width: 600px;
+}
+
+.THIS .form-group {
+    margin: 10px 10px;
+}
+
+.THIS .center{
+    display: flex;
+    justify-content: center;
+}
+
+.THIS .item-group{
+    margin: 3px 15px;
+}

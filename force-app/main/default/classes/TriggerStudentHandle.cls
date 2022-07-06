@@ -205,7 +205,7 @@ public class TriggerStudentHandle {
 	* @modified:
 	**/  
     public static void onAfterUpdate(List<Student__c> a,List<Student__c> b){
-        List<Class__c> updateClass = [SELECT Id, numPass__c, numFail__c FROM Class__c];
+        List<Class__c> updateClass = [SELECT Id,numStu__c , numPass__c, numFail__c FROM Class__c];
         for(Integer i = 0; i < a.size(); i++){
             if(a[i].Class__c != b[i].Class__c){
                 for(Class__c c : updateClass){
@@ -219,10 +219,22 @@ public class TriggerStudentHandle {
                     }
                     if(b[i].Class__c == c.Id){
                         c.numStu__c++;
-                        if(a[i].Status__c == 'Đậu'){
+                        if(b[i].Status__c == 'Đậu'){
                             c.numPass__c++;
-                        }else if (a[i].Status__c == 'Rớt') {
+                        }else if (b[i].Status__c == 'Rớt') {
                             c.numFail__c++;
+                        }
+                    }
+                }
+            }else{
+                for(Class__c c : updateClass){
+                    if(b[i].Status__c != a[i].Status__c){
+                        if(b[i].Status__c == 'Đậu'){
+                            c.numPass__c++;
+                            c.numFail__c--;
+                        }else if (b[i].Status__c == 'Rớt') {
+                            c.numFail__c++;
+                            c.numPass__c--;
                         }
                     }
                 }

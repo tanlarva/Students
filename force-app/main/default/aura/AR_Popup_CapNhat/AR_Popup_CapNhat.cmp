@@ -1,28 +1,29 @@
-<aura:component controller="AR_Student_Controller" implements=" force:appHostable, flexipage:availableForAllPageTypes,flexipage:availableForRecordHome, lightning:actionOverride" access="global">
+<aura:component controller="AR_Student_Controller" implements=" force:appHostable, flexipage:availableForAllPageTypes, flexipage:availableForRecordHome, lightning:actionOverride, force:hasRecordId" access="global">
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"></aura:handler>
     <aura:attribute name="dataStudent"
                     type="Student__c"
                     default="{'SObjectType':'Student__c',
                             'firstName__c':'',
                             'lastName__c':'',
-                            'Sex__c':'true',
+                            'Sex__c':'',
                             'dayOfBirth__c':'',
                             'Class__c':'',
                             'Diem1__c':'',
                             'Diem2__c':'',
                             'Diem3__c':''}"/>
+
+    <!--Loading Page-->
     <aura:attribute name="options" type="Map" access="PRIVATE"/>
     <aura:attribute name="listSex" type="List" default="[{'label': 'Nam', 'value': true},
                                                             {'label': 'Nữ', 'value': false}]"/>
-    <!--Loading Page-->
     <aura:attribute name="loaded" type="Boolean" default="true"/>
-    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
 
     <div class="slds-m-around--xx-small">
         <div class="c-container">
             <aura:if isTrue="{!v.loaded}">
                 <lightning:card>
                     <aura:set attribute="title" >
-                        <h3>Thêm Học Sinh</h3>
+                        <h3>Cập nhật thông tin Học Sinh</h3>
                     </aura:set>
                     <div class="form-group">
                         <lightning:input name="fnameStudent" label="Họ học sinh" value="{!v.dataStudent.firstName__c}"/>
@@ -33,8 +34,8 @@
                     <div class="form-group">
                         <lightning:radioGroup name="sexChoose"
                                             label="Giới tính"
-                                            options="{! v.listSex }"
-                                            value="{! v.dataStudent.Sex__c }"
+                                            options="{!v.listSex }"
+                                            value="{!v.dataStudent.Sex__c }"
                                             type="radio"/>
                     </div>
                     <div class="form-group">
@@ -43,7 +44,7 @@
                     <div class="form-group">
                         <lightning:select aura:id="classPicklist" name="classPicklist" label="Lớp" required="true" onchange="{!c.handleClassOnChange}">
                             <aura:iteration items="{!v.options}" var="option">
-                                <option text="{!option.value}" value="{!option.key}"></option>
+                                <option text="{!option.value}" value="{!option.key}" selected="{!option.selected}"></option>
                             </aura:iteration>
                         </lightning:select>
                     </div>
@@ -57,7 +58,7 @@
                         <lightning:input name="diem3Student" label="Điểm 3" value="{!v.dataStudent.Diem3__c}"/>
                     </div>
                     <div class="form-group">
-                        <lightning:button variant="brand" label="Create" title="Create" onclick="{!c.handleCreateStudent}"/>
+                        <lightning:button variant="brand" label="Save" title="Save" onclick="{!c.handleSaveStudent}"/>
                     </div>
                 </lightning:card>
                 <aura:set attribute="else">
@@ -66,5 +67,4 @@
             </aura:if>
         </div>
     </div>
-    
 </aura:component>	

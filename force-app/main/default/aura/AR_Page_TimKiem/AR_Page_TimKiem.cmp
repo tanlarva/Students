@@ -1,0 +1,77 @@
+<aura:component controller="AR_TimKiem_Controller" implements=" force:appHostable, flexipage:availableForAllPageTypes, flexipage:availableForRecordHome, lightning:actionOverride" access="global">
+    <aura:attribute name="dataSearch"
+                    type="Map"
+                    default = "{
+                        'nameStudent':'', 
+                        'idClass':'',
+                        'startDate':'',
+                        'endDate':'',
+                        'sortName':''
+                    }"/>
+    <aura:attribute name="options" type="Map" access="PRIVATE"/>
+    <aura:attribute name="loaded" type="Boolean" default="true"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"></aura:handler>
+
+
+
+    <div class="">
+        <!-- Thông tin tìm kiếm -->
+        <div class="container-limit">
+            <lightning:card>
+                <aura:set attribute="title">
+                    <h3>Tìm kiếm</h3>
+                </aura:set>
+                <div class="form-group">
+                    <lightning:input name="nameStudent" label="Tên học sinh" value="{!v.dataSearch.nameStudent}"></lightning:input>
+                </div>
+                <div class="form-group">
+                    <lightning:select aura:id="classPicklist" name="classPicklist" label="Lớp" required="true" onchange="{!c.handleClassOnChange}">
+                        <aura:iteration items="{!v.options}" var="option">
+                            <option text="{!option.value}" value="{!option.key}" selected="{!option.selected}"></option>
+                        </aura:iteration>
+                    </lightning:select>
+                </div>
+                <div class="form-group">
+                    <p>Ngày sinh: </p>
+                    <lightning:layout verticalAlign="center">
+                        <lightning:layoutItem flexibility="auto" class="item-group">
+                            <lightning:input type="date" name="startDate" label="Từ" value="{!v.dataSearch.startDate}"/>
+                        </lightning:layoutItem>
+                        <lightning:layoutItem flexibility="auto" class="item-group">
+                            <lightning:input type="date" name="endDate" label="Đến" value="{!v.dataSearch.endDate}"/>
+                        </lightning:layoutItem>
+                    </lightning:layout>
+                </div>
+                <div class="form-group center">
+                    <lightning:layout>
+                        <lightning:layoutItem class="item-group">
+                            <lightning:button variant="brand" label="Tạo mới" title="Create" onclick="{!c.handleCreateStudent}"/>  
+                        </lightning:layoutItem>
+                        <lightning:layoutItem  class="item-group">
+                            <lightning:button variant="brand" label="Tìm kiếm" title="Search" onclick="{!c.handleSearchStudent}"/>
+                        </lightning:layoutItem>
+                        <lightning:layoutItem  class="item-group">
+                            <lightning:button variant="brand" label="Xóa hết" title="Delete All" onclick="{!c.handleDeleteAllStudent}"/>
+                        </lightning:layoutItem>
+                    </lightning:layout>
+                </div>
+            </lightning:card>
+        </div>
+        <!-- Kết quả tìm kiếm -->
+        <div class="container">
+            <aura:if isTrue="{!v.loaded}">
+                <lightning:card>
+                    <aura:set attribute="title">
+                        <h3>Kết quả tìm kiếm</h3>
+                    </aura:set>
+                    <lightning:datatable>
+
+                    </lightning:datatable>
+                </lightning:card>
+                <aura:set attribute="else">
+                        <lightning:spinner alternative="Loading"/>
+                </aura:set>
+            </aura:if>
+        </div>
+    </div>
+</aura:component>	

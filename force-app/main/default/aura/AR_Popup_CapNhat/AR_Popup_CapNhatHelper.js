@@ -61,18 +61,21 @@
         action.setCallback(this, function(response){
             var state = response.getState();
             if(state === 'SUCCESS'){
-                var toastEvent = $A.get("e.force:showToast");
-                toastEvent.setParams({
-                    "title": "Success!",
-                    "message": "Cập nhật thành công."
+                component.find('notifLib').showToast({
+                    "variant": "success",
+                    "title": "Hoàn Tất",
+                    "message": "Cập nhật thành công !!"
                 });
-                toastEvent.fire(); 
                 setTimeout(function(){
-                    var urlEvent = $A.get("e.force:navigateToURL");
-                    urlEvent.setParams({
-                        "url": "lightning/r/Student__c/"+component.get("v.recordId")+"/view"
-                    });
-                    urlEvent.fire();
+                    if(component.get('v.isPopup')){
+                        component.find("overlayPopupCapNhat").notifyClose();
+                    }else{
+                        var urlEvent = $A.get("e.force:navigateToURL");
+                        urlEvent.setParams({
+                            "url": "lightning/r/Student__c/"+dataStudent.Id+"/view"
+                        });
+                        urlEvent.fire();  
+                    } 
                 },1500);
             }else if(state === 'ERROR'){
                 component.set("v.loaded",!component.get("v.loaded"));

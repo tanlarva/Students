@@ -23,11 +23,16 @@
                 });
                 toastEvent.fire(); 
                 setTimeout(function(){
-                    var urlEvent = $A.get("e.force:navigateToURL");
-                    urlEvent.setParams({
-                        "url": "/lightning/o/Student__c/new"
-                    });
-                    urlEvent.fire();
+                    if(component.get("v.isPopup")){
+                        component.find("overlayLib").notifyClose();
+                    }else{
+                        var urlEvent = $A.get("e.force:navigateToURL");
+                        urlEvent.setParams({
+                            "url": "/lightning/o/Student__c/new"
+                        });
+                        urlEvent.fire();
+                    }
+                    
                 },1500);
             }else if(state === 'ERROR'){
                 component.set("v.loaded",!component.get("v.loaded"));

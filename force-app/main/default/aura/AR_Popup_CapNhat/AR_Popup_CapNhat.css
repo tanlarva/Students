@@ -4,6 +4,10 @@
 
 .THIS .c-container{
     margin: auto;
-    width: 50%;
     max-width: 500px;
+}
+
+.THIS .center{
+    display: flex;
+    justify-content: center;
 }

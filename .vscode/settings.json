@@ -5,5 +5,8 @@
     "**/.sfdx": true
   },
   "salesforcedx-vscode-apex.advanced.enable-completion-statistics": true,
-  "salesforcedx-vscode-apex.enable-semantic-errors": true
+  "salesforcedx-vscode-apex.enable-semantic-errors": true,
+  "cSpell.words": [
+    "onrowselection"
+  ]
 }

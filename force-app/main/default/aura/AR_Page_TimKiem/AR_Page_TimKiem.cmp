@@ -11,9 +11,20 @@
     <aura:attribute name="options" type="Map" access="PRIVATE"/>
     <aura:attribute name="loaded" type="Boolean" default="true"/>
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"></aura:handler>
-
-
-
+    
+    <!-- attributes -->
+    <aura:attribute name="listStudent" type="List" access="PRIVATE"/>
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="selectedStudent" type="List"/>
+    <aura:attribute name="activeFilter" type="string" default="all" access="PRIVATE" />
+    <aura:attribute name="listStudentShow" type="List"/>
+     
+    <aura:attribute name="currentPageNumber" type="Integer" default="1"/>
+    <aura:attribute name="pageSize" type="Integer" default="2"/> <!-- Tùy Chỉnh -->
+    <aura:attribute name="totalPages" type="Integer" default="0"/>
+    <aura:attribute name="pageList" type="List"/>
+    <aura:attribute name="totalRecords" type="Integer" />
+    <aura:attribute name="currentPageRecords" type="Integer" />
     <div class="">
         <!-- Thông tin tìm kiếm -->
         <div class="container-limit">
@@ -51,12 +62,13 @@
                             <lightning:button variant="brand" label="Tìm kiếm" title="Search" onclick="{!c.handleSearchStudent}"/>
                         </lightning:layoutItem>
                         <lightning:layoutItem  class="item-group">
-                            <lightning:button variant="brand" label="Xóa hết" title="Delete All" onclick="{!c.handleDeleteAllStudent}"/>
+                            <lightning:button variant="brand" label="Xóa hết" title="Delete All" onclick="{!c.handleDeleteStudent}"/>
                         </lightning:layoutItem>
                     </lightning:layout>
                 </div>
             </lightning:card>
         </div>
+        <lightning:overlayLibrary aura:id="overlayPopup"/>
         <!-- Kết quả tìm kiếm -->
         <div class="container">
             <aura:if isTrue="{!v.loaded}">
@@ -64,9 +76,45 @@
                     <aura:set attribute="title">
                         <h3>Kết quả tìm kiếm</h3>
                     </aura:set>
-                    <lightning:datatable>
-
+                    <lightning:datatable
+                        columns = "{!v.columns}"
+                        data = "{!v.listStudentShow}"
+                        keyField="id"
+                        onrowaction="{!c.handleRowAction}"
+                        onrowselection="{!c.handleRowSelection}">
                     </lightning:datatable>
+                    <!--  Pagination Buttons Start -->
+                    <div class="slds-align_absolute-center form-group"> 
+                        <lightning:button label="First"
+                                        iconName="utility:left"
+                                        iconPosition="left"
+                                        onclick="{!c.onFirst}"
+                                        disabled="{! v.currentPageNumber == 1}" />
+                        <lightning:button label="Previous"
+                                        disabled="{!v.currentPageNumber == 1}" 
+                                        onclick="{!c.handlePrevious}"
+                                        variant="brand"
+                                        iconName="utility:back"
+                                        name="previous"/>
+                        
+                        <span class="slds-badge slds-badge_lightest"
+                            style="margin-right: 10px;margin-left: 10px;">
+                            Page {!v.currentPageNumber} out of {!v.totalPages}
+                        </span>
+                        
+                        <lightning:button label="Next"
+                                        disabled="{!v.currentPageNumber == v.totalPages}"
+                                        onclick="{!c.handleNext}"
+                                        variant="brand"
+                                        iconName="utility:forward"
+                                        iconPosition="right"
+                                        name="next"/>
+                        <lightning:button label="Last"
+                                        iconName="utility:right"
+                                        iconPosition="right"
+                                        onclick="{!c.onLast}"
+                                        disabled="{!v.currentPageNumber == v.totalPages}" />
+                    </div>
                 </lightning:card>
                 <aura:set attribute="else">
                         <lightning:spinner alternative="Loading"/>

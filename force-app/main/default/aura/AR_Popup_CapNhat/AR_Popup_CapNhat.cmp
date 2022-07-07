@@ -13,11 +13,14 @@
                             'Diem3__c':''}"/>
 
     <!--Loading Page-->
+    <aura:attribute name="isPopup" type="Boolean" default="false"/>
     <aura:attribute name="options" type="Map" access="PRIVATE"/>
     <aura:attribute name="listSex" type="List" default="[{'label': 'Nam', 'value': true},
                                                             {'label': 'Nữ', 'value': false}]"/>
     <aura:attribute name="loaded" type="Boolean" default="true"/>
 
+    <lightning:overlayLibrary aura:id="overlayPopupCapNhat"/>
+    <lightning:notificationsLibrary aura:id="notifLib"/>
     <div class="slds-m-around--xx-small">
         <div class="c-container">
             <aura:if isTrue="{!v.loaded}">
@@ -58,11 +61,13 @@
                         <lightning:input name="diem3Student" label="Điểm 3" value="{!v.dataStudent.Diem3__c}"/>
                     </div>
                     <div class="form-group">
-                        <lightning:button variant="brand" label="Save" title="Save" onclick="{!c.handleSaveStudent}"/>
+                        <div class="center">
+                            <lightning:button variant="brand" label="Save" title="Save" onclick="{!c.handleSaveStudent}"/>
+                        </div>
                     </div>
                 </lightning:card>
                 <aura:set attribute="else">
-                    <lightning:spinner alternative="Loading"/>
+                    <lightning:spinner variant="brand" alternative="Loading"/>
                 </aura:set>
             </aura:if>
         </div>

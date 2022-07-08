@@ -21,11 +21,6 @@
         helper.deleteAllStudent(component, event, helper, student);
     },
 
-    handleViewStudent : function(component, event, helper) {
-
-
-    },
-
     handleRowAction : function(component, event, helper) {
         var action = event.getParam("action");
         var row = event.getParam("row");
@@ -35,6 +30,9 @@
                 break;
             case 'delete':
                 helper.deleteStudent(component, event, helper, row);
+                break;
+            case 'view':
+                helper.viewStudent(component, event, helper, row);
                 break;
         }
     },
@@ -46,7 +44,6 @@
             setRows.push(selected[i]);
         }
         component.set('v.selectedStudent',setRows);
-        alert(JSON.stringify(selected));
     },
 
     handleNext : function(component, event, helper){        

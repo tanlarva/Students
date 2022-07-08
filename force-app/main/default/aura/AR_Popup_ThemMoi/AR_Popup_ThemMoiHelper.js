@@ -19,6 +19,7 @@
                 var toastEvent = $A.get("e.force:showToast");
                 toastEvent.setParams({
                     "title": "Success!",
+                    "variant": "success", 
                     "message": "Tạo mới thành công."
                 });
                 toastEvent.fire(); 
@@ -42,6 +43,7 @@
                         var toastEvent = $A.get("e.force:showToast");
                         toastEvent.setParams({
                             "title": "Error!",
+                            "variant": "error", 
                             "message": errors[0].message
                         });
                         toastEvent.fire();
@@ -54,6 +56,7 @@
                 var toastEvent = $A.get("e.force:showToast");
                 toastEvent.setParams({
                     "title": "Warning!",
+                    "variant": "warning", 
                     "message": "Không phản hồi từ phía sever."
                 });
                 toastEvent.fire();

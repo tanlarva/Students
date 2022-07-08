@@ -6,7 +6,7 @@
             if(state === 'SUCCESS'){
                 var result = response.getReturnValue();
                 var classMap = [];
-                classMap.push({key: '', value: 'Tất Cả', selected: true});
+                classMap.push({key: '0000000000TOTAL' , value: 'Tất Cả', selected: true});
                 for(var key in result){
                     classMap.push({key: key, value: result[key]});
                 }
@@ -29,7 +29,7 @@
         
         component.set('v.columns', [
             { label: 'Họ', fieldName: 'firstName__c', type: 'text', sortable:true },
-            { label: 'Tên', fieldName: 'lastName__c', type: 'text', sortable:true },
+            { label: 'Tên', fieldName: 'lastName__c', type: 'button', typeAttributes: {label: {fieldName: 'lastName__c'}, variant: 'base', name: 'view'}, sortable:true },
             { label: 'Giới Tính', fieldName: 'Sex__c', type: 'text' },
             { label: 'Ngày Sinh', fieldName: 'dayOfBirth__c', type: 'text' },
             { label: 'Điểm Hóa', fieldName: 'Diem1__c', type: 'text' , sortable:true},
@@ -54,6 +54,7 @@
             if(state === 'SUCCESS'){
                 component.set("v.loaded", !component.get("v.loaded"));
                 var result = response.getReturnValue();
+                helper.convertSex(result);
                 component.set('v.listStudent', result);
                 //Phân trang
                 helper.preparePagination(component, result);
@@ -84,6 +85,7 @@
             var state = response.getState();
             if(state === 'SUCCESS'){
                 var result = response.getReturnValue();
+                helper.convertSex(result);
                 component.set('v.listStudent', result);
                 //Phân trang
                 helper.preparePagination(component, result);
@@ -182,5 +184,28 @@
                                     })
                                 }
                             })
+    },
+    
+    viewStudent: function(component, event, helper, student){
+        $A.createComponent('c:AR_Popup_ChiTiet',
+                            { recordId: student.Id},
+                            function(result,state){
+                                if(state === 'SUCCESS'){
+                                    component.find('overlayPopup').showCustomModal({
+                                        body : result,
+                                        showCloseButton : true
+                                    })
+                                }
+                            })
+    },
+
+    convertSex: function (listStudent){
+        for(var x of listStudent){
+            if(x.Sex__c){
+                x.Sex__c = 'Nam'
+            }else{
+                x.Sex__c = 'Nữ'
+            }
+        }
     }
 })

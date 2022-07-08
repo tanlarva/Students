@@ -104,7 +104,7 @@ public with sharing class AR_TimKiem_Controller {
             System.debug('@@@' + (dataSearch));
             if(dataSearch != null){
                 if(dataSearch.nameStudent != null){
-                    query1 = ' ((firstName__c LIKE \'%' + String.escapeSingleQuotes(dataSearch.nameStudent) + '%\') OR (lastName__c LIKE \'%' + String.escapeSingleQuotes(dataSearch.nameStudent) + '%\'))';
+                    query1 = ' (lastName__c LIKE \'%' + String.escapeSingleQuotes(dataSearch.nameStudent) + '%\')';
                 }
                 if((dataSearch.startDate!='')&&(dataSearch.endDate!='')){
                     query2 = ' (dayOfBirth__c >= '+ String.escapeSingleQuotes(dataSearch.startDate) +' AND dayOfBirth__c <= '+ String.escapeSingleQuotes(dataSearch.endDate) +')';
@@ -113,7 +113,7 @@ public with sharing class AR_TimKiem_Controller {
                 }else if(dataSearch.startDate!=''){
                     query2 = ' (dayOfBirth__c >= '+ String.escapeSingleQuotes(dataSearch.startDate)+')';
                 }
-                if(dataSearch.idCLass!=''){
+                if(dataSearch.idCLass!='' && dataSearch.idCLass != '0000000000TOTAL'){
                     query3 = ' Class__c = \''+ String.escapeSingleQuotes(dataSearch.idCLass) +'\'';
                 }
                 if(dataSearch.sortName){

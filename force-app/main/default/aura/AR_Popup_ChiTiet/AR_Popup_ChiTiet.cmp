@@ -1,25 +1,75 @@
-<aura:component implements="force:appHostable, flexipage:availableForAllPageTypes,flexipage:availableForRecordHome, lightning:actionOverride, force:hasRecordId" access="global">
-    <aura:attribute name="student" type="Object"/>
-    <lightning:recordViewForm recordId="{!v.recordId}" objectApiName="Student__c">
-        <lightning:card title="Chi tiết Học sinh">
-            <p class="slds-p-horizontal_small">
-                <div class="slds-grid">
-                    <div class="slds-col slds-size_1-of-2">
-                        <lightning:outputField fieldName="firstName__c"/>
-                        <lightning:outputField fieldName="lastName__c"/>
-                        <lightning:outputField fieldName="Sex__c"/>
-                        <lightning:outputField fieldName="dayOfBirth__c"/>
-                        <lightning:outputField fieldName="Status__c"/>
+<aura:component controller="AR_Student_Controller" implements="force:appHostable, flexipage:availableForAllPageTypes,flexipage:availableForRecordHome, lightning:actionOverride, force:hasRecordId" access="global">
+    <aura:attribute name="dataStudent"
+                    type="Student__c"
+                    default="{'SObjectType':'Student__c',
+                            'firstName__c':'',
+                            'lastName__c':'',
+                            'Sex__c':'',
+                            'dayOfBirth__c':'',
+                            'Class__c':'',
+                            'Diem1__c':'',
+                            'Diem2__c':'',
+                            'Diem3__c':'',
+                            'GPA__c':'', 
+                            'XepLoai__c':''}"/>
+    <!-- Use For isPopup -->
+    <lightning:notificationsLibrary aura:id="notifLib"/>
+    <lightning:overlayLibrary aura:id="overlayPopup"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"></aura:handler>
+    
+    <lightning:card title="Chi tiết học sinh">
+        <p class="slds-p-horizontal_small">
+            <div class="slds-grid">
+                <div class="slds-col slds-size_1-of-2">
+                    <div class="row">
+                        <div class="tag">Họ Học Sinh: </div>
+                        <div class="intag">{!v.dataStudent.firstName__c}</div>
                     </div>
-                    <div class="slds-col slds-size_1-of-2">
-                        <lightning:outputField fieldName="Diem1__c"/>
-                        <lightning:outputField fieldName="Diem2__c"/>
-                        <lightning:outputField fieldName="Diem3__c"/>
-                        <lightning:outputField fieldName="GPA__c"/>
-                        <lightning:outputField fieldName="XepLoai__c"/>
+                    <div class="row">
+                        <div class="tag">Tên Học Sinh: </div>
+                        <div class="intag">{!v.dataStudent.lastName__c}</div>
+                    </div>
+                    <div class="row">
+                        <div class="tag">Giới Tính</div>
+                        <div class="intag">
+                            <aura:if isTrue="{!v.dataStudent.firstName__c}">
+                                Nam
+                                <aura:set attribute="else">Nữ</aura:set>
+                            </aura:if>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="tag">Ngày Sinh: </div>
+                        <div class="intag">{!v.dataStudent.dayOfBirth__c}</div>
+                    </div>
+                    <div class="row">
+                        <div class="tag">Tình Trạng: </div>
+                        <div class="intag">{!v.dataStudent.Status__c}</div>
                     </div>
                 </div>
-            </p>
-        </lightning:card>
-    </lightning:recordViewForm>
+                <div class="slds-col slds-size_1-of-2">
+                    <div class="row">
+                        <div class="tag">Điểm Hóa: </div>
+                        <div class="intag">{!v.dataStudent.Diem3__c}</div>
+                    </div>
+                    <div class="row">
+                        <div class="tag">Điểm Toán: </div>
+                        <div class="intag">{!v.dataStudent.Diem2__c}</div>
+                    </div>
+                    <div class="row">
+                        <div class="tag">Điểm Lý: </div>
+                        <div class="intag">{!v.dataStudent.Diem3__c}</div>
+                    </div>
+                    <div class="row">
+                        <div class="tag">Điểm Trung Bình: </div>
+                        <div class="intag">{!v.dataStudent.GPA__c}</div>
+                    </div>
+                    <div class="row">
+                        <div class="tag">Xếp Loại: </div>
+                        <div class="intag">{!v.dataStudent.XepLoai__c}</div>
+                    </div>
+                </div>
+            </div>
+        </p>
+    </lightning:card>
 </aura:component>	

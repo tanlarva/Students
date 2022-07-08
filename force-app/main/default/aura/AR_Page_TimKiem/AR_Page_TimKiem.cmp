@@ -20,7 +20,7 @@
     <aura:attribute name="listStudentShow" type="List"/>
      
     <aura:attribute name="currentPageNumber" type="Integer" default="1"/>
-    <aura:attribute name="pageSize" type="Integer" default="2"/> <!-- Tùy Chỉnh -->
+    <aura:attribute name="pageSize" type="Integer" default="5"/> <!-- Tùy Chỉnh -->
     <aura:attribute name="totalPages" type="Integer" default="0"/>
     <aura:attribute name="pageList" type="List"/>
     <aura:attribute name="totalRecords" type="Integer" />

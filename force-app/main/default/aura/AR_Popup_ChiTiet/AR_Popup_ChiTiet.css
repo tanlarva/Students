@@ -2,8 +2,22 @@
     margin: 10px 10px;
 }
 
-.THIS .c-container{
+.THIS .c-container{ 
     margin: auto;
     width: 50%;
     max-width: 500px;
+}
+
+.THIS .row{
+    margin: 10px;
+}
+
+.THIS .tag{
+    font-size: 12px;
+    font-weight: 200;
+}
+
+.THIS .intag{
+    font-size: 14px;
+    font-weight: normal;
 }

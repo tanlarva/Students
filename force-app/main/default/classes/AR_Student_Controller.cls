@@ -5,8 +5,24 @@
  * @Modify: 
  */
 public with sharing class AR_Student_Controller {
+    /**
+	* Contructor
+	* init
+	* @param: 
+	* @return: 
+	* @created: 2022/07/06 Phan Duy Tân
+	* @modified:
+	**/
     public AR_Student_Controller() {}
 
+    /**
+	* createStudent
+	* Tạo mới Student
+	* @param: 
+	* @return: 
+	* @created: 2022/07/06 Phan Duy Tân
+	* @modified:
+	**/
     @AuraEnabled
     public static void createStudent(Student__c dataStudent){
         try {
@@ -16,6 +32,14 @@ public with sharing class AR_Student_Controller {
         }
     }
 
+    /**
+	* updateStudent
+	* Cập Nhật lại Student
+	* @param: 
+	* @return: 
+	* @created: 2022/07/06 Phan Duy Tân
+	* @modified:
+	**/
     @AuraEnabled
     public static void updateStudent(Student__c dataStudent){
         try {
@@ -25,6 +49,15 @@ public with sharing class AR_Student_Controller {
         }
     }
 
+
+    /**
+	* getDataStudent
+	* Lấy dữ liệu học sinh bằng Id
+	* @param: 
+	* @return: Student__c
+	* @created: 2022/07/06 Phan Duy Tân
+	* @modified:
+	**/
     @AuraEnabled
     public static Student__c getDataStudent(Id id){
         try {
@@ -35,6 +68,14 @@ public with sharing class AR_Student_Controller {
         }
     }
 
+    /**
+	* getListClass
+	* Lấy danh sách lớp cho lựa chọn
+	* @param: 
+	* @return: Map<String,String>
+	* @created: 2022/07/06 Phan Duy Tân
+	* @modified:
+	**/
     @AuraEnabled
     public static Map<String,String> getListClass(){
         Map<String,String> options = new Map<String,String>();

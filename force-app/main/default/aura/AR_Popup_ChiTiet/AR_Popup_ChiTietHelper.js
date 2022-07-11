@@ -1,4 +1,12 @@
 ({
+    /**
+	* getDataStudent
+	* Lấy dữ liệu học sinh bằng Id
+	* @param: 
+	* @return:
+	* @created: 2022/07/06 Phan Duy Tân
+	* @modified:
+	**/
     getDataStudent : function(component, event){
         var action = component.get('c.getDataStudent');
         var student = component.get('v.recordId');

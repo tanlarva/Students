@@ -1,4 +1,12 @@
 ({
+    /**
+	* getClassPickList
+	* Lấy danh sách các lớp
+	* @param: 
+	* @return: Map<String, String>
+	* @created: 2022/07/08 Phan Duy Tân
+	* @modified:
+	**/
     getClassPicklist : function(component, event){
         var action = component.get('c.getListClass');
         action.setCallback(this, function(response){
@@ -16,11 +24,27 @@
         $A.enqueueAction(action);
     },
 
+    /**
+	* changeClass
+	* Chuyển đổi Id lớp khi thay đổi
+	* @param: 
+	* @return: String
+	* @created: 2022/07/08 Phan Duy Tân
+	* @modified:
+	**/
     changeClass: function(component, event){
         var temp = component.find('classPicklist').get('v.value');
         component.set('v.dataSearch.idClass', temp);
     },
 
+    /**
+	* createTable
+	* Tạo form Bảng chứa dữ liệu tìm kiếm
+	* @param: 
+	* @return: Table
+	* @created: 2022/07/08 Phan Duy Tân
+	* @modified:
+	**/
     createTable: function(component, event, helper){
         var actions = [
             { label: 'Cập nhật', name: 'update' },
@@ -41,6 +65,14 @@
         ]);
     },
 
+    /**
+	* fetchDataSearch
+	* Load data sau khi seach lên
+	* @param: 
+	* @return: List
+	* @created: 2022/07/08 Phan Duy Tân
+	* @modified:
+	**/
     fetchDataSearch: function(component, event, helper){
         helper.createTable(component, event, helper);
         component.set("v.loaded", !component.get("v.loaded"));
@@ -56,6 +88,7 @@
                 var result = response.getReturnValue();
                 helper.convertSex(result);
                 component.set('v.listStudent', result);
+                component.set('v.countStudent', result.length)
                 //Phân trang
                 helper.preparePagination(component, result);
             }else if(state === 'ERROR'){
@@ -78,6 +111,14 @@
         $A.enqueueAction(action);
     },
 
+    /**
+	* fetchAllData
+	* Load toàn bộ data học sinh
+	* @param: 
+	* @return: List
+	* @created: 2022/07/08 Phan Duy Tân
+	* @modified:
+	**/
     fetchAllData: function(component, event, helper){
         helper.createTable(component, event, helper);
         var action = component.get('c.getAllStudent');
@@ -88,12 +129,21 @@
                 helper.convertSex(result);
                 component.set('v.listStudent', result);
                 //Phân trang
+                component.set('v.countStudent', result.length)
                 helper.preparePagination(component, result);
             }
         });
         $A.enqueueAction(action);
     },
 
+    /**
+	* preparePagination
+	* Set phân trang đầu tiên và tính toán phân trang
+	* @param: 
+	* @return:
+	* @created: 2022/07/08 Phan Duy Tân
+	* @modified:
+	**/
     preparePagination: function (component, records) {
         let countTotalPage = Math.ceil(records.length / component.get("v.pageSize"));
         let totalPage = countTotalPage > 0 ? countTotalPage : 1;
@@ -102,7 +152,15 @@
         component.set("v.totalRecords", records.length);
         this.setPaginateData(component);
     },
-     
+
+    /**
+	* setPaginateData
+	* Tạo List Show cho từng trang khi đi tới
+	* @param: 
+	* @return:
+	* @created: 2022/07/08 Phan Duy Tân
+	* @modified:
+	**/
     setPaginateData: function(component){
         let data = [];
         let pageNumber = component.get("v.currentPageNumber");
@@ -121,7 +179,15 @@
         component.set("v.currentPageRecords", currentPageCount);
     },
 
-    createStudent: function(component){
+    /**
+	* createStudent
+	* Gửi dữ liệu sau khi điền và đưa đến AR_TimKiem_Controller
+	* @param: 
+	* @return: Modal
+	* @created: 2022/07/08 Phan Duy Tân
+	* @modified:
+	**/
+    createStudent: function(component, event, helper){
         $A.createComponent('c:AR_Popup_ThemMoi',
                             {isPopup: true},
                             function(result,state){
@@ -129,11 +195,22 @@
                                     component.find('overlayPopup').showCustomModal({
                                         body : result,
                                         showCloseButton : true,
+                                        closeCallback: function () {
+                                            helper.fetchDataSearch(component, event, helper);
+                                        }
                                     })
                                 }
                             })
     },
 
+    /**
+	* updateStudent
+	* Đưa Id cảu từng record đi để mở form chỉnh sửa cho từng đối tượng
+	* @param: 
+	* @return: Modal
+	* @created: 2022/07/08 Phan Duy Tân
+	* @modified:
+	**/
     updateStudent: function(component, event, helper, student){
         $A.createComponent('c:AR_Popup_CapNhat',
                             { recordId : student.Id,
@@ -143,11 +220,23 @@
                                     component.find('overlayPopup').showCustomModal({
                                         body : result,
                                         showCloseButton : true,
+                                        closeCallback: function () {
+                                            helper.fetchDataSearch(component, event, helper);
+                                            alert(JSON.stringify(component.get('v.listStudent')));
+                                        }
                                     })
                                 }
                             })
     },
 
+    /**
+	* deleteStudent
+	* Đưa list học sinh đi đến modal Warning để xác nhận xóa
+	* @param: 
+	* @return: Modal
+	* @created: 2022/07/08 Phan Duy Tân
+	* @modified:
+	**/
     deleteStudent: function(component, event, helper, student){
         var listDelete = [];
         listDelete.push(student);
@@ -161,13 +250,21 @@
                                         showCloseButton : false,
                                         cssClass : 'center',
                                         closeCallback : function(){
-                                            this.fetchDataSearch(component, event, helper);
+                                            helper.fetchDataSearch(component, event, helper);
                                         }
                                     })
                                 }
                             })
     },
 
+    /**
+	* deleteStudent
+	* Đưa list học sinh đi đến modal Warning để xác nhận xóa
+	* @param: 
+	* @return: Modal
+	* @created: 2022/07/08 Phan Duy Tân
+	* @modified:
+	**/
     deleteAllStudent: function(component, event, helper, listStudent){
         $A.createComponent('c:AR_Popup_Warning',
                             { listDelete : listStudent},
@@ -179,13 +276,21 @@
                                         showCloseButton : false,
                                         cssClass : 'center',
                                         closeCallback : function(){
-                                            this.fetchDataSearch(component, event, helper);
+                                            helper.fetchDataSearch(component, event, helper);
                                         }
                                     })
                                 }
                             })
     },
-    
+
+    /**
+	* viewStudent
+	* Đưa Id học sinh đi để mở Form chi tiết học sinh
+	* @param: 
+	* @return: Modal
+	* @created: 2022/07/08 Phan Duy Tân
+	* @modified:
+	**/
     viewStudent: function(component, event, helper, student){
         $A.createComponent('c:AR_Popup_ChiTiet',
                             { recordId: student.Id},
@@ -199,6 +304,14 @@
                             })
     },
 
+    /**
+	* convertSex
+	* Chuyển đổi giới tính từ true:Nam - false:Nữ
+	* @param: 
+	* @return:
+	* @created: 2022/07/08 Phan Duy Tân
+	* @modified:
+	**/
     convertSex: function (listStudent){
         for(var x of listStudent){
             if(x.Sex__c){
@@ -207,5 +320,49 @@
                 x.Sex__c = 'Nữ'
             }
         }
+    }, 
+
+    /**
+	* sortStudent
+	* Thay đổi các thông số và set name field cần sort
+	* @param: 
+	* @return: 
+	* @created: 2022/07/11 Phan Duy Tân
+	* @modified:
+	**/
+    sortStudent: function (component, event) {
+        var sortedBy = event.getParam('fieldName');
+        var sortDirection = event.getParam('sortDirection');
+
+        var cloneData = component.get('v.listStudent');
+        cloneData.sort((this.sortBy(sortedBy, sortDirection === 'asc' ? 1 : -1)));
+
+        component.set('v.listStudent', cloneData);
+        component.set('v.sortDirection', sortDirection);
+        component.set('v.sortedBy', sortedBy);
+        this.preparePagination(component, cloneData);
+    },
+
+    /**
+	* sortBy
+	* Giải thuật sort tăng dần hay giảm dần
+	* @param: 
+	* @return:
+	* @created: 2022/07/11 Phan Duy Tân
+	* @modified:
+	**/
+    sortBy: function(field, reverse, primer){
+        var key = primer
+            ? function (x) {
+                return primer(x[field]);
+                }
+            : function (x) {
+                return x[field];
+            };
+        return function (a, b) {
+            a = key(a);
+            b = key(b);
+            return reverse * ((a > b) - (b > a));
+        };
     }
 })

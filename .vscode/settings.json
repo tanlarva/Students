@@ -8,5 +8,8 @@
   "salesforcedx-vscode-apex.enable-semantic-errors": true,
   "cSpell.words": [
     "onrowselection"
+  ],
+  "cSpell.enableFiletypes": [
+    "auraComponent"
   ]
 }

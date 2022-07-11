@@ -1,4 +1,12 @@
 ({
+    /**
+	* deleteStudent
+	* Xóa list học sinh
+	* @param: 
+	* @return: 
+	* @created: 2022/07/08 Phan Duy Tân
+	* @modified:
+	**/
     deleteStudent : function(component, event, helper, idStudent) {
         component.set('v.loaded', !component.get('v.loaded'));
         var action = component.get('c.deleteStudent');

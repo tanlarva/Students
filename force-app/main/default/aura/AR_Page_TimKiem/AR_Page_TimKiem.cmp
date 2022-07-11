@@ -11,13 +11,14 @@
     <aura:attribute name="options" type="Map" access="PRIVATE"/>
     <aura:attribute name="loaded" type="Boolean" default="true"/>
     <aura:handler name="init" value="{!this}" action="{!c.doInit}"></aura:handler>
-    
+    <aura:attribute name="reload" type="Boolean" default="false"/>
     <!-- attributes -->
-    <aura:attribute name="listStudent" type="List" access="PRIVATE"/>
+    <aura:attribute name="listStudent" type="List"/>
     <aura:attribute name="columns" type="List"/>
     <aura:attribute name="selectedStudent" type="List"/>
     <aura:attribute name="activeFilter" type="string" default="all" access="PRIVATE" />
     <aura:attribute name="listStudentShow" type="List"/>
+    <aura:attribute name="countStudent" type ="String"/>
      
     <aura:attribute name="currentPageNumber" type="Integer" default="1"/>
     <aura:attribute name="pageSize" type="Integer" default="5"/> <!-- Tùy Chỉnh -->
@@ -25,6 +26,11 @@
     <aura:attribute name="pageList" type="List"/>
     <aura:attribute name="totalRecords" type="Integer" />
     <aura:attribute name="currentPageRecords" type="Integer" />
+
+    
+    <aura:attribute name="sortDirection" type="String" default="asc" />
+    <aura:attribute name="defaultSortDirection" type="String" default="asc" />
+    <aura:attribute name="sortedBy" type="String"/>
     <div class="">
         <!-- Thông tin tìm kiếm -->
         <div class="container-limit">
@@ -76,12 +82,17 @@
                     <aura:set attribute="title">
                         <h3>Kết quả tìm kiếm</h3>
                     </aura:set>
+                    <p class="right">Số lượng: {!v.countStudent}</p>
                     <lightning:datatable
                         columns = "{!v.columns}"
                         data = "{!v.listStudentShow}"
                         keyField="id"
                         onrowaction="{!c.handleRowAction}"
-                        onrowselection="{!c.handleRowSelection}">
+                        onrowselection="{!c.handleRowSelection}"
+                        defaultSortDirection="{!v.defaultSortDirection}"
+                        sortedDirection="{!v.sortDirection}"
+                        sortedBy="{!v.sortedBy}"
+                        onsort="{!c.handleSort}">
                     </lightning:datatable>
                     <!--  Pagination Buttons Start -->
                     <div class="slds-align_absolute-center form-group"> 

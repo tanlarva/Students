@@ -94,12 +94,10 @@ public class TriggerStudentHandle {
 	**/  
     public static void onAfterInsert(List<Student__c> a){
         List<Class__c> updateClass = new List<Class__c>();
-
         String checkIdClass = 'null';
-        
         for(Student__c stu : a){
             String temp = stu.Class__c;
-            // student = stu;
+            //Lấy class
             if(checkIdClass != temp){
                 checkIdClass = temp;
                 for(Class__c classUpdate:  [SELECT Id, numStu__c, numPass__c, numFail__c FROM Class__c WHERE Id =:stu.Class__c] ){

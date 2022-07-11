@@ -6,10 +6,26 @@
  */
 public with sharing class AR_TimKiem_Controller {
     @AuraEnabled
-    public dataSearch dataSearch {get; set; }     
+    public dataSearch dataSearch {get; set; }// Chứa dự liệu search
 
+    /**
+	* Contructor
+	* init
+	* @param: 
+	* @return: 
+	* @created: 2022/07/07 Phan Duy Tân
+	* @modified:
+	**/
     public AR_TimKiem_Controller() {}
 
+    /**
+	* searchStudent
+	* queery dữ liệu với điều kiện nằm trong datasearch
+	* @param: 
+	* @return: List<Student__c>
+	* @created: 2022/07/07 Phan Duy Tân
+	* @modified:
+	**/
     @AuraEnabled
     public static List<Student__c> searchStudent(dataSearch dataInput) {
         try{
@@ -21,6 +37,14 @@ public with sharing class AR_TimKiem_Controller {
         }
     }
 
+    /**
+	* getAllStudent
+	* lấy toàn bộ danh sách học sinh ở trang tìm kiếm bắt đầu
+	* @param: 
+	* @return: List<Student__c>
+	* @created: 2022/07/06 Phan Duy Tân
+	* @modified:
+	**/
     @AuraEnabled
     public static List<Student__c> getAllStudent(){
         List<Student__c> data = new List<Student__c>();
@@ -32,16 +56,14 @@ public with sharing class AR_TimKiem_Controller {
         }
     }
 
-    // @AuraEnabled
-    // public static void deleteStudent(String id){
-    //     try {
-    //         Student__c s = [SELECT Id FROM Student__c WHERE Id =: id];
-    //         delete s;
-    //     } catch (Exception e) {
-    //         throw new AuraHandledException(e.getMessage());
-    //     }
-    // }
-
+    /**
+	* deleteStudent
+	* xóa List học sinh
+	* @param: 
+	* @return: 
+	* @created: 2022/07/07 Phan Duy Tân
+	* @modified:
+	**/
     @AuraEnabled
     public static void deleteStudent(List<Student__c> deleteStudent){
         try {
@@ -131,6 +153,14 @@ public with sharing class AR_TimKiem_Controller {
         
     }
 
+    /**
+	* getListClass
+	* Lấy danh sách lớp
+	* @param: 
+	* @return: Map<String,String>
+	* @created: 2022/07/06 Phan Duy Tân
+	* @modified:
+	**/
     @AuraEnabled
     public static Map<String,String> getListClass(){
         Map<String,String> options = new Map<String,String>();

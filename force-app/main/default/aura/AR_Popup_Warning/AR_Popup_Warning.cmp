@@ -13,5 +13,5 @@
         <aura:set attribute="else">
             <lightning:spinner variant="brand" alternative="Loading"/>
         </aura:set>
-    </aura:if>    
+    </aura:if>
 </aura:component>	

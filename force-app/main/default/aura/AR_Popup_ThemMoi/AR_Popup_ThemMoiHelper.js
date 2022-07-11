@@ -19,7 +19,7 @@
                 var toastEvent = $A.get("e.force:showToast");
                 toastEvent.setParams({
                     "title": "Success!",
-                    "variant": "success", 
+                    "type": "success", 
                     "message": "Tạo mới thành công."
                 });
                 toastEvent.fire(); 
@@ -43,7 +43,7 @@
                         var toastEvent = $A.get("e.force:showToast");
                         toastEvent.setParams({
                             "title": "Error!",
-                            "variant": "error", 
+                            "type": "error", 
                             "message": errors[0].message
                         });
                         toastEvent.fire();
@@ -66,6 +66,14 @@
         $A.enqueueAction(action);
     },
 
+    /**
+	* getClassPickList
+	* Lấy danh sách các lớp
+	* @param: 
+	* @return: Map<string, string>
+	* @created: 2022/07/06 Phan Duy Tân
+	* @modified:
+	**/
     getClassPicklist : function(component, event){
         var action = component.get('c.getListClass');
         action.setCallback(this, function(response){
@@ -77,12 +85,20 @@
                     classMap.push({key: key, value: result[key]});
                 }
                 component.set('v.options', classMap);
-                component.set('v.dataStudent.Class__c', classMap[1].key);
+                component.set('v.dataStudent.Class__c', classMap[0].key);
             }
         });
         $A.enqueueAction(action);
     },
 
+    /**
+	* changeClass
+	* Thay đổi Id class khi thay đổi class
+	* @param: 
+	* @return: 
+	* @created: 2022/07/06 Phan Duy Tân
+	* @modified:
+	**/
     changeClass: function(component, event){
         var temp = component.find('classPicklist').get('v.value');
         component.set('v.dataStudent.Class__c', temp);

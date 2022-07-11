@@ -20,3 +20,9 @@
 .THIS .item-group{
     margin: 3px 15px;
 }
+
+.THIS .right{
+    display: flex;
+    margin: 0 10px;
+    justify-content: right;
+}

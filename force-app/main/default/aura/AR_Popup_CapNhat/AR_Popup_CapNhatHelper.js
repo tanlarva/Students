@@ -1,4 +1,12 @@
 ({
+    /**
+	* checkIdReady
+	* Check recordId nếu không có thì đi qua create
+	* @param: 
+	* @return: 
+	* @created: 2022/07/06 Phan Duy Tân
+	* @modified:
+	**/
     checkIdReady : function(component, event, helper) {
         component.set("v.loaded",!component.get("v.loaded"));
         var idRecord = component.get("v.recordId");
@@ -50,6 +58,14 @@
         }
     },
 
+    /**
+	* saveData
+	* Lưu dữ liệu sau khi thay đổi trong form
+	* @param: 
+	* @return: 
+	* @created: 2022/07/06 Phan Duy Tân
+	* @modified:
+	**/
     saveData : function(component, event, helper){
         var action = component.get('c.updateStudent');
         var dataStudent = component.get("v.dataStudent");
@@ -106,6 +122,14 @@
         $A.enqueueAction(action);
     },
 
+    /**
+	* getClassPickList
+	* Lấy danh sách lớp cho selection
+	* @param: 
+	* @return: Map<String, String>
+	* @created: 2022/07/06 Phan Duy Tân
+	* @modified:
+	**/
     getClassPicklist : function(component, event, selected){
         var action = component.get('c.getListClass');
         action.setCallback(this, function(response){
@@ -126,6 +150,14 @@
         $A.enqueueAction(action);
     },  
 
+    /**
+	* changeClass
+	* Thay đổi Id Class khi thay đổi lựa chọn
+	* @param: 
+	* @return: 
+	* @created: 2022/07/06 Phan Duy Tân
+	* @modified:
+	**/
     changeClass: function(component, event){
         var temp = component.find('classPicklist').get('v.value');
         component.set('v.dataStudent.Class__c', temp);

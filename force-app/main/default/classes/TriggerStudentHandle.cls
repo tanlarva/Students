@@ -245,54 +245,6 @@ public class TriggerStudentHandle {
             ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.Error, e.getMessage()));
         }
         
-
-
-        // Class__c classOld = new Class__c();
-        // Class__c classNew = new Class__c();
-        // Student__c studentNew = new Student__c();
-        // Student__c studentOld = new Student__c();
-
-        // for(Student__c stuOld : a){
-        //     for(Class__c classMinus : [SELECT Id, numPass__c, numFail__c FROM Class__c WHERE Id =:stuOld.Class__c]){
-        //         classOld = classMinus;
-        //     }
-        //     studentOld = stuOld;
-        // }
-        // for(Student__c stuNew : b){
-        //     for(Class__c classAdd : [SELECT Id, numPass__c, numFail__c FROM Class__c WHERE Id =:stuNew.Class__c]){
-        //         classNew = classAdd;
-        //     }
-        //     studentNew = stuNew;
-        // }
-        
-        // if(classOld!=classNew){
-        //     System.debug('Lớp khác');
-        //     if(studentOld.Status__c=='Đậu'){
-        //         classOld.numPass__c--;
-        //     }else if(studentOld.Status__c=='Rớt'){
-        //         classOld.numFail__c--;
-        //     }
-        //     classOld.numStu__c--;
-        //     update classOld;
-    
-        //     if(studentNew.Status__c=='Đậu'){
-        //         classNew.numPass__c++;
-        //     }else if(studentNew.Status__c=='Rớt'){
-        //         classNew.numFail__c++;
-        //     }
-        //     classNew.numStu__c++;
-        //     update classNew;
-        // }else if(studentOld.Status__c!=studentNew.Status__c){
-        //     System.debug('Lớp cũ');
-        //     if(studentNew.Status__c=='Đậu'){
-        //         classNew.numPass__c++;
-        //         classNew.numFail__c--;
-        //     }else if(studentNew.Status__c=='Rớt'){
-        //         classNew.numPass__c--;
-        //         classNew.numFail__c++;
-        //     }
-        //     update classNew;
-        // }
        
         //Sao chép đối tượng
         // Student__c temp = studentNew.clone(true,true,true,false);
@@ -311,16 +263,6 @@ public class TriggerStudentHandle {
             }
             udt.add(temp);
         }
-
-        // if(temp.GPA__c>=8){
-        //     temp.XepLoai__c = 'Giỏi';
-        // }else if(temp.GPA__c>=6.5){
-        //     temp.XepLoai__c = 'Khá';
-        // }else if(temp.GPA__c>=5){
-        //     temp.XepLoai__c = 'Trung Bình';
-        // }else if(temp.GPA__c>=0){
-        //     temp.XepLoai__c = 'Yếu';
-        // }
         
         for(Integer i = 0; i < a.size(); i++){
             if(a[i].XepLoai__c != udt[i].XepLoai__c){
@@ -331,10 +273,5 @@ public class TriggerStudentHandle {
                 }
             }
         }
-        
-
-        // if(studentOld.XepLoai__c != temp.XepLoai__c){
-        //     upsert udt;
-        // }
     }
 }

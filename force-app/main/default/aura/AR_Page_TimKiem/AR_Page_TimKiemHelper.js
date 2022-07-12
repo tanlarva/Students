@@ -139,7 +139,7 @@
     /**
 	* preparePagination
 	* Set phân trang đầu tiên và tính toán phân trang
-	* @param: 
+	* @param: records
 	* @return:
 	* @created: 2022/07/08 Phan Duy Tân
 	* @modified:
@@ -206,7 +206,7 @@
     /**
 	* updateStudent
 	* Đưa Id cảu từng record đi để mở form chỉnh sửa cho từng đối tượng
-	* @param: 
+	* @param: student
 	* @return: Modal
 	* @created: 2022/07/08 Phan Duy Tân
 	* @modified:
@@ -232,7 +232,7 @@
     /**
 	* deleteStudent
 	* Đưa list học sinh đi đến modal Warning để xác nhận xóa
-	* @param: 
+	* @param: student
 	* @return: Modal
 	* @created: 2022/07/08 Phan Duy Tân
 	* @modified:
@@ -260,7 +260,7 @@
     /**
 	* deleteStudent
 	* Đưa list học sinh đi đến modal Warning để xác nhận xóa
-	* @param: 
+	* @param: listStudent : []
 	* @return: Modal
 	* @created: 2022/07/08 Phan Duy Tân
 	* @modified:
@@ -286,7 +286,7 @@
     /**
 	* viewStudent
 	* Đưa Id học sinh đi để mở Form chi tiết học sinh
-	* @param: 
+	* @param: student
 	* @return: Modal
 	* @created: 2022/07/08 Phan Duy Tân
 	* @modified:
@@ -307,7 +307,7 @@
     /**
 	* convertSex
 	* Chuyển đổi giới tính từ true:Nam - false:Nữ
-	* @param: 
+	* @param: listStudent : []
 	* @return:
 	* @created: 2022/07/08 Phan Duy Tân
 	* @modified:
@@ -346,7 +346,7 @@
     /**
 	* sortBy
 	* Giải thuật sort tăng dần hay giảm dần
-	* @param: 
+	* @param: field, reverse, primer
 	* @return:
 	* @created: 2022/07/11 Phan Duy Tân
 	* @modified:

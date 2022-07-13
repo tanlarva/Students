@@ -24,61 +24,61 @@ public class TriggerStudentHandle {
 	* @created: 2022/06/28 Phan Duy Tân
 	* @modified:
 	**/  
-    public static void onBeforeInsert(List<Student__c> a){
-        for(Student__c stu : a){
+    public static void onBeforeInsert(List<Student__c> triggerNew) {
+        for(Student__c stu : triggerNew) {
             //Check ngày sinh
-            if(stu.dayOfBirth__c==null){
+            if (stu.dayOfBirth__c == null) {
                 //Check đã nhập ngày sinh chưa
                 stu.dayOfBirth__c.addError(Label.null_dayOfBirth);
-            }else{
+            } else {
                 //Đã nhập rồi thì kiểm tra phù hợp chưa
                 integer[] month;
                 
-                Date present_date = System.today();
-                Integer present_Day =  present_date.Day();
-                Integer present_month = present_date.Month();
-                Integer present_year =  present_date.Year();
+                Date presentDate = System.today();
+                Integer presentDay =  presentDate.Day();
+                Integer presentMonth = presentDate.Month();
+                Integer presentYear =  presentDate.Year();
 
 
            
-                if(math.mod(present_year,4)==0){
+                if (math.mod(presentYear,4) == 0) {
                     month = new list <integer>{ 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
-                }else{
+                } else {
                     month = new list <integer>{ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
                 }
     
-                Date birth_date = stu.dayOfBirth__c;
-                Integer birth_Day =  birth_date.Day();
-                Integer birth_month = birth_date.Month();
-                Integer birth_year = birth_date.Year();    
+                Date birthDate = stu.dayOfBirth__c;
+                Integer birthDay =  birthDate.Day();
+                Integer birthMonth = birthDate.Month();
+                Integer birthYear = birthDate.Year();    
                 
             
-                if (birth_day > present_day) {
-                    present_day = present_day + month[birth_month - 1];
-                    present_month = present_month - 1;
+                if (birthDay > presentDay) {
+                    presentDay = presentDay + month[birthMonth - 1];
+                    presentMonth = presentMonth - 1;
                 } 
                 
                     
-                if (birth_month > present_month) {
-                present_year = present_year - 1;
-                present_month = present_month + 12;
+                if (birthMonth > presentMonth) {
+                presentYear = presentYear - 1;
+                presentMonth = presentMonth + 12;
                 }   
         
             
-                integer final_day = present_day - birth_day;
-                integer final_month = present_month - birth_month;
-                integer final_year = present_year - birth_year;
+                integer finalDay = presentDay - birthDay;
+                integer finalMonth = presentMonth - birthMonth;
+                integer finalYear = presentYear - birthYear;
     
-                if(final_year<6 || final_year>18){
+                if (finalYear < 6 || finalYDear > 18) {
                     stu.dayOfBirth__c.addError(Label.illegal_dayOfBirth);
                 }
             }
             //Check input điểm
-            if(stu.Diem1__c==null){
+            if (stu.Diem1__c == null) {
                 stu.Diem1__c.addError(Label.non_DiemHoa);
-            }else if(stu.Diem2__c==null){
+            }else if (stu.Diem2__c == null) {
                 stu.Diem2__c.addError(Label.non_DiemLy);
-            }else if(stu.Diem3__c==null){
+            }else if (stu.Diem3__c == null) {
                 stu.Diem3__c.addError(Label.non_DiemToan);
             }
             //Check 
@@ -92,29 +92,29 @@ public class TriggerStudentHandle {
 	* @created: 2022/06/28 Phan Duy Tân
 	* @modified:
 	**/  
-    public static void onAfterInsert(List<Student__c> a){
+    public static void onAfterInsert(List<Student__c> triggerNew) {
         List<Class__c> updateClass = new List<Class__c>();
         String checkIdClass = 'null';
-        for(Student__c stu : a){
+        for(Student__c stu : triggerNew) {
             String temp = stu.Class__c;
             //Lấy class
-            if(checkIdClass != temp){
+            if (checkIdClass != temp) {
                 checkIdClass = temp;
-                for(Class__c classUpdate:  [SELECT Id, numStu__c, numPass__c, numFail__c FROM Class__c WHERE Id =:stu.Class__c] ){
+                for(Class__c classUpdate:  [SELECT Id, numStu__c, numPass__c, numFail__c FROM Class__c WHERE Id =: stu.Class__c] ) {
                     updateClass.add(classUpdate);
                 }
             }
         }
 
-        for(Class__c upClass : updateClass){
-            for(Student__c stu : a){
-                if(upClass.Id == stu.Class__c){
+        for(Class__c upClass : updateClass) {
+            for(Student__c stu : triggerNew) {
+                if (upClass.Id == stu.Class__c) {
                     //Cập nhật sĩ số
                     upClass.numStu__c = upClass.numStu__c+1;
                     //Cập nhật đậu rớt
-                    if(stu.Status__c == 'Đậu'){
+                    if (stu.Status__c == 'Đậu') {
                         upClass.numPass__c = upClass.numPass__c+1;
-                    }else if(stu.Status__c == 'Rớt'){
+                    } else if (stu.Status__c == 'Rớt') {
                         upClass.numFail__c = upClass.numFail__c+1;
                     }
                 }
@@ -123,28 +123,28 @@ public class TriggerStudentHandle {
 
         try{
             update updateClass;
-        }catch(Exception e){
+        }catch (Exception e) {
             ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.Error, e.getMessage()));
         }
         
 
          //Xếp loại
-         List<Student__c> stus = [SELECT Id, Name, GPA__c, XepLoai__c FROM Student__c WHERE Id IN :a];
-         for(Student__c stuUp: stus){
-             if(stuUp.GPA__c>=8){
+         List<Student__c> stus = [SELECT Id, Name, GPA__c, XepLoai__c FROM Student__c WHERE Id IN : triggerNew];
+         for (Student__c stuUp: stus) {
+             if (stuUp.GPA__c >= 8) {
                  stuUp.XepLoai__c = 'Giỏi';
-             }else if(stuUp.GPA__c>=6.5){
+             } else if (stuUp.GPA__c >= 6.5) {
                  stuUp.XepLoai__c = 'Khá';
-             }else if(stuUp.GPA__c>=5){
+             } else if (stuUp.GPA__c >= 5) {
                  stuUp.XepLoai__c = 'Trung Bình';
-             }else if(stuUp.GPA__c>=0){
+             }else if (stuUp.GPA__c >= 0) {
                  stuUp.XepLoai__c = 'Yếu';
              }
          }
         
         try{
             update stus;
-        }catch(Exception e){
+        } catch (Exception e) {
             ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.Error, e.getMessage()));
         }
          
@@ -157,16 +157,16 @@ public class TriggerStudentHandle {
 	* @created: 2022/06/28 Phan Duy Tân
 	* @modified:
 	**/  
-    public static void onAfterDelete(List<Student__c> a){
+    public static void onAfterDelete(List<Student__c> triggerNew) {
 
         String checkIdClass;
         List<Class__c> updateClass = new List<Class__c>();
         
 
         checkIdClass = 'null';
-        for(Student__c stu: a){
+        for(Student__c stu: triggerNew) {
             String temp = stu.Class__c;
-            if(checkIdClass != temp){
+            if (checkIdClass != temp) {
                 checkIdClass = temp;
                 for(Class__c classUpdate : [SELECT Id, numStu__c, numPass__c, numFail__c FROM Class__c WHERE Id =:stu.Class__c]){
                     updateClass.add(classUpdate);
@@ -174,22 +174,22 @@ public class TriggerStudentHandle {
             }
         }
 
-        for(Class__c upClass : updateClass){
-            for(Student__c stu : a){
-                if(upClass.Id == stu.Class__c){
+        for(Class__c upClass : updateClass) {
+            for(Student__c stu : triggerNew) {
+                if (upClass.Id == stu.Class__c) {
                     upClass.numStu__c--;
-                    if(stu.Status__c=='Đậu'){
+                    if(stu.Status__c == 'Đậu'){
                         upClass.numPass__c--;
-                    }else if(stu.Status__c=='Rớt'){
+                    }else if(stu.Status__c == 'Rớt'){
                         upClass.numFail__c--;
                     }
                 }
             }
         }
         
-        try{
+        try {
             update updateClass;
-        }catch(Exception e){
+        } catch (Exception e) {
             ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.Error, e.getMessage()));
         }
         
@@ -203,35 +203,35 @@ public class TriggerStudentHandle {
 	* @created: 2022/06/28 Phan Duy Tân
 	* @modified:
 	**/  
-    public static void onAfterUpdate(List<Student__c> a,List<Student__c> b){
+    public static void onAfterUpdate(List<Student__c> triggerNew, List<Student__c> triggerOld) {
         List<Class__c> updateClass = [SELECT Id,numStu__c , numPass__c, numFail__c FROM Class__c];
-        for(Integer i = 0; i < a.size(); i++){
-            if(a[i].Class__c != b[i].Class__c){
-                for(Class__c c : updateClass){
-                    if(a[i].Class__c == c.Id){
+        for(Integer i = 0; i < triggerNew.size(); i++) {
+            if (triggerNew[i].Class__c != triggerOld[i].Class__c) {
+                for(Class__c c : updateClass) {
+                    if (triggerNew[i].Class__c == c.Id) {
                         c.numStu__c--;
-                        if(a[i].Status__c == 'Đậu'){
+                        if (triggerNew[i].Status__c == 'Đậu') {
                             c.numPass__c--;
-                        }else if (a[i].Status__c == 'Rớt') {
+                        } else if (triggerNew[i].Status__c == 'Rớt') {
                             c.numFail__c--;
                         }
                     }
-                    if(b[i].Class__c == c.Id){
+                    if (triggerOld[i].Class__c == c.Id) {
                         c.numStu__c++;
-                        if(b[i].Status__c == 'Đậu'){
+                        if (triggerOld[i].Status__c == 'Đậu') {
                             c.numPass__c++;
-                        }else if (b[i].Status__c == 'Rớt') {
+                        } else if (triggerOld[i].Status__c == 'Rớt') {
                             c.numFail__c++;
                         }
                     }
                 }
-            }else{
-                for(Class__c c : updateClass){
-                    if(b[i].Status__c != a[i].Status__c){
-                        if(b[i].Status__c == 'Đậu'){
+            } else {
+                for(Class__c c : updateClass) {
+                    if (triggerOld[i].Status__c != triggerNew[i].Status__c) {
+                        if (triggerOld[i].Status__c == 'Đậu') {
                             c.numPass__c++;
                             c.numFail__c--;
-                        }else if (b[i].Status__c == 'Rớt') {
+                        } else if (triggerOld[i].Status__c == 'Rớt') {
                             c.numFail__c++;
                             c.numPass__c--;
                         }
@@ -240,9 +240,9 @@ public class TriggerStudentHandle {
             }
         }
 
-        try{
+        try {
             update updateClass;
-        }catch(Exception e){
+        } catch (Exception e) {
             ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.Error, e.getMessage()));
         }
         
@@ -251,25 +251,25 @@ public class TriggerStudentHandle {
         // Student__c temp = studentNew.clone(true,true,true,false);
         List<Student__c> udt = new List<Student__c>();
 
-        for(Student__c stu : b){
+        for(Student__c stu : triggerOld){
             Student__c temp = stu.clone(true,true,true,false);
-            if(temp.GPA__c>=8){
+            if (temp.GPA__c >= 8) {
                 temp.XepLoai__c = 'Giỏi';
-            }else if(temp.GPA__c>=6.5){
+            } else if (temp.GPA__c >= 6.5) {
                 temp.XepLoai__c = 'Khá';
-            }else if(temp.GPA__c>=5){
+            } else if (temp.GPA__c >= 5) {
                 temp.XepLoai__c = 'Trung Bình';
-            }else if(temp.GPA__c>=0){
+            } else if (temp.GPA__c >= 0) {
                 temp.XepLoai__c = 'Yếu';
             }
             udt.add(temp);
         }
         
-        for(Integer i = 0; i < a.size(); i++){
-            if(a[i].XepLoai__c != udt[i].XepLoai__c){
-                try{
+        for(Integer i = 0; i < triggerNew.size(); i++) {
+            if (triggerNew[i].XepLoai__c != udt[i].XepLoai__c) {
+                try {
                     upsert udt[i];
-                }catch(Exception e){
+                } catch (Exception e) {
                     ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.Error, e.getMessage()));
                 }
             }

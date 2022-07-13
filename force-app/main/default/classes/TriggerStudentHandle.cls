@@ -120,6 +120,7 @@ public class TriggerStudentHandle {
                 }
             }
         }
+
         try{
             update updateClass;
         }catch(Exception e){

@@ -41,3 +41,9 @@ trigger Trigger_Student on Student__c (before insert, after insert, after update
         }
     }
 }
+/**
+ * Chú thích :
+ * Trigger old - new đều là List
+ * Nên dùng dạng Map
+ * 
+ */

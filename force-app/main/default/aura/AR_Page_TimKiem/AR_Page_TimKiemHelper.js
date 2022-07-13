@@ -52,15 +52,15 @@
         ];
         
         component.set('v.columns', [
-            { label: 'Họ', fieldName: 'firstName__c', type: 'text', sortable:true },
-            { label: 'Tên', fieldName: 'lastName__c', type: 'button', typeAttributes: {label: {fieldName: 'lastName__c'}, variant: 'base', name: 'view'}, sortable:true },
-            { label: 'Giới Tính', fieldName: 'Sex__c', type: 'text' },
-            { label: 'Ngày Sinh', fieldName: 'dayOfBirth__c', type: 'text' },
-            { label: 'Điểm Hóa', fieldName: 'Diem1__c', type: 'text' , sortable:true},
-            { label: 'Điểm Toán', fieldName: 'Diem2__c', type: 'text', sortable:true },
-            { label: 'Điểm Lý', fieldName: 'Diem3__c', type: 'text', sortable:true },
-            { label: 'Điểm Trung Bình', fieldName: 'GPA__c', type: 'text', sortable:true },
-            { label: 'Tình Trạng', fieldName: 'Status__c', type: 'text' },
+            { label: 'Họ', fieldName: 'firstName__c', type: 'text', sortable:true, cellAttributes: { class: { fieldName: 'checkCSSClass' }} },
+            { label: 'Tên', fieldName: 'lastName__c', type: 'button', typeAttributes: {label: {fieldName: 'lastName__c'}, variant: 'base', name: 'view'}, sortable:true,cellAttributes: { class: { fieldName: 'checkCSSClass' }} },
+            { label: 'Giới Tính', fieldName: 'Sex__c', type: 'text',cellAttributes: { class: { fieldName: 'checkCSSClass' }} },
+            { label: 'Ngày Sinh', fieldName: 'dayOfBirth__c', type: 'text',cellAttributes: { class: { fieldName: 'checkCSSClass' }} },
+            { label: 'Điểm Hóa', fieldName: 'Diem1__c', type: 'text' , sortable:true,cellAttributes: { class: { fieldName: 'checkCSSClass' }}},
+            { label: 'Điểm Toán', fieldName: 'Diem2__c', type: 'text', sortable:true,cellAttributes: { class: { fieldName: 'checkCSSClass' }} },
+            { label: 'Điểm Lý', fieldName: 'Diem3__c', type: 'text', sortable:true,cellAttributes: { class: { fieldName: 'checkCSSClass' }} },
+            { label: 'Điểm Trung Bình', fieldName: 'GPA__c', type: 'text', sortable:true,cellAttributes: { class: { fieldName: 'checkCSSClass' }} },
+            { label: 'Tình Trạng', fieldName: 'Status__c', type: 'text',cellAttributes: { class: { fieldName: 'checkCSSClass' }} },
             { type: 'action', typeAttributes: { rowActions: actions } }
         ]);
     },
@@ -87,6 +87,7 @@
                 component.set("v.loaded", !component.get("v.loaded"));
                 var result = response.getReturnValue();
                 helper.convertSex(result);
+                helper.checkCSSClass(result);
                 component.set('v.listStudent', result);
                 component.set('v.countStudent', result.length)
                 //Phân trang
@@ -127,6 +128,7 @@
             if(state === 'SUCCESS'){
                 var result = response.getReturnValue();
                 helper.convertSex(result);
+                helper.checkCSSClass(result);
                 component.set('v.listStudent', result);
                 //Phân trang
                 component.set('v.countStudent', result.length)
@@ -222,7 +224,6 @@
                                         showCloseButton : true,
                                         closeCallback: function () {
                                             helper.fetchDataSearch(component, event, helper);
-                                            alert(JSON.stringify(component.get('v.listStudent')));
                                         }
                                     })
                                 }
@@ -364,5 +365,21 @@
             b = key(b);
             return reverse * ((a > b) - (b > a));
         };
+    },
+
+    /**
+	* checkCSSClass
+	* Đánh dấu rớt
+	* @param: 
+	* @return:
+	* @created: 2022/07/12 Phan Duy Tân
+	* @modified:
+	**/
+    checkCSSClass: function (listStudent){
+        for(var x of listStudent){
+            if(x.Status__c == 'Rớt'){
+                x.checkCSSClass = 'false';
+            }
+        }
     }
 })

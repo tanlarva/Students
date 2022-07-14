@@ -58,7 +58,7 @@ public with sharing class AR_Student_Controller {
 	* @created: 2022/07/06 Phan Duy Tân
 	* @modified:
 	**/
-    @AuraEnabled
+    @AuraEnabled(cacheable=true)
     public static Student__c getDataStudent(Id id) {
         try {
             Student__c dataStudent = [SELECT Id, firstName__c, Class__c, lastName__c, Sex__c, dayOfBirth__c, Diem1__c,Diem2__c, Diem3__c, GPA__c, Status__c, XepLoai__c FROM Student__c WHERE Id =:id];
@@ -76,7 +76,7 @@ public with sharing class AR_Student_Controller {
 	* @created: 2022/07/06 Phan Duy Tân
 	* @modified:
 	**/
-    @AuraEnabled
+    @AuraEnabled(cacheable=true)
     public static Map<String, String> getListClass() {
         Map<String,String> options = new Map<String,String>();
         for(Class__c item : [SELECT Id, nameClass__c FROM Class__c]) {
@@ -85,4 +85,20 @@ public with sharing class AR_Student_Controller {
         return options;
     }
 
+    /**
+	* getListClass
+	* Lấy danh sách lớp cho lựa chọn
+	* @param: 
+	* @return: Map<String,String>
+	* @created: 2022/07/06 Phan Duy Tân
+	* @modified:
+	**/
+    @AuraEnabled(cacheable=true)
+    public static List<Class__c> getListClassLWC() {
+        List<Class__c> listClass = new List<Class__c>();
+        for(Class__c item : [SELECT Id, nameClass__c FROM Class__c]) {
+            listClass.add(item);
+        }
+        return listClass;
+    }
 }

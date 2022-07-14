@@ -1,0 +1,12 @@
+<template>
+    <lightning-card>
+        <lightning-tile>Tìm Kiếm Học Sinh</lightning-tile>
+        <lightning-input label="Tên Học Sinh"></lightning-input>
+        <lightning-combobox
+                    name="class"
+                    label="Lớp"
+                    value={chooseClass}
+                    options={listClass}
+                    onchange={handleChangeClass}></lightning-combobox>
+    </lightning-card>
+</template>

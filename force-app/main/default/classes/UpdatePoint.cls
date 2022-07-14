@@ -77,7 +77,15 @@ public class UpdatePoint implements Database.Batchable<sObject>, Database.Statef
                 updateDiem.add(diemLy);
             }
         }
-        showJob = updateDiem;
+
+        if (showJob != null){
+            for(Diem__c x : updateDiem){
+                showJob.add(x);
+            }
+        } else {
+            showJob = updateDiem;
+        }
+
         upsert updateDiem;
     }
 

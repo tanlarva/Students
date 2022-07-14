@@ -340,5 +340,3 @@ public with sharing class VF_TimKiem_Controller {
     }
 
 }
-
-

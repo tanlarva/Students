@@ -5,3 +5,12 @@
 .layout-group {
     margin: 3px 15px;
 }
+
+.center {
+    display: flex;
+    justify-content: center;
+}
+
+.top {
+    margin-top: 15px;
+}

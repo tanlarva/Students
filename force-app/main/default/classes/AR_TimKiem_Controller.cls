@@ -26,7 +26,7 @@ public with sharing class AR_TimKiem_Controller {
 	* @created: 2022/07/07 Phan Duy Tân
 	* @modified:
 	**/
-    @AuraEnabled
+    @AuraEnabled(cacheable=true)
     public static List<Student__c> searchStudent(dataSearch dataInput) {
         try{
             String query = dataInput.createQuery(dataInput);
@@ -45,7 +45,7 @@ public with sharing class AR_TimKiem_Controller {
 	* @created: 2022/07/06 Phan Duy Tân
 	* @modified:
 	**/
-    @AuraEnabled
+    @AuraEnabled(cacheable=true)
     public static List<Student__c> getAllStudent() {
         List<Student__c> data = new List<Student__c>();
         try {
@@ -161,7 +161,7 @@ public with sharing class AR_TimKiem_Controller {
 	* @created: 2022/07/06 Phan Duy Tân
 	* @modified:
 	**/
-    @AuraEnabled
+    @AuraEnabled(cacheable=true)
     public static Map<String, String> getListClass() {
         Map<String, String> options = new Map<String, String>();
         for(Class__c item : [SELECT Id, nameClass__c FROM Class__c]) {

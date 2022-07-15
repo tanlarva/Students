@@ -11,27 +11,27 @@
                     options={listClass}
                     onchange={handleChangeClass}></lightning-combobox>
         </div>
-        <div class="form-group">
+        <div class="form-group center">
             <p>Ngày Sinh</p>
-            <lightning-layout vertical-align="center">
-                <lightning-layout-item class="layout-group" flexibility="auto" size="2">
+            <lightning-layout>
+                <lightning-layout-item class="layout-group" size="6">
                     <lightning-input type="date" name="startDate" label="Từ" ></lightning-input>
                 </lightning-layout-item>
-                <lightning-layout-item class="layout-group" flexibility="auto" size="2">
+                <lightning-layout-item class="layout-group" size="6">
                     <lightning-input type="date" name="endDate" label="Đến" ></lightning-input>
                 </lightning-layout-item>
             </lightning-layout>
         </div>
-        <div class="form-group">
-            <lightning-layout vertical-align="center">
-                <lightning-layout-item class="layout-group" flexibility="auto">
-                    <lightning-button-icon icon-name="utility:search" alternative-text="Tìm kiếm" variant="border-inverse" alternative-text="Tìm Kiếm"></lightning-button-icon>
+        <div class="form-group center">
+            <lightning-layout>
+                <lightning-layout-item class="layout-group">
+                    <lightning-button label="Tìm kiếm" variant="success" ></lightning-button>
                 </lightning-layout-item>
-                <lightning-layout-item class="layout-group" flexibility="auto">
-                    <lightning-button-icon icon-name="utility:adduser" alternative-text="Thêm mơi" variant="border-inverse" alternative-text="Thêm Mới"></lightning-button-icon>
+                <lightning-layout-item class="layout-group">
+                    <lightning-button label="Thêm mới" variant="brand" ></lightning-button>
                 </lightning-layout-item>
-                <lightning-layout-item class="layout-group" flexibility="auto">
-                    <lightning-button-icon icon-name="utility:delete" alternative-text="Xóa hết" variant="border-inverse" alternative-text="Xóa Hết"></lightning-button-icon>
+                <lightning-layout-item class="layout-group">
+                    <lightning-button label="Xóa hết" variant="destructive" ></lightning-button>
                 </lightning-layout-item>
             </lightning-layout>
         </div>

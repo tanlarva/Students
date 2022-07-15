@@ -1,12 +1,47 @@
 <template>
-    <lightning-card>
-        <lightning-tile>Tìm Kiếm Học Sinh</lightning-tile>
-        <lightning-input label="Tên Học Sinh"></lightning-input>
-        <lightning-combobox
+    <lightning-card title="Tìm Kiếm Học Sinh">
+        <div class="form-group">
+            <lightning-input label="Tên Học Sinh"></lightning-input>
+        </div>
+        <div class="form-group">
+            <lightning-combobox
                     name="class"
                     label="Lớp"
                     value={chooseClass}
                     options={listClass}
                     onchange={handleChangeClass}></lightning-combobox>
+        </div>
+        <div class="form-group">
+            <p>Ngày Sinh</p>
+            <lightning-layout vertical-align="center">
+                <lightning-layout-item class="layout-group" flexibility="auto" size="2">
+                    <lightning-input type="date" name="startDate" label="Từ" ></lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item class="layout-group" flexibility="auto" size="2">
+                    <lightning-input type="date" name="endDate" label="Đến" ></lightning-input>
+                </lightning-layout-item>
+            </lightning-layout>
+        </div>
+        <div class="form-group">
+            <lightning-layout vertical-align="center">
+                <lightning-layout-item class="layout-group" flexibility="auto">
+                    <lightning-button-icon icon-name="utility:search" alternative-text="Tìm kiếm" variant="border-inverse" alternative-text="Tìm Kiếm"></lightning-button-icon>
+                </lightning-layout-item>
+                <lightning-layout-item class="layout-group" flexibility="auto">
+                    <lightning-button-icon icon-name="utility:adduser" alternative-text="Thêm mơi" variant="border-inverse" alternative-text="Thêm Mới"></lightning-button-icon>
+                </lightning-layout-item>
+                <lightning-layout-item class="layout-group" flexibility="auto">
+                    <lightning-button-icon icon-name="utility:delete" alternative-text="Xóa hết" variant="border-inverse" alternative-text="Xóa Hết"></lightning-button-icon>
+                </lightning-layout-item>
+            </lightning-layout>
+        </div>
     </lightning-card>
+    <template if:true={dataStudent}>
+        <lightning-datatable
+                key-field="id"
+                data={dataStudent}
+                columns={columns}
+                onrowaction={handleRowAction}>
+        </lightning-datatable>
+    </template>
 </template>

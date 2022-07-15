@@ -6,9 +6,7 @@ export default class LWC_TimKiem extends LightningElement {
     @wire(getListClass)
     wiredClass({error, data}) {
         if (data) {
-            console.log('Map:', data);
-            this.listClass = [...data];
-            
+            this.listClass = Object.entries(data).map(([value, label]) => ({value, label}));
             this.error = undefined;
         } else if (error) {
             this.error = error;
@@ -21,6 +19,4 @@ export default class LWC_TimKiem extends LightningElement {
     handleChangeClass(event) {
         this.chooseClass= event.detail.value;
     }
-
-    wire
 }

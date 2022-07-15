@@ -47,34 +47,9 @@ public class UpdatePoint implements Database.Batchable<sObject>, Database.Statef
         for(Student__c student : scope){
             if (mapDiem.containsKey(student.Id)) {
                 List<Diem__c> temp = mapDiem.get(student.Id);
-                for(Diem__c x : temp){
-                    if (x.Subject__c == 'Hóa' && x.Diem__c != student.Diem1__c) {
-                        x.Diem__c = student.Diem1__c;
-                        updateDiem.add(x);
-                    } else if (x.Subject__c == 'Toán' && x.Diem__c != student.Diem2__c) {
-                        x.Diem__c = student.Diem2__c;
-                        updateDiem.add(x);
-                    } else if (x.Subject__c == 'Lý' && x.Diem__c != student.Diem3__c) {
-                        x.Diem__c = student.Diem3__c;
-                        updateDiem.add(x);
-                    }
-                }
+                checkFullPoint(temp, updateDiem, student);
             } else {
-                Diem__c diemHoa = new Diem__c();
-                diemHoa.Student__c = student.Id;
-                diemHoa.Subject__c = 'Hóa';
-                diemHoa.Diem__c = student.Diem1__c;
-                Diem__c diemToan = new Diem__c();
-                diemToan.Student__c = student.Id;
-                diemToan.Subject__c = 'Toán';
-                diemToan.Diem__c = student.Diem2__c;
-                Diem__c diemLy = new Diem__c();
-                diemLy.Student__c = student.Id;
-                diemLy.Subject__c = 'Lý';
-                diemLy.Diem__c = student.Diem3__c;
-                updateDiem.add(diemHoa);
-                updateDiem.add(diemToan);
-                updateDiem.add(diemLy);
+                newPoint(updateDiem, student);
             }
         }
 
@@ -124,6 +99,74 @@ public class UpdatePoint implements Database.Batchable<sObject>, Database.Statef
             return listMPoint;
         } else {
             return null;
+        }
+    }
+
+    /**
+	* newPoint
+	* Nếu xóa 1 điểm thì tự thêm mới
+	* @param: List<Diem__c>, Student__c
+	* @return:
+	* @created: 2022/07/15 Phan Duy Tân
+	* @modified:
+	**/ 
+    public void newPoint(List<Diem__c> listDiem, Student__c student) {
+        Diem__c diemHoa = new Diem__c();
+        diemHoa.Student__c = student.Id;
+        diemHoa.Subject__c = 'Hóa';
+        diemHoa.Diem__c = student.Diem1__c;
+        Diem__c diemToan = new Diem__c();
+        diemToan.Student__c = student.Id;
+        diemToan.Subject__c = 'Toán';
+        diemToan.Diem__c = student.Diem2__c;
+        Diem__c diemLy = new Diem__c();
+        diemLy.Student__c = student.Id;
+        diemLy.Subject__c = 'Lý';
+        diemLy.Diem__c = student.Diem3__c;
+        listDiem.add(diemHoa);
+        listDiem.add(diemToan);
+        listDiem.add(diemLy);
+    }
+
+    /**
+	* checkFullPoint
+	* Nếu xóa 1 điểm thì tự thêm mới không thì so sanhs thay đổi
+	* @param: List<Diem__c>, List<Diem__c>, Student__c
+	* @return:
+	* @created: 2022/07/15 Phan Duy Tân
+	* @modified:
+	**/  
+    public void checkFullPoint(List<Diem__c> inMap, List<Diem__c> updateDiem, Student__c student) {
+        if (inMap.size() == 3) {
+            for(Diem__c x : inMap){
+                if (x.Subject__c == 'Hóa' && x.Diem__c != student.Diem1__c) {
+                    x.Diem__c = student.Diem1__c;
+                    updateDiem.add(x);
+                } else if (x.Subject__c == 'Toán' && x.Diem__c != student.Diem2__c) {
+                    x.Diem__c = student.Diem2__c;
+                    updateDiem.add(x);
+                } else if (x.Subject__c == 'Lý' && x.Diem__c != student.Diem3__c) {
+                    x.Diem__c = student.Diem3__c;
+                    updateDiem.add(x);
+                }
+            }
+        } else {
+            Map<String, Diem__c> temp = new Map<String, Diem__c>();
+            List<Diem__c> pointNow = new List<Diem__c>();
+            newPoint(pointNow, student);
+            for (Diem__c x : inMap) {
+                temp.put(x.Subject__c, x);
+            }
+            for(Diem__c x : pointNow){
+                if (!temp.containsKey(x.Subject__c)) {
+                    temp.put(x.Subject__c, x);
+                    updateDiem.add(x);
+                } else {
+                    if (temp.get(x.Subject__c).Diem__c != x.Diem__c){
+                        updateDiem.add(x);
+                    }
+                }
+            }
         }
     }
 }

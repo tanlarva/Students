@@ -1,0 +1,12 @@
+.form-group {
+    margin: 15px 10px;
+}
+
+.form-group-2 {
+    margin: 10px 15px;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+}

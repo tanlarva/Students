@@ -1,0 +1,36 @@
+body {
+    margin: 0;
+}
+
+.wrapper {
+    min-height: 200vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.content {
+    display: flex;
+    flex: 1;
+    color: #000;
+}
+
+.columns {
+    display: flex;
+    flex: 1;
+}
+
+.main {
+    flex: 1;
+    order: 2;
+    max-width: 1200px;
+}
+
+.sidebar-first {
+    width: 20%;
+    order: 1;
+}
+
+.sidebar-second {
+    width: 30%;
+    order: 3;
+}

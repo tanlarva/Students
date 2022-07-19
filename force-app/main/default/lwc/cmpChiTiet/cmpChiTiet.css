@@ -1,0 +1,18 @@
+.container-right {
+    margin-left: 12px;
+}
+
+p, .label {
+    color: #515151;
+    display: inline-block;
+}
+
+.form-group {
+    margin: 15px;
+}
+
+.value {
+    color: #000;
+    font-weight: 500;
+    margin-left: 10px;
+}

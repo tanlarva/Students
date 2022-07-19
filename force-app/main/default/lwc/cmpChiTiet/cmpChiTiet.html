@@ -1,0 +1,57 @@
+<template>
+    <template if:true={student}>
+        <div class="container-right">
+            <lightning-card title="Thông tin Học Sinh">
+                <lightning-layout>
+                    <lightning-layout-item>
+                        <div class="form-group">
+                            <p class="label">Họ:</p>
+                            <p class="value">{student.firstName__c}</p>
+                        </div>
+                        <div class="form-group">
+                            <p class="label">Tên:</p>
+                            <p class="value">{student.lastName__c}</p>
+                        </div>
+                        <div class="form-group">
+                            <p class="label">Ngày sinh:</p>
+                            <p class="value">{student.dayOfBirth__c}</p>
+                        </div>
+                        <div class="form-group">
+                            <p class="label">Giới tính:</p>
+                            <p class="value">{student.Sex__c}</p>
+                        </div>
+                        <div class="form-group">
+                            <p class="label">Tình trạng:</p>
+                            <p class="value">{student.Status__c}</p>
+                        </div>
+                    </lightning-layout-item>
+                    <lightning-layout-item>
+                        <div class="form-group">
+                            <p class="label">Điểm Hóa:</p>
+                            <p class="value">{student.Diem1__c}</p>
+                        </div>
+                        <div class="form-group">
+                            <p class="label">Điểm Toán:</p>
+                            <p class="value">{student.Diem2__c}</p>
+                        </div>
+                        <div class="form-group">
+                            <p class="label">Điểm Lý:</p>
+                            <p class="value">{student.Diem3__c}</p>
+                        </div>
+                        <div class="form-group">
+                            <p class="label">Điểm trung bình:</p>
+                            <p class="value">{student.GPA__c}</p>
+                        </div>
+                        <div class="form-group">
+                            <p class="label">Xếp loại:</p>
+                            <p class="value">{student.XepLoai__c}</p>
+                        </div>
+                    </lightning-layout-item>
+                </lightning-layout>
+                
+                
+            </lightning-card>
+        </div>
+    </template>
+    
+</template>

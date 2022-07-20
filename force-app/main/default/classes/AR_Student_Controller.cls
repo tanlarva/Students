@@ -58,7 +58,7 @@ public with sharing class AR_Student_Controller {
 	* @created: 2022/07/06 Phan Duy Tân
 	* @modified:
 	**/
-    @AuraEnabled(cacheable=true)
+    @AuraEnabled
     public static Student__c getDataStudent(Id id) {
         try {
             Student__c dataStudent = [SELECT Id, firstName__c, Class__c, lastName__c, Sex__c, dayOfBirth__c, Diem1__c,Diem2__c, Diem3__c, GPA__c, Status__c, XepLoai__c FROM Student__c WHERE Id =:id];

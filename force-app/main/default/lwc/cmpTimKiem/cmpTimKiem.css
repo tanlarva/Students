@@ -15,6 +15,16 @@
     margin-bottom: 15px;
 }
 
-.false{
-    background: orange !important;
+.false {
+    background-color: orange !important;
+}
+
+.right {
+    display: flex;
+    justify-content: end;
+    margin: -10px 10px 10px 0px;
+}
+
+.modalBodySpinner{
+    position: relative;
 }

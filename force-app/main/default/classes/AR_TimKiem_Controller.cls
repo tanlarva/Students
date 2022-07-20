@@ -38,6 +38,25 @@ public with sharing class AR_TimKiem_Controller {
     }
 
     /**
+	* searchStudentLWC
+	* queery dữ liệu với điều kiện nằm trong datasearch (cacheable=false)
+	* @param: 
+	* @return: List<Student__c>
+	* @created: 2022/07/20 Phan Duy Tân
+	* @modified:
+	**/
+    @AuraEnabled
+    public static List<Student__c> searchStudentLWC(dataSearch dataInput) {
+        try{
+            String query = dataInput.createQuery(dataInput);
+            List<Student__c> data = Database.query(query);
+            return data;
+        }catch(Exception e){
+            throw new AuraHandledException(e.getMessage());
+        }
+    }
+
+    /**
 	* getAllStudent
 	* lấy toàn bộ danh sách học sinh ở trang tìm kiếm bắt đầu
 	* @param: 

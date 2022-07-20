@@ -1,8 +1,7 @@
 import { LightningElement, wire, api, track } from 'lwc';
 import getListClass from '@salesforce/apex/AR_TimKiem_Controller.getListClass';
 import getAllStudent from '@salesforce/apex/AR_TimKiem_Controller.getAllStudent';
-import searchStudent from '@salesforce/apex/AR_TimKiem_Controller.searchStudent';
-import deleteStudent from '@salesforce/apex/AR_TimKiem_Controller.deleteStudent';
+import searchStudent from '@salesforce/apex/AR_TimKiem_Controller.searchStudentLWC';
 
 const actions = [
     { label: 'Cập nhật', name: 'update' },
@@ -11,8 +10,8 @@ const actions = [
 const columns = [
     { label: 'Họ', fieldName: 'firstName__c', type: 'text', sortable:true, cellAttributes: { class: { fieldName: 'checkCSSClass' }} },
     { label: 'Tên', fieldName: 'lastName__c', type: 'button', typeAttributes: {label: {fieldName: 'lastName__c'}, variant: 'base', name: 'view'}, sortable:true,cellAttributes: { class: { fieldName: 'checkCSSClass' }} },
-    { label: 'Giới Tính', fieldName: 'Sex__c', type: 'text',cellAttributes: { class: { fieldName: 'checkCSSClass' }} },
-    { label: 'Ngày Sinh', fieldName: 'dayOfBirth__c', type: 'text',cellAttributes: { class: { fieldName: 'checkCSSClass' }} },
+    { label: 'Giới Tính', fieldName: 'Sex__c', type: 'text', cellAttributes: { class: { fieldName: 'checkCSSClass' }} },
+    { label: 'Ngày Sinh', fieldName: 'dayOfBirth__c', type: 'text', cellAttributes: { class: { fieldName: 'checkCSSClass' }} },
     { label: 'Điểm Hóa', fieldName: 'Diem1__c', type: 'text' , sortable:true,cellAttributes: { class: { fieldName: 'checkCSSClass' }}},
     { label: 'Điểm Toán', fieldName: 'Diem2__c', type: 'text', sortable:true,cellAttributes: { class: { fieldName: 'checkCSSClass' }} },
     { label: 'Điểm Lý', fieldName: 'Diem3__c', type: 'text', sortable:true,cellAttributes: { class: { fieldName: 'checkCSSClass' }} },
@@ -29,6 +28,7 @@ export default class LWC_TimKiem extends LightningElement {
         endDate : '',
         sortName : true
     }
+
     @track columns = columns;
     @track page = 1; //initialize 1st page
     @track currentPageSize = 0;
@@ -40,10 +40,13 @@ export default class LWC_TimKiem extends LightningElement {
     @track listClass;
     @track dataStudent;
     @track dataStudentShow;
+    @track sortBy;
+    @track sortDirection;
     error;
-    //
     selectedStudent = [];
-    studentCount;
+    countStudent;
+    loading = false;
+
     @wire(getListClass)
     wiredClass({error, data}) {
         if (data) {
@@ -58,17 +61,12 @@ export default class LWC_TimKiem extends LightningElement {
             this.error = error;
         }
     };
+
     @wire(getAllStudent)
     wiredStudent({error, data}) {
         if (data) {
-            this.dataStudent = JSON.parse(JSON.stringify(data));
-            this.convertSex(this.dataStudent);
-            this.checkCSSClass(this.dataStudent);
-            this.totalRecountCount = this.dataStudent.length;
-            this.endingRecord = this.dataStudent.length;
-            this.totalPage = Math.ceil(this.totalRecountCount / this.pageSize);
-            this.currentPageSize = this.endingRecord - this.startingRecord + 1;
-            this.dataStudentShow = this.dataStudent.slice(0, this.pageSize);
+            this.loading = true;
+            this.setupData(data);
             //console.log('this.dataStudent:', JSON.stringify(this.dataStudentShow));
             this.error = undefined;
         } else if (error) {
@@ -77,27 +75,51 @@ export default class LWC_TimKiem extends LightningElement {
         }
     };
 
+    setupData(data) {
+        this.dataStudent = JSON.parse(JSON.stringify(data));
+        this.countStudent = this.dataStudent.length;
+        this.convertSex(this.dataStudent);
+        this.checkCSSClass(this.dataStudent);
+        this.totalRecountCount = this.dataStudent.length;
+        this.endingRecord = this.dataStudent.length;
+        this.totalPage = Math.ceil(this.totalRecountCount / this.pageSize);
+        this.currentPageSize = this.endingRecord - this.startingRecord + 1;
+        this.dataStudentShow = this.dataStudent.slice(0, this.pageSize);
+        this.loading = false;
+    };
+
+    setupDataSort(data) {
+        this.dataStudent = data
+        this.countStudent = this.dataStudent.length;
+        this.totalRecountCount = this.dataStudent.length;
+        this.endingRecord = this.dataStudent.length;
+        this.totalPage = Math.ceil(this.totalRecountCount / this.pageSize);
+        this.currentPageSize = this.endingRecord - this.startingRecord + 1;
+        this.dataStudentShow = this.dataStudent.slice(0, this.pageSize);
+        this.loading = false;
+    }
+
     previousHandler() {
         if (this.page > 1) {
             this.page = this.page - 1;
             this.displayRecordPerPage(this.page);
         }
-    }
+    };
 
     nextHandler() {
-        if((this.page<this.totalPage) && this.page !== this.totalPage){
+        if ((this.page<this.totalPage) && this.page !== this.totalPage) {
             this.page = this.page + 1;
             this.displayRecordPerPage(this.page);            
         }             
-    }
+    };
  
     get isPreviousDisable(){
         return (this.page == 1 ? true : false);
-    }
+    };
  
     get isNextDisable(){
         return (this.page === this.totalPage || (this.page > this.totalPage)) ? true : false;
-    }
+    };
 
     displayRecordPerPage(page){
         this.startingRecord = ((page -1) * this.pageSize) ;
@@ -111,19 +133,20 @@ export default class LWC_TimKiem extends LightningElement {
         this.startingRecord = this.startingRecord + 1;
  
         this.currentPageSize = this.endingRecord - this.startingRecord + 1;
-    }
+    };
 
     handleRowAction(event) {
         const actionName = event.detail.action.name;
         const row = event.detail.row;
         switch (actionName) {
             case 'delete':
-                // this.deleteRow(row);
                 console.log(JSON.stringify(row));
+                this.template.querySelector('c-modal-Confirm-Delete').show1Student(row);
                 break;
             case 'update':
                 // this.showRowDetails(row);
                 console.log(JSON.stringify(row));
+                this.template.querySelector('c-modal-Cap-Nhat').show(row);
                 break;  
             case 'view':
                 //console.log('row' + JSON.stringify(row));
@@ -132,23 +155,23 @@ export default class LWC_TimKiem extends LightningElement {
                 break;
             default:
         }
-    }
+    };
 
     handleChangeClass(event) {
         this.dataSearch.idClass = event.detail.value;
-    }
+    };
 
     handleChangeName(event) {
         this.dataSearch.nameStudent = event.detail.value;
-    }
+    };
 
     handleChangeDate1(event) {
         this.dataSearch.startDate = event.detail.value;
-    }
+    };
 
     handleChangeDate2(event) {
         this.dataSearch.endDate = event.detail.value;
-    }
+    };
 
     convertSex(dataStudent) {
         for(var x of dataStudent) {
@@ -158,7 +181,7 @@ export default class LWC_TimKiem extends LightningElement {
                 x.Sex__c = 'Nữ'
             }
         }
-    }
+    };
 
     checkCSSClass(dataStudent) {
         for(var x of dataStudent){
@@ -166,33 +189,27 @@ export default class LWC_TimKiem extends LightningElement {
                 x.checkCSSClass = 'false';
             }
         }
-    }
+    };
 
     handleShowModalAdd() {
         const modal = this.template.querySelector("c-modal-Them-Moi");
         modal.show();
-    }
+    };
 
     handleBtnSearch(event) {
+        this.loading = true;
         this.resetData();
         searchStudent({dataInput : this.dataSearch})
         .then (data => {
-            console.log('Datasearch: '+ JSON.stringify(data))
-            this.dataStudent = JSON.parse(JSON.stringify(data));
-            this.convertSex(this.dataStudent);
-            this.checkCSSClass(this.dataStudent);
-            this.totalRecountCount = this.dataStudent.length;
-            this.endingRecord = this.dataStudent.length;
-            this.totalPage = Math.ceil(this.totalRecountCount / this.pageSize);
-            this.currentPageSize = this.endingRecord - this.startingRecord + 1;
-            this.dataStudentShow = this.dataStudent.slice(0, this.pageSize);
+            //console.log('Datasearch: '+ JSON.stringify(data))
+            this.setupData(data);
             this.error = undefined;
         })
         .catch (error => {
             console.error(error);
             this.error = error;
         })
-    }
+    };
 
     resetData() {
         this.dataStudent = null;
@@ -203,15 +220,44 @@ export default class LWC_TimKiem extends LightningElement {
         this.startingRecord = 1; 
         this.endingRecord = 0;
         this.dataStudentShow = null;
-    }
+        this.countStudent = 0;
+    };
 
-    getSelectedStudent(event) {        
+    getSelectedStudent(event) {
         const selectedRows = event.detail.selectedRows;
         this.studentCount = event.detail.selectedRows.length;
         this.selectedStudent = event.detail.selectedRows;
-    }
+    };
 
     handleBtnDelete(event) {
-        deleteStudent()
+        if (this.selectedStudent.length > 0) {
+            this.template.querySelector('c-modal-Confirm-Delete').show();
+        }
+    };
+
+    handleSortStudent(event) {
+        this.sortBy = event.detail.fieldName;
+        this.sortDirection = event.detail.sortDirection;
+        
+        this.sortStudentData(event.detail.fieldName, event.detail.sortDirection);
     }
+
+    sortStudent(fieldName, direction) {
+        this.loading = true;
+        let parseData = this.dataStudent;
+       
+        let keyValue = (a) => {
+            return a[fieldname];
+        };
+        let isReverse = direction === 'asc' ? 1: -1;
+        parseData.sort((x, y) => {
+            x = keyValue(x) ? keyValue(x) : ''; 
+            y = keyValue(y) ? keyValue(y) : '';
+            
+            return isReverse * ((x > y) - (y > x));
+        });
+        
+        this.sortDataSort(parseData)
+    }
+
 }

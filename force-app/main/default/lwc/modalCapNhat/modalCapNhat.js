@@ -1,41 +1,32 @@
-import { LightningElement, track, api, wire } from 'lwc';
+import { LightningElement, wire, api, track} from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import getListClass from '@salesforce/apex/AR_TimKiem_Controller.getListClass';
-import createStudent from '@salesforce/apex/AR_Student_Controller.createStudent';
+import updateStudent from '@salesforce/apex/AR_Student_Controller.updateStudent';
+import getDataStudent from '@salesforce/apex/AR_Student_Controller.getDataStudent';
 
-export default class LWC_ThemMoi extends LightningElement {
+export default class ModalCapNhat extends LightningElement {
     @track showModal = false;
     @track loading = false;
-    @track listClass;
-    @track student = {
-        firstName__c : '',
-        lastName__c : '',
-        Sex__c : true,
-        dayOfBirth__c : '',
-        Class__c : '',
-        Diem1__c : '',
-        Diem2__c : '',
-        Diem3__c : '',
-    };
+    @track listClass = false;
+    @track student;
+    getIdStudent;
+    error;
 
-    @api show() {
-        this.showModal = true;
+    @api show(student) {
         this.loading = false;
-        this.student = {
-            firstName__c : '',
-            lastName__c : '',
-            Sex__c : true,
-            dayOfBirth__c : '',
-            Class__c : '',
-            Diem1__c : '',
-            Diem2__c : '',
-            Diem3__c : '',
-        }
-    };
-
-    handleDialogClose() {
-        this.showModal = false;
-    };
+        this.getIdStudent = student.Id;
+        getDataStudent({id : this.getIdStudent})
+        .then ( data => {
+            this.student = JSON.parse(JSON.stringify(data));
+            this.showModal = true;
+            this.error = undefined;
+        })
+        .catch ( error => {
+            this.error = error;
+            this.contacts = undefined;
+        })
+        console.log(this.getIdStudent);
+    }
 
     @wire(getListClass)
     wiredClass({error, data}) {
@@ -69,15 +60,30 @@ export default class LWC_ThemMoi extends LightningElement {
     diem3ChangedHandler(event) {
         this.student.Diem3__c = event.detail.value;
     };
+    handleChangeClass(event) {
+        this.student.Class__c = event.detail.value;
+    };
+    handleChangeSex(event) {
+        this.student.Sex__c = event.detail.value;
+    }
 
-    handleCreateStudent() {
+    get optionsSex() {
+        return [
+            { label: 'Nam', value: true },
+            { label: 'Nữ', value: false },
+        ];
+    }
+
+
+    handleUpdate(event) {
         this.loading = true;
-        createStudent({dataStudent: this.student})
+        console.log('Update ' + JSON.stringify(this.student));
+        updateStudent({dataStudent: this.student})
         .then ( ok => {
             this.dispatchEvent(
                 new ShowToastEvent({
                     title: 'Success',
-                    message: 'Học sinh tạo thành công',
+                    message: 'Cập nhật thành công',
                     variant: 'success',
                 }),
             );
@@ -96,16 +102,9 @@ export default class LWC_ThemMoi extends LightningElement {
             );
             this.showModal = false;
         })
-    };
+    }
 
-    handleChangeSex(event) {
-        this.student.Sex__c = event.detail.value;
-    };
-
-    get optionsSex() {
-        return [
-            { label: 'Nam', value: true },
-            { label: 'Nữ', value: false },
-        ];
-    };
+    handleDialogClose() {
+        this.showModal = false;
+    }
 }

@@ -1,7 +1,7 @@
 <template>
-    <div class="bottom">
+    <div class="bottom sort with unicode">
         <lightning-card title="Tìm Kiếm Học Sinh" class="bottom">
-            <div class="form-group">
+            <div class="form-group slds-col">
                 <lightning-input label="Tên Học Sinh" value={dataSearch.nameStudent} onchange={handleChangeName}></lightning-input>
             </div>
             <div class="form-group">
@@ -12,18 +12,18 @@
                         options={listClass}
                         onchange={handleChangeClass}></lightning-combobox>
             </div>
-            <div class="form-group center">
+            <div class="form-group center slds-col">
                 <p>Ngày Sinh</p>
                 <lightning-layout>
-                    <lightning-layout-item class="layout-group" size="6">
+                    <lightning-layout-item class="layout-group">
                         <lightning-input type="date" name="startDate" label="Từ" value={dataSearch.startDate} onchange={handleChangeDate1}></lightning-input>
                     </lightning-layout-item>
-                    <lightning-layout-item class="layout-group" size="6">
+                    <lightning-layout-item class="layout-group">
                         <lightning-input type="date" name="endDate" label="Đến" value={dataSearch.endDate} onchange={handleChangeDate2}></lightning-input>
                     </lightning-layout-item>
                 </lightning-layout>
             </div>
-            <div class="form-group center">
+            <div class="form-group center slds-col">
                 <lightning-layout>
                     <lightning-layout-item class="layout-group">
                         <lightning-button label="Tìm kiếm" variant="success" onclick={handleBtnSearch}></lightning-button>
@@ -51,11 +51,11 @@
                 onrowaction={handleRowAction}
                 sorted-by={sortBy}
                 sorted-direction={sortDirection}
-                onsort={handleSortStudentData}
+                onsort={handleSortStudent}
                 onrowselection={getSelectedStudent}>
             </lightning-datatable>
             <!--  Pagination Buttons Start -->
-            <div class="slds-align_absolute-center">
+            <div class="slds-align_absolute-center top">
                 <lightning-button label="Previous" icon-name="utility:chevronleft" onclick={previousHandler}
                     disabled={isPreviousDisable}>
                 </lightning-button>

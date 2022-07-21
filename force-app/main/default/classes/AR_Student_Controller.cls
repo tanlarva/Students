@@ -21,7 +21,7 @@ public with sharing class AR_Student_Controller {
 	* @param: 
 	* @return: 
 	* @created: 2022/07/06 Phan Duy Tân
-	* @modified:
+	* @modified: 2022/07/20 Phan Duy Tân
 	**/
     @AuraEnabled
     public static void createStudent(Student__c dataStudent) {
@@ -38,7 +38,7 @@ public with sharing class AR_Student_Controller {
 	* @param: 
 	* @return: 
 	* @created: 2022/07/06 Phan Duy Tân
-	* @modified:
+	* @modified: 2022/07/20 Phan Duy Tân
 	**/
     @AuraEnabled
     public static void updateStudent(Student__c dataStudent) {
@@ -56,7 +56,7 @@ public with sharing class AR_Student_Controller {
 	* @param: 
 	* @return: Student__c
 	* @created: 2022/07/06 Phan Duy Tân
-	* @modified:
+	* @modified: 2022/07/20 Phan Duy Tân
 	**/
     @AuraEnabled
     public static Student__c getDataStudent(Id id) {

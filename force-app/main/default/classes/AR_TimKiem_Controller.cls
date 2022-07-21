@@ -43,7 +43,7 @@ public with sharing class AR_TimKiem_Controller {
 	* @param: 
 	* @return: List<Student__c>
 	* @created: 2022/07/20 Phan Duy Tân
-	* @modified:
+	* @modified: 2022/07/20 Phan Duy Tân
 	**/
     @AuraEnabled
     public static List<Student__c> searchStudentLWC(dataSearch dataInput) {
@@ -81,7 +81,7 @@ public with sharing class AR_TimKiem_Controller {
 	* @param: 
 	* @return: 
 	* @created: 2022/07/07 Phan Duy Tân
-	* @modified:
+	* @modified: 2022/07/20 Phan Duy Tân
 	**/
     @AuraEnabled
     public static void deleteStudent(List<Student__c> deleteStudent) {

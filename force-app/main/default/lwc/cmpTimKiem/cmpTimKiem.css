@@ -15,8 +15,8 @@
     margin-bottom: 15px;
 }
 
-.false {
-    background-color: orange !important;
+.not-pass {
+    background: orange !important;
 }
 
 .right {
@@ -27,4 +27,8 @@
 
 .modalBodySpinner{
     position: relative;
+}
+
+.top {
+    margin-top: 10px;
 }

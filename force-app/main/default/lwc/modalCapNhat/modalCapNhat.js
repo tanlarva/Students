@@ -4,6 +4,12 @@ import getListClass from '@salesforce/apex/AR_TimKiem_Controller.getListClass';
 import updateStudent from '@salesforce/apex/AR_Student_Controller.updateStudent';
 import getDataStudent from '@salesforce/apex/AR_Student_Controller.getDataStudent';
 
+/**
+ * ClassName: ModalCapNhat
+ * ClassDetail:
+ * @Create: 2022/07/18 Phan Duy Tân
+ * @Modify:
+ */
 export default class ModalCapNhat extends LightningElement {
     @track showModal = false;
     @track loading = false;
@@ -12,6 +18,14 @@ export default class ModalCapNhat extends LightningElement {
     getIdStudent;
     error;
 
+    /**
+	* show
+	* Dùng để mở Modal và lấy id student
+	* @param: 
+	* @return: 
+	* @created: 2022/07/18 Phan Duy Tân
+	* @modified: 2022/07/20 Phan Duy Tân
+	**/
     @api show(student) {
         this.loading = false;
         this.getIdStudent = student.Id;
@@ -26,8 +40,9 @@ export default class ModalCapNhat extends LightningElement {
             this.contacts = undefined;
         })
         console.log(this.getIdStudent);
-    }
+    };
 
+    //Lấy danh sách lớp
     @wire(getListClass)
     wiredClass({error, data}) {
         if (data) {
@@ -39,34 +54,47 @@ export default class ModalCapNhat extends LightningElement {
         }
     };
 
+    //Đổi giá trị trong student khi nhập Họ
     fnameChangedHandler(event) {
         this.student.firstName__c = event.detail.value;
     };
+
+    //Đổi giá trị trong student khi nhập Tên
     lnameChangedHandler(event) {
         this.student.lastName__c = event.detail.value;
     };
+
+    //Đổi giá trị trong student khi nhập Ngày sinh
     birthChangedHandler(event) {
         this.student.dayOfBirth__c = event.detail.value;
     };
+
+    //Đổi giá trị trong student khi thay đổi lớp
     handleChangeClass(event) {
         this.student.Class__c = event.detail.value;
     };
+
+    //Đổi giá trị trong student khi nhập điểm Hóa
     diem1ChangedHandler(event) {
         this.student.Diem1__c = event.detail.value;
     };
+
+    //Đổi giá trị trong student khi nhập điểm Toán
     diem2ChangedHandler(event) {
         this.student.Diem2__c = event.detail.value;
     };
+
+    //Đổi giá trị trong student khi nhập điểm Lý
     diem3ChangedHandler(event) {
         this.student.Diem3__c = event.detail.value;
     };
-    handleChangeClass(event) {
-        this.student.Class__c = event.detail.value;
-    };
+
+    //Đổi giá trị trong student khi thay đổi giới tính
     handleChangeSex(event) {
         this.student.Sex__c = event.detail.value;
     }
 
+    //Gắn giá trị cho radio-group
     get optionsSex() {
         return [
             { label: 'Nam', value: true },
@@ -74,7 +102,14 @@ export default class ModalCapNhat extends LightningElement {
         ];
     }
 
-
+    /**
+	* handleUpdate
+	* Sự kiện khi ấn nút cập nhật
+	* @param: 
+	* @return: 
+	* @created: 2022/07/19 Phan Duy Tân
+	* @modified: 2022/07/20 Phan Duy Tân
+	**/
     handleUpdate(event) {
         this.loading = true;
         console.log('Update ' + JSON.stringify(this.student));
@@ -104,6 +139,14 @@ export default class ModalCapNhat extends LightningElement {
         })
     }
 
+    /**
+	* handleDialogClose
+	* Khi nhân nút Close
+	* @param: 
+	* @return: 
+	* @created: 2022/07/19 Phan Duy Tân
+	* @modified: 
+	**/
     handleDialogClose() {
         this.showModal = false;
     }

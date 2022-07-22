@@ -3,7 +3,13 @@ import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import getListClass from '@salesforce/apex/AR_TimKiem_Controller.getListClass';
 import createStudent from '@salesforce/apex/AR_Student_Controller.createStudent';
 
-export default class LWC_ThemMoi extends LightningElement {
+/**
+ * ClassName: ModalThemMoi
+ * ClassDetail:
+ * @Create: 2022/07/19 Phan Duy Tân
+ * @Modify:
+ */
+export default class ModalThemMoi extends LightningElement {
     @track showModal = false;
     @track loading = false;
     @track listClass;
@@ -18,6 +24,14 @@ export default class LWC_ThemMoi extends LightningElement {
         Diem3__c : '',
     };
 
+    /**
+	* show
+	* Dùng để mở Modal và tạo object student
+	* @param: 
+	* @return: 
+	* @created: 2022/07/19 Phan Duy Tân
+	* @modified: 2022/07/20 Phan Duy Tân
+	**/
     @api show() {
         this.showModal = true;
         this.loading = false;
@@ -33,10 +47,19 @@ export default class LWC_ThemMoi extends LightningElement {
         }
     };
 
+    /**
+	* handleDialogClose
+	* Dùng để đóng Modal
+	* @param: 
+	* @return: 
+	* @created: 2022/07/19 Phan Duy Tân
+	* @modified: 2022/07/20 Phan Duy Tân
+	**/
     handleDialogClose() {
         this.showModal = false;
     };
 
+    //Lấy danh sách lớp
     @wire(getListClass)
     wiredClass({error, data}) {
         if (data) {
@@ -48,28 +71,49 @@ export default class LWC_ThemMoi extends LightningElement {
         }
     };
 
+    //Đổi giá trị trong student khi nhập Họ
     fnameChangedHandler(event) {
         this.student.firstName__c = event.detail.value;
     };
+
+    //Đổi giá trị trong student khi nhập Tên
     lnameChangedHandler(event) {
         this.student.lastName__c = event.detail.value;
     };
+
+    //Đổi giá trị trong student khi nhập Ngày sinh
     birthChangedHandler(event) {
         this.student.dayOfBirth__c = event.detail.value;
     };
+
+    //Đổi giá trị trong student khi thay đổi lớp
     handleChangeClass(event) {
         this.student.Class__c = event.detail.value;
     };
+
+    //Đổi giá trị trong student khi nhập điểm Hóa
     diem1ChangedHandler(event) {
         this.student.Diem1__c = event.detail.value;
     };
+
+    //Đổi giá trị trong student khi nhập điểm Toán
     diem2ChangedHandler(event) {
         this.student.Diem2__c = event.detail.value;
     };
+
+    //Đổi giá trị trong student khi nhập điểm Lý
     diem3ChangedHandler(event) {
         this.student.Diem3__c = event.detail.value;
     };
 
+    /**
+	* handleCreateStudent
+	* Sự kiện khi ấn nút Tạo mới
+	* @param: 
+	* @return: 
+	* @created: 2022/07/19 Phan Duy Tân
+	* @modified: 2022/07/20 Phan Duy Tân
+	**/
     handleCreateStudent() {
         this.loading = true;
         createStudent({dataStudent: this.student})
@@ -98,10 +142,12 @@ export default class LWC_ThemMoi extends LightningElement {
         })
     };
 
+    //Đổi giá trị trong student khi thay đổi giới tính
     handleChangeSex(event) {
         this.student.Sex__c = event.detail.value;
     };
 
+    //Gắn giá trị cho radio-group
     get optionsSex() {
         return [
             { label: 'Nam', value: true },

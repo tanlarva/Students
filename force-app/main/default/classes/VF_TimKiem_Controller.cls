@@ -8,8 +8,8 @@ public with sharing class VF_TimKiem_Controller {
     public String sId {get; set;}
     public Boolean sSort {get; set;}
     private static final Integer INT_LIMIT_QUERY = 50000;
-    private Integer pageCurrent = 1;
-    private Integer totalPage = 0;
+    public Integer pageCurrent = 1;
+    public Integer totalPage = 0;
     private final Integer pageSize = 3;
     public Integer totalSearch {get; set; }
     String chooseCLass;
@@ -95,14 +95,13 @@ public with sharing class VF_TimKiem_Controller {
 	**/
     public void searchStudent(){
         dataSearch.nameStudent = ApexPages.currentPage().getParameters().get('nameStu');
-        dataSearch.startDate = null;
-        dataSearch.endDate = null;
         if((ApexPages.currentPage().getParameters().get('strDate'))!=''){
             dataSearch.setStartDate(ApexPages.currentPage().getParameters().get('strDate'));
         }
         if((ApexPages.currentPage().getParameters().get('endDate'))!=''){
             dataSearch.setEndDate(ApexPages.currentPage().getParameters().get('endDate'));
         }
+        dataSearch.sortName = (sSort==null) ? false : sSort;
         String query = this.createQuery(this.dataSearch);
     
         List<Student__c> temp = Database.query(query);
@@ -257,11 +256,11 @@ public with sharing class VF_TimKiem_Controller {
                 query1 = ' ((firstName__c LIKE \'%' + String.escapeSingleQuotes(dataSearch.nameStudent) + '%\') OR (lastName__c LIKE \'%' + String.escapeSingleQuotes(dataSearch.nameStudent) + '%\'))';
             }
             if((dataSearch.startDate!=null)&&(dataSearch.endDate!=null)){
-                query2 = ' (dayOfBirth__c > '+ String.escapeSingleQuotes(dataSearch.startDate) +' AND dayOfBirth__c < '+ String.escapeSingleQuotes(dataSearch.endDate) +')';
+                query2 = ' (dayOfBirth__c >= '+ String.escapeSingleQuotes(dataSearch.startDate) +' AND dayOfBirth__c <= '+ String.escapeSingleQuotes(dataSearch.endDate) +')';
             }else if(dataSearch.endDate!=null){
-                query2 = ' (dayOfBirth__c < '+ String.escapeSingleQuotes(dataSearch.endDate)+')';
+                query2 = ' (dayOfBirth__c <= '+ String.escapeSingleQuotes(dataSearch.endDate)+')';
             }else if(dataSearch.startDate!=null){
-                query2 = ' (dayOfBirth__c > '+ String.escapeSingleQuotes(dataSearch.startDate)+')';
+                query2 = ' (dayOfBirth__c >= '+ String.escapeSingleQuotes(dataSearch.startDate)+')';
             }
             if(dataSearch.idCLass!=null){
                 query3 = ' Class__c = \''+ String.escapeSingleQuotes(dataSearch.idCLass) +'\'';

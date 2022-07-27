@@ -5,7 +5,7 @@
 * @modified:
 */
 public class VF_ThemMoi_Controller {
-    public Student__c student {get; private set;}
+    public Student__c student {get; set;}
     String chooseCLass;
 
     /**

@@ -86,12 +86,8 @@ public with sharing class AR_TimKiem_Controller {
     @AuraEnabled
     public static void deleteStudent(List<Student__c> deleteStudent) {
         try {
-            List<Student__c> listDelete = new List<Student__c>();
-            for(Student__c s : [SELECT Id FROM Student__c WHERE Id IN: deleteStudent]) {
-                listDelete.add(s);
-            }
-            if(listDelete.size()>0){
-                delete listDelete;
+            if(deleteStudent.size()>0){
+                delete deleteStudent;
             }
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());
@@ -105,7 +101,7 @@ public with sharing class AR_TimKiem_Controller {
     * @created: 2022/07/06 Phan Duy Tân
     * @modified:
     */
-    class dataSearch {
+    public class dataSearch {
         @AuraEnabled
         public String nameStudent {get; set;}
         @AuraEnabled
@@ -116,19 +112,19 @@ public with sharing class AR_TimKiem_Controller {
         public String endDate {get; set;}
         @AuraEnabled
         public Boolean sortName {get; set;}
-        public dataSearch() {}
+        public dataSearch() {
+            this.nameStudent = '';
+            this.idCLass = '';
+            this.startDate = '';
+            this.endDate = '';
+            this.sortName = true;
+        }
         public dataSearch(String nameStudent, String idCLass, String startDate, String endDate, Boolean sortName) {
             this.nameStudent = nameStudent;
             this.idCLass = idCLass;
             this.startDate = startDate;
             this.endDate = endDate;
             this.sortName = sortName;
-        }
-        public void setStartDate(String day) {
-            this.startDate = day;
-        }
-        public void setEndDate(String day) {
-            this.endDate = day;
         }
 
         /**
@@ -140,21 +136,21 @@ public with sharing class AR_TimKiem_Controller {
         * @modified:
         **/
         public String createQuery(dataSearch dataSearch) {
-            String query = 'SELECT Class__c, dayOfBirth__c,Diem1__c,Diem3__c,Diem2__c,firstName__c,GPA__c,Id,lastName__c,Sex__c,Status__c, Name FROM Student__c WHERE ';
+            String query = 'SELECT Class__c, dayOfBirth__c,Diem1__c,Diem3__c,Diem2__c,firstName__c,GPA__c,Id,lastName__c,Sex__c,Status__c, Name FROM Student__c ';
             String query1, query2, query3, query4;
             System.debug('@@@' + (dataSearch));
             if (dataSearch != null) {
-                if (dataSearch.nameStudent != null) {
+                if (!string.isBlank(dataSearch.nameStudent)) {
                     query1 = ' (lastName__c LIKE \'%' + String.escapeSingleQuotes(dataSearch.nameStudent) + '%\')';
                 }
-                if ((dataSearch.startDate != '') && (dataSearch.endDate != '')) {
+                if ((!string.isBlank(dataSearch.startDate)) && (!string.isBlank(dataSearch.endDate))) {
                     query2 = ' (dayOfBirth__c >= '+ String.escapeSingleQuotes(dataSearch.startDate) +' AND dayOfBirth__c <= '+ String.escapeSingleQuotes(dataSearch.endDate) +')';
-                }else if (dataSearch.endDate != '') {
+                }else if (!string.isBlank(dataSearch.endDate)) {
                     query2 = ' (dayOfBirth__c <= '+ String.escapeSingleQuotes(dataSearch.endDate)+')';
-                }else if (dataSearch.startDate != '') {
+                }else if (!string.isBlank(dataSearch.startDate)) {
                     query2 = ' (dayOfBirth__c >= '+ String.escapeSingleQuotes(dataSearch.startDate)+')';
                 }
-                if (dataSearch.idCLass != '' && dataSearch.idCLass != '0000000000TOTAL') {
+                if (!string.isBlank(dataSearch.idCLass) && dataSearch.idCLass != '0000000000TOTAL') {
                     query3 = ' Class__c = \''+ String.escapeSingleQuotes(dataSearch.idCLass) +'\'';
                 }
                 if (dataSearch.sortName) {
@@ -162,7 +158,8 @@ public with sharing class AR_TimKiem_Controller {
                 }
             }
 
-            query = query + (query1 != null ?  query1 : '')
+            query = query + (((query1 != null) || (query2 != null) || (query3 != null)) ? ' WHERE': '')
+                        + (query1 != null ?  query1 : '')
                         + (((query1 != null) && (query2 != null)) ? ' AND ' + query2 : (query2 != null ? query2 : ''))
                         + ((((query1 != null) || (query2 != null)) && (query3 != null)) ? ' AND ' + query3 : (query3 != null ? query3 : ''))
                         + (query4 != null ? query4 : '');

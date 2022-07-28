@@ -6,10 +6,12 @@
 	* @created: 2022/06/28 Phan Duy Tân
 	* @modified:
 	**/
-trigger Trigger_Student on Student__c (before insert, after insert, after update, after delete) {
+trigger Trigger_Student on Student__c (before insert, before update, after insert, after update, after delete) {
     if (Trigger.isBefore) {
         if (Trigger.isInsert) {
             TriggerStudentHandle.onBeforeInsert(Trigger.new);
+        } else if (Trigger.isUpdate) {
+            TriggerStudentHandle.onBeforeUpdate(Trigger.new);
         }
     } else if (Trigger.isAfter) {
         if (Trigger.isInsert) {

@@ -82,10 +82,98 @@ public class TriggerStudentHandle {
             //Check input điểm
             if (stu.Diem1__c == null) {
                 stu.Diem1__c.addError(Label.non_DiemHoa);
-            }else if (stu.Diem2__c == null) {
-                stu.Diem2__c.addError(Label.non_DiemLy);
-            }else if (stu.Diem3__c == null) {
-                stu.Diem3__c.addError(Label.non_DiemToan);
+            } else if (stu.Diem1__c < 0) {
+                stu.Diem1__c.addError(Label.non_DiemHoa);
+            }
+
+            if (stu.Diem2__c == null) {
+                stu.Diem2__c.addError(Label.non_DiemToan);
+            } else if (stu.Diem2__c < 0) {
+                stu.Diem2__c.addError(Label.non_DiemToan);
+            }
+
+            if (stu.Diem3__c == null) {
+                stu.Diem3__c.addError(Label.non_DiemLy);
+            } else if (stu.Diem3__c < 0) {
+                stu.Diem3__c.addError(Label.non_DiemLy);
+            }
+            //Check 
+        }
+    }
+     /**
+	* onBeforeUpdate
+	* Xử lí trước update
+	* @param: 
+	* @return: 
+	* @created: 2022/07/28 Phan Duy Tân
+	* @modified:
+	**/
+    public static void onBeforeUpdate(List<Student__c> triggerNew) {
+        for(Student__c stu : triggerNew) {
+            //Check ngày sinh
+            if (stu.dayOfBirth__c == null) {
+                //Check đã nhập ngày sinh chưa
+                stu.dayOfBirth__c.addError(Label.null_dayOfBirth);
+            } else {
+                //Đã nhập rồi thì kiểm tra phù hợp chưa
+                integer[] month;
+                
+                Date presentDate = System.today();
+                Integer presentDay =  presentDate.Day();
+                Integer presentMonth = presentDate.Month();
+                Integer presentYear =  presentDate.Year();
+
+
+           
+                if (math.mod(presentYear,4) == 0) {
+                    month = new list <integer>{ 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+                } else {
+                    month = new list <integer>{ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+                }
+    
+                Date birthDate = stu.dayOfBirth__c;
+                Integer birthDay =  birthDate.Day();
+                Integer birthMonth = birthDate.Month();
+                Integer birthYear = birthDate.Year();    
+                
+            
+                if (birthDay > presentDay) {
+                    presentDay = presentDay + month[birthMonth - 1];
+                    presentMonth = presentMonth - 1;
+                } 
+                
+                    
+                if (birthMonth > presentMonth) {
+                presentYear = presentYear - 1;
+                presentMonth = presentMonth + 12;
+                }   
+        
+            
+                integer finalDay = presentDay - birthDay;
+                integer finalMonth = presentMonth - birthMonth;
+                integer finalYear = presentYear - birthYear;
+    
+                if (finalYear < MIN_AGE || finalYear > MAX_AGE) {
+                    stu.dayOfBirth__c.addError(Label.illegal_dayOfBirth);
+                }
+            }
+            //Check input điểm
+            if (stu.Diem1__c == null) {
+                stu.Diem1__c.addError(Label.non_DiemHoa);
+            } else if (stu.Diem1__c < 0) {
+                stu.Diem1__c.addError(Label.non_DiemHoa);
+            }
+
+            if (stu.Diem2__c == null) {
+                stu.Diem2__c.addError(Label.non_DiemToan);
+            } else if (stu.Diem2__c < 0) {
+                stu.Diem2__c.addError(Label.non_DiemToan);
+            }
+
+            if (stu.Diem3__c == null) {
+                stu.Diem3__c.addError(Label.non_DiemLy);
+            } else if (stu.Diem3__c < 0) {
+                stu.Diem3__c.addError(Label.non_DiemLy);
             }
             //Check 
         }
@@ -231,13 +319,15 @@ public class TriggerStudentHandle {
                 }
             } else {
                 for(Class__c c : updateClass) {
-                    if (triggerOld[i].Status__c != triggerNew[i].Status__c) {
-                        if (triggerOld[i].Status__c == PASS) {
-                            c.numPass__c++;
-                            c.numFail__c--;
-                        } else if (triggerOld[i].Status__c == FAIL) {
-                            c.numFail__c++;
-                            c.numPass__c--;
+                    if (triggerNew[i].Class__c == c.Id) {
+                        if (triggerOld[i].Status__c != triggerNew[i].Status__c) {
+                            if (triggerOld[i].Status__c == PASS) {
+                                c.numPass__c++;
+                                c.numFail__c--;
+                            } else if (triggerOld[i].Status__c == FAIL) {
+                                c.numFail__c++;
+                                c.numPass__c--;
+                            }
                         }
                     }
                 }

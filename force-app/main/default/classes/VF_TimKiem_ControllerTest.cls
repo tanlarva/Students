@@ -13,7 +13,8 @@ public class VF_TimKiem_ControllerTest {
     private static void methodTestGetResults() {
         VF_TimKiem_Controller con = new VF_TimKiem_Controller();
         Test.startTest();
-        List<Object> getList = con.getResults();
+            List<Object> getList = con.getResults();
+            con.getResults();
         Test.stopTest();
         System.assertEquals(3, getList.size());
         System.assertEquals(listStudent.size(), con.totalSearch);
@@ -37,6 +38,8 @@ public class VF_TimKiem_ControllerTest {
         VF_TimKiem_Controller con = new VF_TimKiem_Controller();
         Test.startTest();
             con.sId = listStudent[0].Id;
+            con.deleteStudent();
+            con.sId = '';
             con.deleteStudent();
             List<Object> checkStudent = con.getResults();
         Test.stopTest();
@@ -74,8 +77,113 @@ public class VF_TimKiem_ControllerTest {
         System.assertEquals(con.totalPage, lastPage);
         System.assertEquals(con.totalPage -1, prePage);
         System.assertEquals(con.totalPage, nextPage);
-
     }
+
+    @isTest
+    private static void testMethodUpdateStudent() {
+        VF_TimKiem_Controller con = new VF_TimKiem_Controller();
+        con.sId = listStudent[3].Id;
+        Test.startTest();
+            Pagereference check = con.updateStudent();
+        Test.stopTest();
+        String output = '/apex/vf_capnhat?id='+listStudent[3].Id;
+        System.assertEquals(output, check.getUrl());
+    }
+
+    @isTest
+    private static void testMethodDetailStudent() {
+        VF_TimKiem_Controller con = new VF_TimKiem_Controller();
+        con.sId = listStudent[3].Id;
+        Test.startTest();
+            Pagereference check = con.detailStudent();
+        Test.stopTest();
+        String output = '/apex/vf_chitiet?id='+listStudent[3].Id;
+        System.assertEquals(output, check.getUrl());
+    }
+    
+    @isTest
+    private static void testMethodNewStudent() {
+        VF_TimKiem_Controller con = new VF_TimKiem_Controller();
+        Test.startTest();
+            Pagereference check = con.newStudent();
+        Test.stopTest();
+        String output = '/apex/vf_themmoi';
+        System.assertEquals(output, check.getUrl());
+    }
+
+    @isTest
+    private static void testMethodDeleteMNStudent() {
+        VF_TimKiem_Controller con = new VF_TimKiem_Controller();
+        con.getResults();
+        con.result[0].isSelected = true;
+        con.result[1].isSelected = true;
+        Test.startTest();
+            con.deleteMNStudent();
+            con.result = null;
+            con.deleteMNStudent();
+        Test.stopTest();
+        Integer check = [SELECT COUNT() FROM Student__c];
+        System.assertEquals(3, check);
+    }
+
+    @isTest
+    private static void testMethodGetPageNumber() {
+        VF_TimKiem_Controller con = new VF_TimKiem_Controller();
+        con.getResults();
+        Test.startTest();
+            String check = con.getPageNumber();
+        Test.stopTest();
+        String output = '1';
+        System.assertEquals(output, check);
+    }
+
+    @isTest
+    private static void testMethodCreateQuery() {
+        VF_TimKiem_Controller con = new VF_TimKiem_Controller();
+        Test.startTest();
+            // Trường hợp đầy đủ
+            String query1 = con.createQuery(con.dataSearch = new VF_TimKiem_Controller.dataSearch(listStudent[0].lastName__c, listClass[0].Id, '2012-10-10', '2012-10-11', true));
+
+            //Trường hợp thiếu tên
+            String query2 = con.createQuery(con.dataSearch = new VF_TimKiem_Controller.dataSearch(null, listClass[0].Id, '2012-10-10', '2012-10-11', true));
+            
+            //Trường hợp thiếu lớp
+            String query3 = con.createQuery(con.dataSearch = new VF_TimKiem_Controller.dataSearch(listStudent[0].lastName__c, null, '2012-10-10', '2012-10-11', true));
+
+            //Trường hợp thiếu startdate
+            String query4 = con.createQuery(con.dataSearch = new VF_TimKiem_Controller.dataSearch(listStudent[0].lastName__c, listClass[0].Id, null, '2012-10-11', true));
+
+            //Trường hợp thiếu endate
+            String query5 = con.createQuery(con.dataSearch = new VF_TimKiem_Controller.dataSearch(listStudent[0].lastName__c, listClass[0].Id, '2012-10-10', null, true));
+
+            //Trường hợp không có gì
+            String query6 = con.createQuery(con.dataSearch = new VF_TimKiem_Controller.dataSearch(null, null, null, null, false));
+        Test.stopTest();
+
+        List<Object> output1 = Database.query(query1);
+        List<Object> output2 = Database.query(query2);
+        List<Object> output3 = Database.query(query3);
+        List<Object> output4 = Database.query(query4);
+        List<Object> output5 = Database.query(query5);
+        List<Object> output6 = Database.query(query6);
+        
+        System.assertEquals(1, output1.size());
+        System.assertEquals(2, output2.size());
+        System.assertEquals(1, output3.size());
+        System.assertEquals(1, output4.size());
+        System.assertEquals(1, output5.size());
+        System.assertEquals(5, output6.size());
+    }
+
+    @isTest
+    private static void testMethodUpdateStu() {
+        VF_TimKiem_Controller con = new VF_TimKiem_Controller();
+        Test.startTest();
+            PageReference check = con.updateStu(listStudent[0].Id);
+        Test.stopTest();
+        System.assertEquals('/apex/vf_capnhat?id='+listStudent[0].Id, check.getUrl());
+    }
+    
     private static List<Class__c> listClass;
     private static List<Student__c> listStudent;
     final static Integer NUM_CLASS = 5;

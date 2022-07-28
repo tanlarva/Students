@@ -14,7 +14,7 @@ public with sharing class VF_TimKiem_Controller {
     public Integer totalSearch {get; set; }
     String chooseCLass;
     public dataSearch dataSearch {get; set; }     
-    private List<studentDTO> result {get; set; }
+    public List<studentDTO> result {get; set; }
 
     /**
 	* Contructor
@@ -249,7 +249,7 @@ public with sharing class VF_TimKiem_Controller {
 	* @modified:
 	**/
     public String createQuery(dataSearch dataSearch){
-        String query = 'SELECT Class__c, dayOfBirth__c,Diem1__c,Diem3__c,Diem2__c,firstName__c,GPA__c,Id,lastName__c,Sex__c,Status__c, Name FROM Student__c WHERE ';
+        String query = 'SELECT Class__c, dayOfBirth__c,Diem1__c,Diem3__c,Diem2__c,firstName__c,GPA__c,Id,lastName__c,Sex__c,Status__c, Name FROM Student__c';
         String query1, query2, query3, query4;
         if(dataSearch != null){
             if(dataSearch.nameStudent != null){
@@ -270,7 +270,8 @@ public with sharing class VF_TimKiem_Controller {
             }
         }
 
-        query = query + (query1 != null ?  query1 : '')
+        query = query + (((query1 != null) || (query2 != null) || (query3 != null) || (query4 != null)) ? ' WHERE': '')
+                      + (query1 != null ?  query1 : '')
                       + (((query1 != null) && (query2 != null)) ? ' AND ' + query2 : (query2 != null ? query2 : ''))
                       + ((((query1 != null) || (query2 != null)) && (query3 != null)) ? ' AND ' + query3 : (query3 != null ? query3 : ''))
                       + (query4 != null ? query4 : '');
@@ -300,7 +301,7 @@ public with sharing class VF_TimKiem_Controller {
     * @created: 2022/06/21 Phan Duy Tân
     * @modified: 2022/07/06 Phan Duy Tân
     */
-    class dataSearch{
+    public class dataSearch{
         public String nameStudent {get; set;}
         public String idCLass {get; set;}
         public String startDate {get; set;}
@@ -329,7 +330,7 @@ public with sharing class VF_TimKiem_Controller {
     * @created: 2022/06/21 Phan Duy Tân
     * @modified:
     */
-    class studentDTO{
+    public class studentDTO{
         public Student__c student {get; set;}
         public boolean isSelected {get; set;}
         public studentDTO(boolean isSelected, Student__c student){

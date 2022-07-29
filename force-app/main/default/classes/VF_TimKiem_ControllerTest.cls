@@ -1,6 +1,17 @@
+/*
+ * ClassName: VF_TimKiem_ControllerTest
+ * ClassDetail: Test Class cho VF_TimKiem_Controller
+ * @create: 2022/07/27 Phan Duy Tân
+ * @modify:
+ */
 @isTest
 public class VF_TimKiem_ControllerTest {
-
+    /*
+     * methodTestConstructor
+     * Dùng để test cho constructor
+     * @create: 2022/07/27 Phan Duy Tân
+     * @modify:
+     */
     @isTest
     private static void methodTestConstructor() {
         Test.startTest();
@@ -9,6 +20,12 @@ public class VF_TimKiem_ControllerTest {
         System.assert(true);
     }
 
+    /*
+     * methodTestResults
+     * Dùng để test cho method getResults()
+     * @create: 2022/07/27 Phan Duy Tân
+     * @modify:
+     */
     @isTest
     private static void methodTestGetResults() {
         VF_TimKiem_Controller con = new VF_TimKiem_Controller();
@@ -20,6 +37,12 @@ public class VF_TimKiem_ControllerTest {
         System.assertEquals(listStudent.size(), con.totalSearch);
     }
 
+    /*
+     * testMethodGetListClass
+     * Dùng để test cho method getListClass()
+     * @create: 2022/07/27 Phan Duy Tân
+     * @modify:
+     */
     @isTest
     private static void testMethodGetListClass() {
         VF_TimKiem_Controller con = new VF_TimKiem_Controller();
@@ -33,6 +56,12 @@ public class VF_TimKiem_ControllerTest {
         System.assertEquals(listClass[0].Id, checkChooseClass);
     }
 
+    /*
+     * testMethodDeleteStudent
+     * Dùng để test cho method deleteStudent()
+     * @create: 2022/07/27 Phan Duy Tân
+     * @modify:
+     */
     @isTest
     private static void testMethodDeleteStudent() {
         VF_TimKiem_Controller con = new VF_TimKiem_Controller();
@@ -47,6 +76,12 @@ public class VF_TimKiem_ControllerTest {
         System.assertEquals(output, con.totalSearch);
     }
 
+    /*
+     * testMethodSearchStudent
+     * Dùng để test cho method searchStudent()
+     * @create: 2022/07/27 Phan Duy Tân
+     * @modify:
+     */
     @isTest
     private static void testMethodSearchStudent() {
         ApexPages.currentPage().getParameters().put('nameStu','B');
@@ -58,7 +93,13 @@ public class VF_TimKiem_ControllerTest {
         Test.stopTest();
         System.assertEquals(1, con.totalSearch);
     }
-    
+
+    /*
+     * testMethodPage
+     * Dùng để test cho method page()
+     * @create: 2022/07/27 Phan Duy Tân
+     * @modify:
+     */
     @isTest
     private static void testMethodPage() {
         VF_TimKiem_Controller con = new VF_TimKiem_Controller();
@@ -79,6 +120,12 @@ public class VF_TimKiem_ControllerTest {
         System.assertEquals(con.totalPage, nextPage);
     }
 
+    /*
+     * testMethodUpdateStudent
+     * Dùng để test cho method updateStudent()
+     * @create: 2022/07/27 Phan Duy Tân
+     * @modify:
+     */
     @isTest
     private static void testMethodUpdateStudent() {
         VF_TimKiem_Controller con = new VF_TimKiem_Controller();
@@ -90,6 +137,12 @@ public class VF_TimKiem_ControllerTest {
         System.assertEquals(output, check.getUrl());
     }
 
+    /*
+     * testMethodDetailStudent
+     * Dùng để test cho method detailStudent()
+     * @create: 2022/07/27 Phan Duy Tân
+     * @modify:
+     */
     @isTest
     private static void testMethodDetailStudent() {
         VF_TimKiem_Controller con = new VF_TimKiem_Controller();
@@ -100,7 +153,13 @@ public class VF_TimKiem_ControllerTest {
         String output = '/apex/vf_chitiet?id='+listStudent[3].Id;
         System.assertEquals(output, check.getUrl());
     }
-    
+
+    /*
+     * testMethodNewStudent
+     * Dùng để test cho method newStudent()
+     * @create: 2022/07/27 Phan Duy Tân
+     * @modify:
+     */
     @isTest
     private static void testMethodNewStudent() {
         VF_TimKiem_Controller con = new VF_TimKiem_Controller();
@@ -111,6 +170,12 @@ public class VF_TimKiem_ControllerTest {
         System.assertEquals(output, check.getUrl());
     }
 
+    /*
+     * testMethodDeleteMNStudent
+     * Dùng để test cho method deleteMNStudent()
+     * @create: 2022/07/27 Phan Duy Tân
+     * @modify:
+     */
     @isTest
     private static void testMethodDeleteMNStudent() {
         VF_TimKiem_Controller con = new VF_TimKiem_Controller();
@@ -126,6 +191,12 @@ public class VF_TimKiem_ControllerTest {
         System.assertEquals(3, check);
     }
 
+    /*
+     * testMethodGetPageNumber
+     * Dùng để test cho method getPageNumber()
+     * @create: 2022/07/27 Phan Duy Tân
+     * @modify:
+     */
     @isTest
     private static void testMethodGetPageNumber() {
         VF_TimKiem_Controller con = new VF_TimKiem_Controller();
@@ -137,6 +208,12 @@ public class VF_TimKiem_ControllerTest {
         System.assertEquals(output, check);
     }
 
+    /*
+     * testMethodCreateQuery
+     * Dùng để test cho method createQuery()
+     * @create: 2022/07/27 Phan Duy Tân
+     * @modify:
+     */
     @isTest
     private static void testMethodCreateQuery() {
         VF_TimKiem_Controller con = new VF_TimKiem_Controller();
@@ -175,6 +252,12 @@ public class VF_TimKiem_ControllerTest {
         System.assertEquals(5, output6.size());
     }
 
+    /*
+     * testMethodUpdateStu
+     * Dùng để test cho method updateStu()
+     * @create: 2022/07/27 Phan Duy Tân
+     * @modify:
+     */
     @isTest
     private static void testMethodUpdateStu() {
         VF_TimKiem_Controller con = new VF_TimKiem_Controller();
@@ -183,11 +266,12 @@ public class VF_TimKiem_ControllerTest {
         Test.stopTest();
         System.assertEquals('/apex/vf_capnhat?id='+listStudent[0].Id, check.getUrl());
     }
-    
-    private static List<Class__c> listClass;
-    private static List<Student__c> listStudent;
-    final static Integer NUM_CLASS = 5;
-    final static Integer NUM_STUDENT = 5;
+
+    private static List<Class__c> listClass; //Danh dách lớp được tạo
+    private static List<Student__c> listStudent; //Danh sách học sinh được tạo
+    final static Integer NUM_CLASS = 5; //Số lớp được tạo
+    final static Integer NUM_STUDENT = 5; //Số học sinh được tạo đúng
+    //Data Test
     static {
         listClass = new List<Class__c>();
         for (Integer i = 0; i < NUM_CLASS; i++) {
@@ -203,7 +287,7 @@ public class VF_TimKiem_ControllerTest {
         listStudent.add(createStudent('Học Sinh', 'E', '10/10/2012', true, listClass[3].Id, 8, 8, 8));
         insert listStudent;
     }
-
+    // Tạo học sinh
     private static Student__c createStudent(String fName, String lName, String dayOfBirth, Boolean Sex, String idClass, Integer Diem1, Integer Diem2, Integer Diem3) {
         Student__c result = new Student__c();
         result.firstName__c = fName;
@@ -216,7 +300,7 @@ public class VF_TimKiem_ControllerTest {
         result.Diem3__c = Diem3;
         return result;
     }
-
+    //Tạo lớp
     private static Class__c createClass(String nameClass) {
         Class__c result = new Class__c();
         result.nameClass__c = nameClass;

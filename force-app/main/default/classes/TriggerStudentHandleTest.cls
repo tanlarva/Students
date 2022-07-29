@@ -1,6 +1,17 @@
+/*
+ * ClassName: TriggerStudentHandleTest
+ * ClassDetail: Test Class cho TriggerStudentHandle
+ * @create: 2022/07/28 Phan Duy Tân
+ * @modify:
+ */
 @isTest
 public class TriggerStudentHandleTest {
-
+    /*
+     * testMethodConstructor
+     * Dùng để test cho method constructor
+     * @create: 2022/07/28 Phan Duy Tân
+     * @modify:
+     */
     @isTest
     private static void testMethodConstructor() {
         String error;
@@ -12,9 +23,15 @@ public class TriggerStudentHandleTest {
             }
         Test.stopTest();
         System.debug('Error: ' + error);
-        System.assertNotEquals(null, error);
+        System.assertEquals(null, error);
     }
 
+    /*
+     * testMethodOnBeforeInsert
+     * Dùng để test cho method onBeforeInsert()
+     * @create: 2022/07/28 Phan Duy Tân
+     * @modify:
+     */
     @isTest
     private static void testMethodOnBeforeInsert() {
         String error;
@@ -28,7 +45,13 @@ public class TriggerStudentHandleTest {
         System.debug('Error: ' + error);
         System.assertEquals(null, error);
     }
-    
+
+    /*
+     * testMethodOnBeforeUpdate
+     * Dùng để test cho method onBeforeUpdate()
+     * @create: 2022/07/28 Phan Duy Tân
+     * @modify:
+     */
     @isTest
     private static void testMethodOnBeforeUpdate() {
         String error;
@@ -58,7 +81,13 @@ public class TriggerStudentHandleTest {
         System.debug('Error: ' + error);
         System.assertEquals(null, error);
     }
-    
+
+    /*
+     * testMethodOnAfterInsert
+     * Dùng để test cho method onAfterInsert()
+     * @create: 2022/07/28 Phan Duy Tân
+     * @modify:
+     */
     @isTest
     private static void testMethodOnAfterInsert() {
 
@@ -77,7 +106,13 @@ public class TriggerStudentHandleTest {
         System.assertEquals(1, Lop_0.numFail__c);
         System.assertEquals(checkXepLoai, check);
     }
-    
+
+    /*
+     * testMethodOnAfterDelete
+     * Dùng để test cho method onAfterDelete()
+     * @create: 2022/07/28 Phan Duy Tân
+     * @modify:
+     */
     @isTest
     private static void testMethodOnAfterDelete() {
         Test.startTest();
@@ -89,7 +124,13 @@ public class TriggerStudentHandleTest {
         System.assertEquals(1, Lop_0.numPass__c);
         System.assertEquals(1, Lop_0.numFail__c);
     }
-    
+
+    /*
+     * testMethodOnAfterUpdate
+     * Dùng để test cho method onAfterUpdate()
+     * @create: 2022/07/28 Phan Duy Tân
+     * @modify:
+     */
     @isTest
     private static void testMethodOnAfterUpdate() {
         Test.startTest();
@@ -119,14 +160,15 @@ public class TriggerStudentHandleTest {
         System.assertEquals(1, Lop_1.numFail__c);
     }
 
-    private static List<Class__c> listClass;
-    private static List<Student__c> listStudent;
-    private static List<Student__c> listStudentError;
-    private static List<String> checkXepLoai;
-    private static Student__c student;
-    private static Student__c studentErorr;
-    final static Integer NUM_CLASS = 5;
-    final static Integer NUM_STUDENT = 5;
+    private static List<Class__c> listClass; //Danh sách lớp đã tạo
+    private static List<Student__c> listStudent;    //Danh sách học sinh đã tạo
+    private static List<Student__c> listStudentError;   //Danh sách học sinh dữ liệu lỗi
+    private static List<String> checkXepLoai;   //Danh sách xếp loại của listStudent
+    private static Student__c student;  //Học sinh đúng
+    private static Student__c studentErorr; //Học sinh lỗi
+    final static Integer NUM_CLASS = 5; //Số lớp được tạo
+    final static Integer NUM_STUDENT = 5;   //Số học sinh được tạo
+    //DataTest
     static {
         listClass = new List<Class__c>();
         for (Integer i = 0; i < NUM_CLASS; i++) {
@@ -168,7 +210,7 @@ public class TriggerStudentHandleTest {
         student = createStudent('Học Sinh', 'Test', '10/10/2012', true, listClass[0].Id, 8, 8, 8);
         studentErorr = createStudent('Học Sinh', 'Test', '10/10/2022', true, listClass[0].Id, 8, 8, 8);
     }
-
+    //Tạo học sinh
     private static Student__c createStudent(String fName, String lName, String dayOfBirth, Boolean Sex, String idClass, Integer Diem1, Integer Diem2, Integer Diem3) {
         Student__c result = new Student__c();
         result.firstName__c = fName;
@@ -181,7 +223,7 @@ public class TriggerStudentHandleTest {
         result.Diem3__c = Diem3;
         return result;
     }
-
+    //Tạo lớp
     private static Class__c createClass(String nameClass) {
         Class__c result = new Class__c();
         result.nameClass__c = nameClass;

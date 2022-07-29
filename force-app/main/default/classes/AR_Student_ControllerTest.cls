@@ -1,6 +1,17 @@
+/*
+ * ClassName: AR_Student_ControllerTest
+ * ClassDetail: Test Class cho AR_Student_Controller
+ * @create: 2022/07/28 Phan Duy Tân
+ * @modify:
+ */
 @isTest
 public class AR_Student_ControllerTest {
-
+    /*
+     * testMethodConstructor
+     * Dùng để test cho method constructor
+     * @create: 2022/07/28 Phan Duy Tân
+     * @modify:
+     */
     @isTest
     private static void testMethodConstructor() {
         String error;
@@ -12,6 +23,12 @@ public class AR_Student_ControllerTest {
         System.assertEquals(null, error);
     }
 
+    /*
+     * testMethodCreateStudent
+     * Dùng để test cho method createStudent()
+     * @create: 2022/07/28 Phan Duy Tân
+     * @modify:
+     */
     @isTest
     private static void testMethodCreateStudent() {
         String error;
@@ -28,6 +45,12 @@ public class AR_Student_ControllerTest {
         System.assert(error != null);
     }
 
+    /*
+     * testMethodUpdateStudent
+     * Dùng để test cho method updateStudent()
+     * @create: 2022/07/28 Phan Duy Tân
+     * @modify:
+     */
     @isTest
     private static void testMethodUpdateStudent() {
         String output = 'Check';
@@ -48,6 +71,12 @@ public class AR_Student_ControllerTest {
         System.assert(error != null);
     }
 
+    /*
+     * testMethodGetDataStudent
+     * Dùng để test cho method getDataStudent()
+     * @create: 2022/07/28 Phan Duy Tân
+     * @modify:
+     */
     @isTest
     private static void testMethodGetDataStudent() {
         Test.startTest();
@@ -58,6 +87,12 @@ public class AR_Student_ControllerTest {
         System.assert(output2 != null);
     }
 
+    /*
+     * testMethodGetListClass
+     * Dùng để test cho method getListClass
+     * @create: 2022/07/28 Phan Duy Tân
+     * @modify:
+     */
     @isTest
     private static void testMethodGetListClass() {
         Test.startTest();
@@ -66,6 +101,12 @@ public class AR_Student_ControllerTest {
         System.assertEquals(listClass.size(), output.size());
     }
 
+    /*
+     * testMethodGetListClassLWC
+     * Dùng để test cho method getListClassLWC()
+     * @create: 2022/07/28 Phan Duy Tân
+     * @modify:
+     */
     @isTest
     private static void testMethodGetListClassLWC() {
         Test.startTest();
@@ -75,12 +116,13 @@ public class AR_Student_ControllerTest {
     }
 
 
-    private static List<Class__c> listClass;
-    private static List<Student__c> listStudent;
-    private static Student__c student;
-    private static Student__c studentErorr;
-    final static Integer NUM_CLASS = 5;
-    final static Integer NUM_STUDENT = 5;
+    private static List<Class__c> listClass;    //Danh sách lớp đã tạo
+    private static List<Student__c> listStudent;    //Danh sách học sinh đã tạo
+    private static Student__c student;  //Học sinh đúng
+    private static Student__c studentErorr; //Học sinh sai
+    final static Integer NUM_CLASS = 5; //Số lớp đã tạo
+    final static Integer NUM_STUDENT = 5;   //Số học sinh đã tạo
+    //Data Test
     static {
         listClass = new List<Class__c>();
         for (Integer i = 0; i < NUM_CLASS; i++) {
@@ -99,7 +141,7 @@ public class AR_Student_ControllerTest {
         student = createStudent('Học Sinh', 'Test', '10/10/2012', true, listClass[0].Id, 8, 8, 8);
         studentErorr = createStudent('Học Sinh', 'Test', '10/10/2022', true, listClass[0].Id, 8, 8, 8);
     }
-
+    //Tạo học sinh
     private static Student__c createStudent(String fName, String lName, String dayOfBirth, Boolean Sex, String idClass, Integer Diem1, Integer Diem2, Integer Diem3) {
         Student__c result = new Student__c();
         result.firstName__c = fName;
@@ -112,7 +154,7 @@ public class AR_Student_ControllerTest {
         result.Diem3__c = Diem3;
         return result;
     }
-
+    //Tạo lớp
     private static Class__c createClass(String nameClass) {
         Class__c result = new Class__c();
         result.nameClass__c = nameClass;

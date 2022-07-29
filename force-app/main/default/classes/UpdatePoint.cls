@@ -17,7 +17,7 @@ public class UpdatePoint implements Database.Batchable<sObject>, Database.Statef
 	* @modified:
 	**/ 
     public void execute(SchedulableContext SC) {
-        Database.executeBatch(new UpdatePoint(),2);
+        Database.executeBatch(new UpdatePoint());
     }
 
     /**

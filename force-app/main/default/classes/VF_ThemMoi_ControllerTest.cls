@@ -1,5 +1,17 @@
+/*
+ * ClassName: VF_ThemMoi_ControllerTest
+ * ClassDetail: Test Class cho VF_ThemMoi_Controller
+ * @create: 2022/07/27 Phan Duy Tân
+ * @modify:
+ */
 @isTest
 public class VF_ThemMoi_ControllerTest {
+    /*
+     * testMethodConstructor
+     * Dùng để test cho method constructor
+     * @create: 2022/07/27 Phan Duy Tân
+     * @modify:
+     */
     @isTest
     private static void testMethodConstructor() {
         Test.startTest();
@@ -9,6 +21,12 @@ public class VF_ThemMoi_ControllerTest {
         System.assertEquals(output, con.student.getSObjectType());
     }
 
+    /*
+     * testMethodSave
+     * Dùng để test cho method save()
+     * @create: 2022/07/27 Phan Duy Tân
+     * @modify:
+     */
     @isTest
     private static void testMethodSave() {
         VF_ThemMoi_Controller con = new VF_ThemMoi_Controller();
@@ -20,6 +38,12 @@ public class VF_ThemMoi_ControllerTest {
         System.assertEquals(check.lastName__c, con.student.lastName__c);
     }
 
+    /*
+     * testMethodSaveError
+     * Dùng để test cho method save() khi error
+     * @create: 2022/07/27 Phan Duy Tân
+     * @modify:
+     */
     @isTest
     private static void testMethodSaveError() {
         VF_ThemMoi_Controller con = new VF_ThemMoi_Controller();
@@ -30,7 +54,13 @@ public class VF_ThemMoi_ControllerTest {
         List<Student__c> check = [SELECT Id, lastName__c FROM Student__c WHERE lastName__c =:'checkSave'];
         System.assert(check.size() == 0);
     }
-    
+
+    /*
+     * testMethodGetListClass
+     * Dùng để test cho method getListClass()
+     * @create: 2022/07/27 Phan Duy Tân
+     * @modify:
+     */
     @isTest
     private static void testMethodGetListClass() {
         VF_ThemMoi_Controller con = new VF_ThemMoi_Controller();
@@ -44,10 +74,11 @@ public class VF_ThemMoi_ControllerTest {
         System.assertEquals(listClass[0].Id, checkChooseClass);
     }
 
-    private static List<Class__c> listClass;
-    private static List<Student__c> listStudent;
-    final static Integer NUM_CLASS = 5;
-    final static Integer NUM_STUDENT = 5;
+    private static List<Class__c> listClass;    //Danh sách lớp đã tạo
+    private static List<Student__c> listStudent;    //Danh sách học sinh đã tạo
+    final static Integer NUM_CLASS = 5; //Số lớp đã tạo
+    final static Integer NUM_STUDENT = 5;   //Số học sinh đã tạo
+    //Data Test
     static {
         listClass = new List<Class__c>();
         for (Integer i = 0; i < NUM_CLASS; i++) {
@@ -63,7 +94,7 @@ public class VF_ThemMoi_ControllerTest {
         listStudent.add(createStudent('Học Sinh', 'E', '10/10/2012', true, listClass[3].Id, 8, 8, 8));
         insert listStudent;
     }
-
+    //Tạo học sinh
     private static Student__c createStudent(String fName, String lName, String dayOfBirth, Boolean Sex, String idClass, Integer Diem1, Integer Diem2, Integer Diem3) {
         Student__c result = new Student__c();
         result.firstName__c = fName;
@@ -76,7 +107,7 @@ public class VF_ThemMoi_ControllerTest {
         result.Diem3__c = Diem3;
         return result;
     }
-
+    //Tạo Lớp
     private static Class__c createClass(String nameClass) {
         Class__c result = new Class__c();
         result.nameClass__c = nameClass;
